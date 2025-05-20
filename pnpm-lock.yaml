@@ -45,9 +45,6 @@ importers:
       commitlint:
         specifier: ^19.8.1
         version: 19.8.1(@types/node@20.17.46)(typescript@5.8.3)
-      commitlint-config-gitmoji:
-        specifier: ^2.3.1
-        version: 2.3.1
       commitlint-plugin-gitmoji:
         specifier: ^2.2.6
         version: 2.2.6
@@ -223,14 +220,8 @@ packages:
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@gitmoji/commit-types@1.1.5':
-    resolution: {integrity: sha512-8D3FZMRY+gtYpTcHG1SOGmm9CFqxNh6rI9xDoCydxHxnWgqInbdF3nk9gibW5gXA58Hf2cVcJaLEcGOKLRAtmw==}
-
   '@gitmoji/gitmoji-regex@1.0.0':
     resolution: {integrity: sha512-+BFXxcWCxn0UIYuG1v5n9SfaCCS8tw95j1x3QsTJRdGGiihRyVLTHiu1wrHlzH3z4nYXKjCKiZFTdWwMjRI+gQ==}
-
-  '@gitmoji/parser-opts@1.4.0':
-    resolution: {integrity: sha512-zzmx/vtpdB/ijjUm7u9OzHNCXWKpSbzVEgVzOzhilMgoTBlUDyInZFUtiCTV+Wf4oCP9nxGa/kQGQFfN+XLH1g==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1062,9 +1053,6 @@ packages:
     resolution: {integrity: sha512-gwAPAVTy/j5YcOOebcCRIijn+mSjWJC+IYKivTu6aG8Ei/scoXgfsMRnuAk6b0GRste2J4NGxVdMN3ZpfNaVaw==}
     engines: {node: '>= 12'}
     hasBin: true
-
-  commitlint-config-gitmoji@2.3.1:
-    resolution: {integrity: sha512-T15ssbsyNc6szHlnGWo0/xvIA1mObqM70E9TwKNVTpksxhm+OdFht8hvDdKJAVi4nlZX5tcfTeILOi7SHBGH3w==}
 
   commitlint-plugin-gitmoji@2.2.6:
     resolution: {integrity: sha512-oKHPHeNXby0Ix0ZbHVSK5ZyPx1V4fyBjLOy93cYwXhOEPXe36nkDc/HDPFfQpzx1vz39277TaP9LScbqTbscfQ==}
@@ -3489,16 +3477,10 @@ snapshots:
       '@eslint/core': 0.13.0
       levn: 0.4.1
 
-  '@gitmoji/commit-types@1.1.5': {}
-
   '@gitmoji/gitmoji-regex@1.0.0':
     dependencies:
       emoji-regex: 10.4.0
       gitmojis: 3.15.0
-
-  '@gitmoji/parser-opts@1.4.0':
-    dependencies:
-      '@gitmoji/gitmoji-regex': 1.0.0
 
   '@humanfs/core@0.19.1': {}
 
@@ -4286,13 +4268,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
       - typescript
-
-  commitlint-config-gitmoji@2.3.1:
-    dependencies:
-      '@commitlint/types': 17.8.1
-      '@gitmoji/commit-types': 1.1.5
-      '@gitmoji/parser-opts': 1.4.0
-      commitlint-plugin-gitmoji: 2.2.6
 
   commitlint-plugin-gitmoji@2.2.6:
     dependencies:

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -12,15 +12,44 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.woff2')
+    format('woff2-variations');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+h1 {
+  font-weight: 700;
+}
+h2 {
+  font-weight: 600;
+}
+p,
+span,
+div {
+  font-weight: 400;
+}
+button {
+  font-weight: 500;
+}
+input,
+textarea,
+select,
+option {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
 }

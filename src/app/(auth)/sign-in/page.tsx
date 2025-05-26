@@ -1,7 +1,7 @@
 'use client';
-import { LoginForm } from '@/components/auth/LoginForm';
-import { LoginHeader } from '@/components/auth/LoginHeader';
-import { SignupLink } from '@/components/auth/SignupLink';
+import { LoginForm } from '@/components/sign-in/LoginForm';
+import { LoginHeader } from '@/components/sign-in/LoginHeader';
+import { SignupLink } from '@/components/sign-in/SignupLink';
 
 export default function SignInPage() {
   return (

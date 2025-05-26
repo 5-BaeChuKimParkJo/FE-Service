@@ -5,12 +5,13 @@ import {
   validateNickname,
   validateEmailFormat,
 } from '@/lib/validation.utils';
-import {
-  checkNicknameAvailability,
-  checkEmailAvailability,
-} from '@/services/auth-service';
+
 import { useRegisterStore } from '@/store/use-register-store';
 import useDebounce from '@/lib/debounce';
+import {
+  checkEmailAvailability,
+  checkNicknameAvailability,
+} from '@/actions/auth-service';
 
 export function useUserInfoFormHandlers() {
   const {

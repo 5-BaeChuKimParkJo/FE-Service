@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useRegisterStore } from '@/store/use-register-store';
-import { registerUser } from '@/services/auth-service';
+import { registerUser } from '@/actions/auth-service';
 
 export function useRegistrationHandler() {
   const router = useRouter();

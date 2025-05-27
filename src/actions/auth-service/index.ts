@@ -1,3 +1,5 @@
+import { useMutation, useQuery } from '@tanstack/react-query';
+
 /**
  * 이메일 중복 확인 API
  * @param email 확인할 이메일
@@ -6,10 +8,8 @@
 export async function checkEmailAvailability(email: string): Promise<boolean> {
   try {
     // 실제 API 호출 구현
-    // const response = await fetch(`/api/auth/check-email?email=${encodeURIComponent(email)}`);
-    // if (!response.ok) throw new Error('API 호출 실패');
-    // const data = await response.json();
-    // return data.available;
+    // const response = await instance.get<{ available: boolean }>(`/auth/check-email?email=${encodeURIComponent(email)}`);
+    // return response.available;
 
     // 임시 구현 (API 연동 전)
     console.log(email);
@@ -32,10 +32,8 @@ export async function checkNicknameAvailability(
 ): Promise<boolean> {
   try {
     // 실제 API 호출 구현
-    // const response = await fetch(`/api/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`);
-    // if (!response.ok) throw new Error('API 호출 실패');
-    // const data = await response.json();
-    // return data.available;
+    // const response = await instance.get<{ available: boolean }>(`/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+    // return response.available;
 
     // 임시 구현 (API 연동 전)
     await new Promise((resolve) => setTimeout(resolve, 800));
@@ -54,25 +52,27 @@ export async function checkNicknameAvailability(
  * @param userData 사용자 데이터
  * @returns 가입 결과
  */
-export async function registerUser(userData: {
+export interface RegisterUserData {
   phoneNumber: string;
   name: string;
   nickname: string;
   email: string;
   password: string;
   interests?: string[];
-}): Promise<{ success: boolean; userId?: string; message?: string }> {
+}
+
+export interface RegisterResponse {
+  success: boolean;
+  userId?: string;
+  message?: string;
+}
+
+export async function registerUser(
+  userData: RegisterUserData,
+): Promise<RegisterResponse> {
   try {
     // 실제 API 호출 구현
-    // const response = await fetch('/api/auth/register', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(userData),
-    // });
-    // if (!response.ok) throw new Error('API 호출 실패');
-    // return await response.json();
+    // return await instance.post<RegisterResponse>('/auth/register', userData);
 
     if (!userData) {
       //나중에 지울 예정
@@ -88,4 +88,47 @@ export async function registerUser(userData: {
     console.error('회원가입 중 오류:', error);
     throw error;
   }
+}
+
+// TanStack Query Hooks
+
+/**
+ * 이메일 중복 확인을 위한 쿼리 훅
+ * @param email 확인할 이메일
+ * @param enabled 자동 쿼리 활성화 여부
+ */
+export function useCheckEmailAvailability(email: string, enabled = false) {
+  return useQuery({
+    queryKey: ['checkEmail', email],
+    queryFn: () => checkEmailAvailability(email),
+    enabled:
+      enabled && email.length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    staleTime: Infinity,
+  });
+}
+
+/**
+ * 닉네임 중복 확인을 위한 쿼리 훅
+ * @param nickname 확인할 닉네임
+ * @param enabled 자동 쿼리 활성화 여부
+ */
+export function useCheckNicknameAvailability(
+  nickname: string,
+  enabled = false,
+) {
+  return useQuery({
+    queryKey: ['checkNickname', nickname],
+    queryFn: () => checkNicknameAvailability(nickname),
+    enabled: enabled && nickname.length >= 2,
+    staleTime: Infinity, // 같은 닉네임은 한 번만 체크
+  });
+}
+
+/**
+ * 회원가입을 위한 뮤테이션 훅
+ */
+export function useRegisterUser() {
+  return useMutation({
+    mutationFn: registerUser,
+  });
 }

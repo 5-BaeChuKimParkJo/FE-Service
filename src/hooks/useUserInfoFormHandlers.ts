@@ -9,13 +9,14 @@ import {
 import { useRegisterStore } from '@/store/use-register-store';
 import useDebounce from '@/lib/debounce';
 import {
-  checkEmailAvailability,
-  checkNicknameAvailability,
+  useCheckEmailAvailability,
+  useCheckNicknameAvailability,
 } from '@/actions/auth-service';
 
 export function useUserInfoFormHandlers() {
   const {
     email,
+    nickname,
     setName,
     setNickname,
     setEmail,
@@ -26,26 +27,41 @@ export function useUserInfoFormHandlers() {
   const [nameError, setNameError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [isCheckingNickname, setIsCheckingNickname] = useState(false);
-  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
+  // TanStack Query 훅 사용
+  const {
+    isFetching: isCheckingNickname,
+    refetch: checkNickname,
+    isError: _isNicknameError,
+    error: _nicknameQueryError,
+    data: _isNicknameAvailable,
+  } = useCheckNicknameAvailability(nickname, false);
+
+  const {
+    isFetching: isCheckingEmail,
+    refetch: checkEmail,
+    isError: _isEmailError,
+    error: _emailQueryError,
+    data: _isEmailAvailable,
+  } = useCheckEmailAvailability(email, false);
+
+  // 닉네임 체크 함수 (TanStack Query 사용)
   const checkNicknameDuplicate = useCallback(
     async (value: string) => {
       if (!value || value.length < 2) return;
 
-      setIsCheckingNickname(true);
       try {
-        const isAvailable = await checkNicknameAvailability(value);
-        setIsNicknameVerified(isAvailable);
+        const result = await checkNickname();
+        const isAvailable = result.data;
+
+        setIsNicknameVerified(!!isAvailable);
         setNicknameError(isAvailable ? '' : '이미 사용 중인 닉네임입니다.');
-      } catch (error) {
-        setNicknameError('닉네임 확인 중 오류가 발생했습니다.' + error);
+      } catch {
+        setNicknameError('닉네임 확인 중 오류가 발생했습니다.');
         setIsNicknameVerified(false);
-      } finally {
-        setIsCheckingNickname(false);
       }
     },
-    [setIsNicknameVerified],
+    [checkNickname, setIsNicknameVerified],
   );
 
   const createDebounce = useDebounce();
@@ -75,6 +91,7 @@ export function useUserInfoFormHandlers() {
     setEmailError(validateEmailFormat(value));
   };
 
+  // 이메일 체크 함수 (TanStack Query 사용)
   const handleVerifyEmail = async () => {
     const emailErrorMsg = validateEmailFormat(email);
     if (emailErrorMsg) {
@@ -82,16 +99,15 @@ export function useUserInfoFormHandlers() {
       return;
     }
 
-    setIsCheckingEmail(true);
     try {
-      const isAvailable = await checkEmailAvailability(email);
-      setIsEmailVerified(isAvailable);
+      const result = await checkEmail();
+      const isAvailable = result.data;
+
+      setIsEmailVerified(!!isAvailable);
       setEmailError(isAvailable ? '' : '이미 사용 중인 이메일입니다.');
-    } catch (error) {
-      setEmailError('이메일 중복 확인 중 오류가 발생했습니다.' + error);
+    } catch {
+      setEmailError('이메일 중복 확인 중 오류가 발생했습니다.');
       setIsEmailVerified(false);
-    } finally {
-      setIsCheckingEmail(false);
     }
   };
 

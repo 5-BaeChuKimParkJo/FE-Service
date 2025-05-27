@@ -1,11 +1,4 @@
-export interface ApiResponse<T> {
-  httpStatus: string;
-
-  isSuccess: boolean;
-
+export interface ErrorResponse {
+  errorCode: string;
   message: string;
-
-  code: number;
-
-  result: T | null;
 }

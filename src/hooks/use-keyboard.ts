@@ -9,7 +9,7 @@ interface KeyboardHandlerProps {
   setVerificationError: (error: string) => void;
 }
 
-export function useKeyboardHandler({
+export function useKeyboard({
   inputMode,
   setPhoneError,
   setVerificationError,

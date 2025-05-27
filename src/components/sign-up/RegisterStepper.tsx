@@ -1,5 +1,5 @@
 'use client';
-import { Smartphone, User, Lock, Heart } from 'lucide-react';
+import { Smartphone, User, Heart } from 'lucide-react';
 
 import { motion } from 'framer-motion';
 import { useRegisterStore } from '@/store/use-register-store';
@@ -9,22 +9,9 @@ export function RegisterStepper() {
   const { currentStep } = useRegisterStore();
 
   const steps = [
-    {
-      icon: <Smartphone className='h-5 w-5' />,
-      label: '휴대폰 인증',
-    },
-    {
-      icon: <User className='h-5 w-5' />,
-      label: '정보 입력',
-    },
-    {
-      icon: <Lock className='h-5 w-5' />,
-      label: '비밀번호',
-    },
-    {
-      icon: <Heart className='h-5 w-5' />,
-      label: '관심 카테고리',
-    },
+    { icon: <Smartphone className='h-5 w-5' />, label: '휴대폰 인증' },
+    { icon: <User className='h-5 w-5' />, label: '계정 정보' },
+    { icon: <Heart className='h-5 w-5' />, label: '관심 카테고리' },
   ];
 
   return (
@@ -32,13 +19,13 @@ export function RegisterStepper() {
       <ol className='flex items-center justify-between relative'>
         <div className='absolute top-5 left-0 right-0 h-[2px] bg-muted' />
 
-        {[1, 2, 3].map((_, index) => (
+        {[1, 2].map((_, index) => (
           <motion.div
             key={`line-${index}`}
             className='absolute top-5 h-[2px] bg-primary'
             style={{
-              left: `${(index * 100) / 3}%`,
-              right: `${100 - ((index + 1) * 100) / 3}%`,
+              left: `${(index * 100) / 2}%`,
+              right: `${100 - ((index + 1) * 100) / 2}%`,
             }}
             initial={{ scaleX: 0, transformOrigin: 'left' }}
             animate={{

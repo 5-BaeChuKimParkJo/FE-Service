@@ -4,30 +4,34 @@ import { useRouter } from 'next/navigation';
 import { useRegisterStore } from '@/store/use-register-store';
 import { registerUser } from '@/actions/auth-service';
 
-export function useRegistrationHandler() {
+export function useRegistration() {
   const router = useRouter();
-  const { setCurrentStep, setIsSubmitting } = useRegisterStore();
+  const {
+    currentStep,
+    setCurrentStep,
+    stepOneValid,
+    stepTwoValid,
+    setIsSubmitting,
+  } = useRegisterStore();
 
+  // 다음 단계로 이동
   const handleNext = () => {
-    const { currentStep } = useRegisterStore.getState();
-    if (currentStep < 3) {
+    if (
+      (currentStep === 0 && stepOneValid) ||
+      (currentStep === 1 && stepTwoValid)
+    ) {
       setCurrentStep(currentStep + 1);
     }
   };
 
+  // 이전 단계로 이동
   const handlePrevious = () => {
-    const { currentStep } = useRegisterStore.getState();
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
 
-  // StepThree에서 비밀번호 확인 후 다음 단계로 이동
-  const handlePasswordConfirm = () => {
-    setCurrentStep(3); // 관심 카테고리 단계로 이동
-  };
-
-  // StepFour에서 최종 회원가입 처리
+  // StepThree에서 관심사 선택 후 회원가입 처리
   const handleComplete = async () => {
     setIsSubmitting(true);
 
@@ -36,10 +40,9 @@ export function useRegistrationHandler() {
 
       // 회원가입 API 호출
       const result = await registerUser({
+        userId: userData.nickname, // 닉네임을 userId로 사용
         phoneNumber: userData.phoneNumber,
-        name: userData.name,
         nickname: userData.nickname,
-        email: userData.email,
         password: userData.password,
         interests: userData.interests,
       });
@@ -55,24 +58,23 @@ export function useRegistrationHandler() {
     }
   };
 
-  // 관심 카테고리 건너뛰기 시 회원가입 처리
+  // 관심사 선택 건너뛰기
   const handleSkip = async () => {
     setIsSubmitting(true);
 
     try {
       const userData = useRegisterStore.getState();
 
-      // 회원가입 API 호출 (관심 카테고리 없이)
+      // 회원가입 API 호출 (관심사 없이)
       const result = await registerUser({
+        userId: userData.nickname, // 닉네임을 userId로 사용
         phoneNumber: userData.phoneNumber,
-        name: userData.name,
         nickname: userData.nickname,
-        email: userData.email,
         password: userData.password,
-        interests: [],
+        interests: [], // 빈 배열로 설정
       });
 
-      console.log('회원가입 성공! (관심 카테고리 없음)', result);
+      console.log('회원가입 성공!', result);
 
       // 홈 페이지로 이동
       router.push('/home');
@@ -86,7 +88,6 @@ export function useRegistrationHandler() {
   return {
     handleNext,
     handlePrevious,
-    handlePasswordConfirm,
     handleComplete,
     handleSkip,
   };

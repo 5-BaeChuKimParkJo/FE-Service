@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import QueryProvider from '@/providers/QueryProvider';
 
 export const metadata: Metadata = {
   title: '중고 경매 플랫폼 찰낙찰낙',
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <div className='w-full min-w-[320px] max-w-[480px] mx-auto px-4 pb-safe pt-safe scrollbar-hidden overflow-y-scroll overflow-x-hidden'>
-          {children}
-        </div>
+        <QueryProvider>
+          <div className='w-full min-w-[320px] max-w-[480px] mx-auto px-4 pb-safe pt-safe scrollbar-hidden overflow-y-scroll overflow-x-hidden'>
+            {children}
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );

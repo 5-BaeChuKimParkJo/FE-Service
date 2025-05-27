@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRegisterStore } from '@/store/use-register-store';
 import { usePhoneVerification } from './use-phone-verification';
 import { PhoneVerificationForm } from './phone-verification/PhoneVerificationForm';
-import { useKeyboardHandler } from './keyboard-handler';
+import { useKeyboard } from '../../hooks/use-keyboard';
 import { PhoneVerificationKeyboard } from './phone-verification/PhoneVerificationKeyboard';
 
 export function StepOne() {
@@ -25,7 +25,7 @@ export function StepOne() {
 
   const verificationErrorMessage = verificationError[0];
 
-  const { handleKeyPress } = useKeyboardHandler({
+  const { handleKeyPress } = useKeyboard({
     inputMode,
     setPhoneError: phoneError[1],
     setVerificationError: verificationError[1],

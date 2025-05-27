@@ -1,61 +1,102 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRegisterStore } from '@/store/use-register-store';
-import { useUserInfoFormHandlers } from '@/hooks/useUserInfoFormHandlers';
+import { useUserInfoForm } from '@/hooks/use-user-info-form';
 
-import { NameInput } from './user-info/NameInput';
 import { NicknameInput } from './user-info/NicknameInput';
-import { EmailInput } from './user-info/EmailInput';
+import { UserIdInput } from './user-info/UserIdInput';
 import { FormStatusMessage } from './user-info/FormStatusMessage';
+import {
+  validatePassword,
+  validatePasswordMatch,
+} from '@/lib/validation.utils';
+import { Input } from '../ui/input';
 
 export function StepTwo() {
   const {
-    name,
+    userId,
     nickname,
-    email,
+    password,
+    passwordConfirm,
+    setPassword,
+    setPasswordConfirm,
     setStepTwoValid,
-    isEmailVerified,
+    isUserIdVerified,
     isNicknameVerified,
   } = useRegisterStore();
 
   const [allFieldsValid, setAllFieldsValid] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmError, setConfirmError] = useState('');
 
   const {
-    nameError,
+    userIdError,
     nicknameError,
-    emailError,
+    isCheckingUserId,
     isCheckingNickname,
-    isCheckingEmail,
-    handleNameChange,
+    handleUserIdChange,
     handleNicknameChange,
-    handleEmailChange,
-    handleVerifyEmail,
-  } = useUserInfoFormHandlers();
+  } = useUserInfoForm();
 
-  const isEmailVerifyDisabled =
-    !email || emailError !== '' || isCheckingEmail || isEmailVerified;
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+
+    const validation = validatePassword(value);
+    if (!validation.isValid) {
+      setPasswordError(validation.message || '');
+    } else {
+      setPasswordError('');
+    }
+
+    // 비밀번호 확인 필드가 이미 입력되어 있다면 일치 여부 확인
+    if (passwordConfirm) {
+      const matchValidation = validatePasswordMatch(value, passwordConfirm);
+      if (!matchValidation.isValid) {
+        setConfirmError(matchValidation.message || '');
+      } else {
+        setConfirmError('');
+      }
+    }
+  };
+
+  const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPasswordConfirm(value);
+
+    const validation = validatePasswordMatch(password, value);
+    if (!validation.isValid) {
+      setConfirmError(validation.message || '');
+    } else {
+      setConfirmError('');
+    }
+  };
 
   useEffect(() => {
     const isValid =
-      !!name &&
+      !!userId &&
       !!nickname &&
-      !!email &&
-      isEmailVerified &&
+      !!password &&
+      !!passwordConfirm &&
+      isUserIdVerified &&
       isNicknameVerified &&
-      nameError === '' &&
+      userIdError === '' &&
       nicknameError === '' &&
-      emailError === '';
+      passwordError === '' &&
+      confirmError === '';
 
     setStepTwoValid(isValid);
     setAllFieldsValid(isValid);
   }, [
-    name,
+    userId,
     nickname,
-    email,
-    nameError,
+    password,
+    passwordConfirm,
+    userIdError,
     nicknameError,
-    emailError,
-    isEmailVerified,
+    passwordError,
+    confirmError,
+    isUserIdVerified,
     isNicknameVerified,
     setStepTwoValid,
   ]);
@@ -63,18 +104,20 @@ export function StepTwo() {
   return (
     <section
       className='flex flex-col h-full'
-      aria-labelledby='personal-info-title'
+      aria-labelledby='account-info-title'
     >
       <div className='flex-1'>
         <div className='space-y-6'>
-          <h2 id='personal-info-title' className='sr-only'>
-            개인 정보 입력
+          <h2 id='account-info-title' className='sr-only'>
+            계정 정보 입력
           </h2>
 
-          <NameInput
-            name={name}
-            error={nameError}
-            onChange={handleNameChange}
+          <UserIdInput
+            userId={userId}
+            error={userIdError}
+            isVerified={isUserIdVerified}
+            isChecking={isCheckingUserId}
+            onChange={handleUserIdChange}
           />
 
           <NicknameInput
@@ -85,15 +128,25 @@ export function StepTwo() {
             onChange={handleNicknameChange}
           />
 
-          <EmailInput
-            email={email}
-            error={emailError}
-            isVerified={isEmailVerified}
-            isChecking={isCheckingEmail}
-            onChange={handleEmailChange}
-            onVerify={handleVerifyEmail}
-            isVerifyDisabled={isEmailVerifyDisabled}
+          <Input
+            label='비밀번호'
+            type='password'
+            value={password}
+            onChange={handlePasswordChange}
+            error={passwordError}
           />
+
+          <Input
+            label='비밀번호 확인'
+            type='password'
+            value={passwordConfirm}
+            onChange={handleConfirmChange}
+            error={confirmError}
+          />
+
+          <p className='text-xs text-muted-foreground'>
+            8자 이상의 안전한 비밀번호를 입력해주세요.
+          </p>
 
           <FormStatusMessage
             isVisible={allFieldsValid}

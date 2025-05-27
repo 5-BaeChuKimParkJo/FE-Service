@@ -1,103 +1,59 @@
 'use client';
-import { useEffect, useState } from 'react';
 
+import { Label } from '@/components/ui/label';
 import { useRegisterStore } from '@/store/use-register-store';
-import { Input } from '../ui/input';
-import {
-  validatePassword,
-  validatePasswordMatch,
-} from '@/lib/validation.utils';
+import { Checkbox } from '../ui/checkbox';
+
+const CATEGORIES = [
+  { id: 'tech', label: '기술' },
+  { id: 'fashion', label: '패션' },
+  { id: 'food', label: '음식' },
+  { id: 'travel', label: '여행' },
+  { id: 'sports', label: '스포츠' },
+  { id: 'music', label: '음악' },
+  { id: 'movies', label: '영화' },
+  { id: 'books', label: '도서' },
+];
 
 export function StepThree() {
-  const {
-    password,
-    passwordConfirm,
-    setPassword,
-    setPasswordConfirm,
-    setStepThreeValid,
-  } = useRegisterStore();
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmError, setConfirmError] = useState('');
+  const { interests, setInterests } = useRegisterStore();
 
-  useEffect(() => {
-    const isValid: boolean =
-      password.length >= 8 &&
-      password === passwordConfirm &&
-      passwordError === '' &&
-      confirmError === '';
-    setStepThreeValid(isValid);
-  }, [
-    password,
-    passwordConfirm,
-    passwordError,
-    confirmError,
-    setStepThreeValid,
-  ]);
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPassword(value);
-
-    const validation = validatePassword(value);
-    if (!validation.isValid) {
-      setPasswordError(validation.message || '');
+  const handleToggleInterest = (id: string) => {
+    if (interests.includes(id)) {
+      setInterests(interests.filter((item) => item !== id));
     } else {
-      setPasswordError('');
-    }
-
-    // 비밀번호 확인 필드가 이미 입력되어 있다면 일치 여부 확인
-    if (passwordConfirm) {
-      const matchValidation = validatePasswordMatch(value, passwordConfirm);
-      if (!matchValidation.isValid) {
-        setConfirmError(matchValidation.message || '');
-      } else {
-        setConfirmError('');
-      }
-    }
-  };
-
-  const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPasswordConfirm(value);
-
-    const validation = validatePasswordMatch(password, value);
-    if (!validation.isValid) {
-      setConfirmError(validation.message || '');
-    } else {
-      setConfirmError('');
+      setInterests([...interests, id]);
     }
   };
 
   return (
-    <section
-      className='flex flex-col h-full'
-      aria-labelledby='password-setup-title'
-    >
+    <section className='flex flex-col h-full' aria-labelledby='interests-title'>
       <div className='flex-1'>
         <div className='space-y-6'>
-          <h2 id='password-setup-title' className='sr-only'>
-            비밀번호 설정
-          </h2>
+          <div className='text-center mb-4'>
+            <h2 id='interests-title' className='text-xl font-semibold'>
+              관심 카테고리
+            </h2>
+            <p className='text-sm text-muted-foreground'>
+              맞춤 콘텐츠를 위해 관심 있는 카테고리를 선택해주세요.
+            </p>
+          </div>
 
-          <Input
-            label='비밀번호'
-            type='password'
-            value={password}
-            onChange={handlePasswordChange}
-            error={passwordError}
-          />
-
-          <Input
-            label='비밀번호 확인'
-            type='password'
-            value={passwordConfirm}
-            onChange={handleConfirmChange}
-            error={confirmError}
-          />
-
-          <p className='text-xs text-muted-foreground'>
-            8자 이상의 안전한 비밀번호를 입력해주세요.
-          </p>
+          <div className='grid grid-cols-2 gap-4'>
+            {CATEGORIES.map((category) => (
+              <div
+                key={category.id}
+                className='flex items-center space-x-2 bg-white p-3 rounded-md border'
+              >
+                <Checkbox
+                  id={category.id}
+                  checked={interests.includes(category.id)}
+                  onCheckedChange={() => handleToggleInterest(category.id)}
+                />
+                <Label htmlFor={category.id}>{category.label}</Label>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PhoneInput } from '@/components/sign-up/PhoneInput';
 import { NumericKeyboard } from '@/components/ui/numeric-keyboard';
-import { useLoginForm } from '@/hooks/useLoginForm';
+import { useLoginForm } from '@/hooks/use-login-form';
 
 export function LoginForm() {
   const {

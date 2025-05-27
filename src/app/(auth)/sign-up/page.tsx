@@ -2,32 +2,26 @@
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { RegisterStepper } from '@/components/sign-up/RegisterStepper';
-import { useRegistrationHandler } from '@/components/sign-up/registration-handler';
+import { useRegistration } from '@/hooks/use-registration';
+import { useStepAnimation } from '@/hooks/use-step-animation';
 import { StepOne } from '@/components/sign-up/StepOne';
 import { StepTwo } from '@/components/sign-up/StepTwo';
 import { StepThree } from '@/components/sign-up/StepThree';
-import { StepFour } from '@/components/sign-up/StepFour';
 import {
   NavigationButtons,
   RegistrationButtons,
 } from '@/components/ui/button-group';
-import { useStepAnimation } from '@/hooks/use-step-animation';
 import { useRegisterStore } from '@/store/use-register-store';
 
 export default function SignUpPage() {
-  const { currentStep, stepTwoValid, stepThreeValid, isSubmitting, interests } =
+  const { currentStep, stepTwoValid, isSubmitting, interests } =
     useRegisterStore();
   const { stepVariants, direction, transition } = useStepAnimation();
-  const {
-    handleNext,
-    handlePrevious,
-    handlePasswordConfirm,
-    handleComplete,
-    handleSkip,
-  } = useRegistrationHandler();
+  const { handleNext, handlePrevious, handleComplete, handleSkip } =
+    useRegistration();
 
   const getStepLabel = (step: number): string => {
-    const labels = ['기본 정보', '개인 정보', '비밀번호 설정', '관심사 선택'];
+    const labels = ['휴대폰 인증', '계정 정보', '관심사 선택'];
     return labels[step] || '';
   };
 
@@ -45,16 +39,6 @@ export default function SignUpPage() {
           />
         );
       case 2:
-        return (
-          <NavigationButtons
-            onPrevious={handlePrevious}
-            onNext={handlePasswordConfirm}
-            nextDisabled={!stepThreeValid}
-            isLoading={isSubmitting}
-            nextLabel='다음'
-          />
-        );
-      case 3:
         return (
           <RegistrationButtons
             onComplete={handleComplete}
@@ -89,7 +73,7 @@ export default function SignUpPage() {
               key='step-1'
               role='tabpanel'
               aria-labelledby='step-1-tab'
-              aria-label='기본 정보 입력'
+              aria-label='휴대폰 인증'
               custom={direction}
               variants={stepVariants}
               initial='enter'
@@ -106,7 +90,7 @@ export default function SignUpPage() {
               key='step-2'
               role='tabpanel'
               aria-labelledby='step-2-tab'
-              aria-label='개인 정보 입력'
+              aria-label='계정 정보 입력'
               custom={direction}
               variants={stepVariants}
               initial='enter'
@@ -123,23 +107,6 @@ export default function SignUpPage() {
               key='step-3'
               role='tabpanel'
               aria-labelledby='step-3-tab'
-              aria-label='비밀번호 설정'
-              custom={direction}
-              variants={stepVariants}
-              initial='enter'
-              animate='center'
-              exit='exit'
-              transition={transition}
-              className='absolute w-full'
-            >
-              <StepThree />
-            </motion.div>
-          )}
-          {currentStep === 3 && (
-            <motion.div
-              key='step-4'
-              role='tabpanel'
-              aria-labelledby='step-4-tab'
               aria-label='관심사 선택'
               custom={direction}
               variants={stepVariants}
@@ -149,7 +116,7 @@ export default function SignUpPage() {
               transition={transition}
               className='absolute w-full'
             >
-              <StepFour />
+              <StepThree />
             </motion.div>
           )}
         </AnimatePresence>

@@ -2,34 +2,32 @@
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { PhoneInput } from '@/components/sign-up/PhoneInput';
-import { NumericKeyboard } from '@/components/ui/numeric-keyboard';
 import { useLoginForm } from '@/hooks/use-login-form';
 
 export function LoginForm() {
-  const {
-    formData,
-    errors,
-    isLoading,
-    keyboardMode,
-    handleChange,
-    openKeyboard,
-    closeKeyboard,
-    handleKeyPress,
-    handleSubmit,
-  } = useLoginForm();
+  const { formData, errors, isLoading, handleChange, handleSubmit } =
+    useLoginForm();
 
   return (
     <>
       <form onSubmit={handleSubmit} className='flex flex-col space-y-6'>
-        <PhoneInput
+        {/* <PhoneInput
           phoneNumber={formData.phoneNumber}
           phoneError={errors.phoneNumber}
           openKeyboard={openKeyboard}
+        /> */}
+
+        <Input
+          label='your id'
+          name='id'
+          type='text'
+          value={formData.id}
+          onChange={handleChange}
+          disabled={isLoading}
         />
 
         <Input
-          label='비밀번호'
+          label='password'
           name='password'
           type='password'
           autoComplete='current-password'
@@ -48,29 +46,16 @@ export function LoginForm() {
         <div className='flex justify-end'>
           <Link
             href='/forgot-password'
-            className='text-sm text-blue-600 hover:underline'
+            className='text-sm text-gray-600 hover:underline'
           >
-            비밀번호를 잊으셨나요?
+            Forget Password
           </Link>
         </div>
 
         <Button type='submit' className='w-full' disabled={isLoading}>
-          {isLoading ? '로그인 중...' : '로그인'}
+          {isLoading ? 'Loading' : 'SIGN IN'}
         </Button>
       </form>
-
-      {keyboardMode !== 'hidden' && (
-        <>
-          <div
-            className='fixed inset-0 bg-black/20 z-40'
-            onClick={closeKeyboard}
-            aria-hidden='true'
-          />
-          <div className='fixed inset-x-0 bottom-0 z-50'>
-            <NumericKeyboard keypadType='default' onKeyPress={handleKeyPress} />
-          </div>
-        </>
-      )}
     </>
   );
 }

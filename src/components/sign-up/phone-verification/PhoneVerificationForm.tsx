@@ -4,6 +4,7 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Input } from '../../ui/input';
 import { CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface PhoneVerificationFormProps {
   phoneNumber: string;
@@ -91,9 +92,6 @@ interface VerificationButtonProps {
   onVerify: () => void;
 }
 
-/**
- * 인증 관련 버튼 컴포넌트
- */
 const VerificationButton = memo(function VerificationButton({
   isVerificationSent,
   phoneNumber,
@@ -101,27 +99,19 @@ const VerificationButton = memo(function VerificationButton({
   onSendVerification,
   onVerify,
 }: VerificationButtonProps) {
-  const buttonClasses =
-    'w-full py-2 px-4 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors';
-
   if (!isVerificationSent) {
     return (
-      <button
-        className={buttonClasses}
+      <Button
+        label='인증번호 발송'
+        width='full'
         onClick={onSendVerification}
         disabled={!phoneNumber}
-      >
-        인증번호 발송
-      </button>
+      />
     );
   }
 
   return (
-    <button
-      className={buttonClasses}
-      onClick={onVerify}
-      disabled={!verificationCode}
-    >
+    <button onClick={onVerify} disabled={!verificationCode}>
       인증 확인
     </button>
   );

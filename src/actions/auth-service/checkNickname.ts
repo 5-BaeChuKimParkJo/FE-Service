@@ -8,21 +8,16 @@ import { useQuery } from '@tanstack/react-query';
 export async function checkNicknameAvailability(
   nickname: string,
 ): Promise<boolean> {
-  try {
-    // 실제 API 호출 구현
-    // const response = await instance.get<{ available: boolean }>(`/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`);
-    // return response.available;
+  // 실제 API 호출 구현
+  // const response = await instance.get<{ available: boolean }>(`/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+  // return response.available;
 
-    // 임시 구현 (API 연동 전)
-    await new Promise((resolve) => setTimeout(resolve, 800));
+  // 임시 구현 (API 연동 전)
+  await new Promise((resolve) => setTimeout(resolve, 800));
 
-    // 테스트를 위해 'admin'과 'test'는 중복으로 처리
-    const reservedNicknames = ['호초', '호촐', '김호철', '멋쟁이'];
-    return !reservedNicknames.includes(nickname.toLowerCase());
-  } catch (error) {
-    console.error('닉네임 중복 확인 중 오류:', error);
-    throw error;
-  }
+  // 테스트를 위해 'admin'과 'test'는 중복으로 처리
+  const reservedNicknames = ['호초', '호촐', '김호철', '멋쟁이'];
+  return !reservedNicknames.includes(nickname.toLowerCase());
 }
 
 /**

@@ -38,7 +38,6 @@ export function NavigationButtons({
     <ButtonGroup className={className}>
       {onPrevious && (
         <Button
-          variant='outline'
           className='flex-1'
           onClick={onPrevious}
           disabled={prevDisabled || isLoading}

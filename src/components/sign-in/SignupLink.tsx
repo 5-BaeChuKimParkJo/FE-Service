@@ -4,8 +4,8 @@ export function SignupLink() {
   return (
     <section className='mt-6 text-center'>
       <p className='text-sm text-gray-600'>
-        아직 찰낙찰낙 회원이 아니신가요?{' '}
-        <Link href='/sign-up' className='text-blue-600 hover:underline'>
+        계정을 아직 가지고 있지 않으세요?
+        <Link href='/sign-up' className='text-gray-900 font-black ml-2'>
           회원가입
         </Link>
       </p>

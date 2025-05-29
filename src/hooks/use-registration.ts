@@ -8,6 +8,7 @@ import { registerUser } from '@/actions/auth-service';
 export function useRegistration() {
   const router = useRouter();
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const [showWhaleTransition, setShowWhaleTransition] = useState(false);
   const {
     currentStep,
     setCurrentStep,
@@ -81,6 +82,14 @@ export function useRegistration() {
   };
 
   const handleGoToLogin = () => {
+    // WelcomeDialog 닫고 고래 애니메이션 시작
+    setShowWelcomeDialog(false);
+    setShowWhaleTransition(true);
+  };
+
+  const handleWhaleTransitionComplete = () => {
+    // 고래 애니메이션 완료 후 페이지 이동
+    setShowWhaleTransition(false);
     router.replace('/sign-in');
   };
 
@@ -90,7 +99,9 @@ export function useRegistration() {
     handleComplete,
     handleSkip,
     showWelcomeDialog,
+    showWhaleTransition,
     handleCloseWelcomeDialog,
     handleGoToLogin,
+    handleWhaleTransitionComplete,
   };
 }

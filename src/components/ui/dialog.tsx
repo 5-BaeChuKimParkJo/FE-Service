@@ -12,7 +12,6 @@ interface DialogProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showCloseButton?: boolean;
   closeOnBackdropClick?: boolean;
-  closeOnEscape?: boolean;
 }
 
 const sizeClasses = {
@@ -30,61 +29,8 @@ export function Dialog({
   size = 'md',
   showCloseButton = false,
   closeOnBackdropClick = true,
-  closeOnEscape = true,
 }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
-
-  // ESC 키로 닫기
-  useEffect(() => {
-    if (!closeOnEscape) return;
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose, closeOnEscape]);
-
-  // 포커스 트랩
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const focusableElements = dialog.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-    const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
-
-    const handleTabKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab') return;
-
-      if (event.shiftKey) {
-        if (document.activeElement === firstElement) {
-          lastElement?.focus();
-          event.preventDefault();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          firstElement?.focus();
-          event.preventDefault();
-        }
-      }
-    };
-
-    // 첫 번째 요소에 포커스
-    firstElement?.focus();
-
-    document.addEventListener('keydown', handleTabKey);
-    return () => document.removeEventListener('keydown', handleTabKey);
-  }, [isOpen]);
 
   // body 스크롤 방지
   useEffect(() => {

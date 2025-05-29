@@ -10,6 +10,7 @@ import { StepOne } from '@/components/sign-up/StepOne';
 import { StepTwo } from '@/components/sign-up/StepTwo';
 import { StepThree } from '@/components/sign-up/StepThree';
 import { WelcomeDialog } from '@/components/dialogs/WelcomeDialog';
+import { WhaleTransition } from '@/components/animations/WhaleTransition';
 import { useRegisterStore } from '@/store/use-register-store';
 import Back from '@/assets/icons/common/back.svg';
 
@@ -29,8 +30,10 @@ export default function SignUpPage() {
     handleComplete,
     handleSkip,
     showWelcomeDialog,
+    showWhaleTransition,
     handleCloseWelcomeDialog,
     handleGoToLogin,
+    handleWhaleTransitionComplete,
   } = useRegistration();
 
   const getStepLabel = (step: number): string => {
@@ -173,6 +176,12 @@ export default function SignUpPage() {
         onClose={handleCloseWelcomeDialog}
         onGoToLogin={handleGoToLogin}
         userName={nickname}
+      />
+
+      {/* Whale Transition Animation */}
+      <WhaleTransition
+        isActive={showWhaleTransition}
+        onComplete={handleWhaleTransitionComplete}
       />
     </>
   );

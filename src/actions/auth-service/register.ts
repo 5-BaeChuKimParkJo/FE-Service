@@ -1,15 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
+'use server';
 
-/**
- * 회원가입 API
- * @param userData 사용자 데이터
- * @returns 가입 결과
- */
 export interface RegisterUserData {
+  phoneNumber: string;
+  nickname: string;
   userId: string;
   password: string;
-  nickname: string;
-  phoneNumber: string;
   interests?: string[];
 }
 
@@ -35,10 +30,4 @@ export async function registerUser(
     success: true,
     userId: 'user_' + Math.random().toString(36).substr(2, 9),
   };
-}
-
-export function useRegisterUser() {
-  return useMutation({
-    mutationFn: registerUser,
-  });
 }

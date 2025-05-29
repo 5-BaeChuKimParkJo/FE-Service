@@ -5,37 +5,18 @@ import { validateNickname, validateUserId } from '@/lib/validation.utils';
 import { useRegisterStore } from '@/store/use-register-store';
 import useDebounce from '@/lib/debounce';
 import {
-  useCheckNicknameAvailability,
-  useCheckUserIdAvailability,
+  checkNicknameAvailability,
+  checkUserIdAvailability,
 } from '@/actions/auth-service';
 
 export function useUserInfoForm() {
-  const {
-    userId,
-    nickname,
-    setUserId,
-    setNickname,
-    setIsNicknameVerified,
-    setIsUserIdVerified,
-  } = useRegisterStore();
+  const { setUserId, setNickname, setIsNicknameVerified, setIsUserIdVerified } =
+    useRegisterStore();
 
   const [userIdError, setUserIdError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
-
-  // TanStack Query 훅 사용
-  const {
-    isFetching: isCheckingUserId,
-    refetch: checkUserId,
-    data: _isUserIdAvailable,
-  } = useCheckUserIdAvailability(userId, false);
-
-  const {
-    isFetching: isCheckingNickname,
-    refetch: checkNickname,
-    isError: _isNicknameError,
-    error: _nicknameQueryError,
-    data: _isNicknameAvailable,
-  } = useCheckNicknameAvailability(nickname, false);
+  const [isCheckingUserId, setIsCheckingUserId] = useState(false);
+  const [isCheckingNickname, setIsCheckingNickname] = useState(false);
 
   // 아이디 체크 함수
   const checkUserIdDuplicate = useCallback(
@@ -43,36 +24,40 @@ export function useUserInfoForm() {
       if (!value || value.length < 4) return;
 
       try {
-        const result = await checkUserId();
-        const isAvailable = result.data;
+        setIsCheckingUserId(true);
+        const isAvailable = await checkUserIdAvailability(value);
 
-        setIsUserIdVerified(!!isAvailable);
+        setIsUserIdVerified(isAvailable);
         setUserIdError(isAvailable ? '' : '이미 사용 중인 아이디입니다.');
       } catch {
         setUserIdError('아이디 확인 중 오류가 발생했습니다.');
         setIsUserIdVerified(false);
+      } finally {
+        setIsCheckingUserId(false);
       }
     },
-    [checkUserId, setIsUserIdVerified],
+    [setIsUserIdVerified],
   );
 
-  // 닉네임 체크 함수 (TanStack Query 사용)
+  // 닉네임 체크 함수
   const checkNicknameDuplicate = useCallback(
     async (value: string) => {
       if (!value || value.length < 2) return;
 
       try {
-        const result = await checkNickname();
-        const isAvailable = result.data;
+        setIsCheckingNickname(true);
+        const isAvailable = await checkNicknameAvailability(value);
 
-        setIsNicknameVerified(!!isAvailable);
+        setIsNicknameVerified(isAvailable);
         setNicknameError(isAvailable ? '' : '이미 사용 중인 닉네임입니다.');
       } catch {
         setNicknameError('닉네임 확인 중 오류가 발생했습니다.');
         setIsNicknameVerified(false);
+      } finally {
+        setIsCheckingNickname(false);
       }
     },
-    [checkNickname, setIsNicknameVerified],
+    [setIsNicknameVerified],
   );
 
   const createDebounce = useDebounce();

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+'use server';
 
 /**
  * 닉네임 중복 확인 API
@@ -18,21 +18,4 @@ export async function checkNicknameAvailability(
   // 테스트를 위해 'admin'과 'test'는 중복으로 처리
   const reservedNicknames = ['호초', '호촐', '김호철', '멋쟁이'];
   return !reservedNicknames.includes(nickname.toLowerCase());
-}
-
-/**
- * 닉네임 중복 확인을 위한 쿼리 훅
- * @param nickname 확인할 닉네임
- * @param enabled 자동 쿼리 활성화 여부
- */
-export function useCheckNicknameAvailability(
-  nickname: string,
-  enabled = false,
-) {
-  return useQuery({
-    queryKey: ['checkNickname', nickname],
-    queryFn: () => checkNicknameAvailability(nickname),
-    enabled: enabled && nickname.length >= 2,
-    staleTime: Infinity, // 같은 닉네임은 한 번만 체크
-  });
 }

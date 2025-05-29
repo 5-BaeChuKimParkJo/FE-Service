@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-
+'use server';
 /**
  * 아이디 중복 확인 API
  * @param userId 확인할 아이디
@@ -20,18 +19,4 @@ export async function checkUserIdAvailability(
   // 테스트를 위해 'admin', 'test', 'user' 등은 중복으로 처리
   const reservedUserIds = ['admin', 'test', 'user', 'root', 'system'];
   return !reservedUserIds.includes(userId.toLowerCase());
-}
-
-/**
- * 아이디 중복 확인을 위한 쿼리 훅
- * @param userId 확인할 아이디
- * @param enabled 자동 쿼리 활성화 여부
- */
-export function useCheckUserIdAvailability(userId: string, enabled = false) {
-  return useQuery({
-    queryKey: ['checkUserId', userId],
-    queryFn: () => checkUserIdAvailability(userId),
-    enabled: enabled && userId.length >= 4 && /^[a-zA-Z0-9_]+$/.test(userId),
-    staleTime: Infinity, // 같은 아이디는 한 번만 체크
-  });
 }

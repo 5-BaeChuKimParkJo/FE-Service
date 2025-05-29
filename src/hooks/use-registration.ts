@@ -40,7 +40,7 @@ export function useRegistration() {
 
       // 회원가입 API 호출
       const result = await registerUser({
-        userId: userData.nickname, // 닉네임을 userId로 사용
+        userId: userData.userId, // 닉네임을 userId로 사용
         phoneNumber: userData.phoneNumber,
         nickname: userData.nickname,
         password: userData.password,

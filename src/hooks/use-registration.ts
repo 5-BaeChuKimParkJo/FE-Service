@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useRegisterStore } from '@/store/use-register-store';
@@ -6,6 +7,7 @@ import { registerUser } from '@/actions/auth-service';
 
 export function useRegistration() {
   const router = useRouter();
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const {
     currentStep,
     setCurrentStep,
@@ -43,7 +45,8 @@ export function useRegistration() {
         interests: userData.interests,
       });
 
-      router.replace('/sign-in');
+      // 회원가입 성공 후 WelcomeDialog 표시
+      setShowWelcomeDialog(true);
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
     } finally {
@@ -64,7 +67,8 @@ export function useRegistration() {
         password: userData.password,
       });
 
-      router.replace('/sign-in');
+      // 회원가입 성공 후 WelcomeDialog 표시
+      setShowWelcomeDialog(true);
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
     } finally {
@@ -72,10 +76,21 @@ export function useRegistration() {
     }
   };
 
+  const handleCloseWelcomeDialog = () => {
+    setShowWelcomeDialog(false);
+  };
+
+  const handleGoToLogin = () => {
+    router.replace('/sign-in');
+  };
+
   return {
     handleNext,
     handlePrevious,
     handleComplete,
     handleSkip,
+    showWelcomeDialog,
+    handleCloseWelcomeDialog,
+    handleGoToLogin,
   };
 }

@@ -9,15 +9,29 @@ import { useStepAnimation } from '@/hooks/use-step-animation';
 import { StepOne } from '@/components/sign-up/StepOne';
 import { StepTwo } from '@/components/sign-up/StepTwo';
 import { StepThree } from '@/components/sign-up/StepThree';
+import { WelcomeDialog } from '@/components/dialogs/WelcomeDialog';
 import { useRegisterStore } from '@/store/use-register-store';
 import Back from '@/assets/icons/common/back.svg';
 
 export default function SignUpPage() {
   const router = useRouter();
-  const { currentStep, stepTwoValid, isSubmitting, interests, setCurrentStep } =
-    useRegisterStore();
+  const {
+    currentStep,
+    stepTwoValid,
+    isSubmitting,
+    interests,
+    setCurrentStep,
+    nickname,
+  } = useRegisterStore();
   const { stepVariants, direction, transition } = useStepAnimation();
-  const { handleNext, handleComplete, handleSkip } = useRegistration();
+  const {
+    handleNext,
+    handleComplete,
+    handleSkip,
+    showWelcomeDialog,
+    handleCloseWelcomeDialog,
+    handleGoToLogin,
+  } = useRegistration();
 
   const getStepLabel = (step: number): string => {
     const labels = ['휴대폰 인증', '계정 정보', '관심사 선택'];
@@ -74,82 +88,92 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className='container max-w-md mx-auto py-8 px-4 min-h-[100dvh] flex flex-col relative'>
-      <button
-        onClick={handleBack}
-        className='absolute top-3 left-3 '
-        aria-label='뒤로 가기'
-      >
-        <Back />
-      </button>
+    <>
+      <main className='container max-w-md mx-auto py-8 px-4 min-h-[100dvh] flex flex-col relative'>
+        <button
+          onClick={handleBack}
+          className='absolute top-3 left-3 '
+          aria-label='뒤로 가기'
+        >
+          <Back />
+        </button>
 
-      <h1 className='text-2xl font-bold mt-10 mb-10 text-center'>SIGN UP</h1>
+        <h1 className='text-2xl font-bold mt-10 mb-10 text-center'>SIGN UP</h1>
 
-      <nav aria-label='회원가입 진행 단계' className='ml-2 mr-2 mb-6'>
-        <RegisterStepper />
-      </nav>
+        <nav aria-label='회원가입 진행 단계' className='ml-2 mr-2 mb-6'>
+          <RegisterStepper />
+        </nav>
 
-      <section
-        className='flex-1 pb-20 relative overflow-hidden'
-        aria-live='polite'
-        aria-label={`현재 단계: ${getStepLabel(currentStep)}`}
-      >
-        <AnimatePresence initial={false} mode='wait' custom={direction}>
-          {currentStep === 0 && (
-            <motion.div
-              key='step-1'
-              role='tabpanel'
-              aria-labelledby='step-1-tab'
-              aria-label='휴대폰 인증'
-              custom={direction}
-              variants={stepVariants}
-              initial='enter'
-              animate='center'
-              exit='exit'
-              transition={transition}
-              className='absolute w-full'
-            >
-              <StepOne />
-            </motion.div>
-          )}
-          {currentStep === 1 && (
-            <motion.div
-              key='step-2'
-              role='tabpanel'
-              aria-labelledby='step-2-tab'
-              aria-label='계정 정보 입력'
-              custom={direction}
-              variants={stepVariants}
-              initial='enter'
-              animate='center'
-              exit='exit'
-              transition={transition}
-              className='absolute w-full'
-            >
-              <StepTwo />
-            </motion.div>
-          )}
-          {currentStep === 2 && (
-            <motion.div
-              key='step-3'
-              role='tabpanel'
-              aria-labelledby='step-3-tab'
-              aria-label='관심사 선택'
-              custom={direction}
-              variants={stepVariants}
-              initial='enter'
-              animate='center'
-              exit='exit'
-              transition={transition}
-              className='absolute w-full'
-            >
-              <StepThree />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </section>
+        <section
+          className='flex-1 pb-20 relative overflow-hidden'
+          aria-live='polite'
+          aria-label={`현재 단계: ${getStepLabel(currentStep)}`}
+        >
+          <AnimatePresence initial={false} mode='wait' custom={direction}>
+            {currentStep === 0 && (
+              <motion.div
+                key='step-1'
+                role='tabpanel'
+                aria-labelledby='step-1-tab'
+                aria-label='휴대폰 인증'
+                custom={direction}
+                variants={stepVariants}
+                initial='enter'
+                animate='center'
+                exit='exit'
+                transition={transition}
+                className='absolute w-full'
+              >
+                <StepOne />
+              </motion.div>
+            )}
+            {currentStep === 1 && (
+              <motion.div
+                key='step-2'
+                role='tabpanel'
+                aria-labelledby='step-2-tab'
+                aria-label='계정 정보 입력'
+                custom={direction}
+                variants={stepVariants}
+                initial='enter'
+                animate='center'
+                exit='exit'
+                transition={transition}
+                className='absolute w-full'
+              >
+                <StepTwo />
+              </motion.div>
+            )}
+            {currentStep === 2 && (
+              <motion.div
+                key='step-3'
+                role='tabpanel'
+                aria-labelledby='step-3-tab'
+                aria-label='관심사 선택'
+                custom={direction}
+                variants={stepVariants}
+                initial='enter'
+                animate='center'
+                exit='exit'
+                transition={transition}
+                className='absolute w-full'
+              >
+                <StepThree />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
 
-      {renderButtons()}
-    </main>
+        {renderButtons()}
+      </main>
+
+      {/* Welcome Dialog */}
+      <WelcomeDialog
+        isOpen={showWelcomeDialog}
+        onClose={handleCloseWelcomeDialog}
+        onGoToLogin={handleGoToLogin}
+        userName={nickname}
+      />
+    </>
   );
 }

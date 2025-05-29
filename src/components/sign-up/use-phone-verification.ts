@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { sendCode } from '@/actions/auth-service/sendCode';
-import { verifyCode } from '@/actions/auth-service/verifyCode';
+import { sendCode } from '@/actions/auth-service/send-code';
+import { verifyCode } from '@/actions/auth-service/verify-code';
 import { useRegisterStore } from '@/store/use-register-store';
 import { isValidPhoneNumber, isValidVerificationCode } from '@/lib/phone-utils';
 
@@ -70,10 +70,6 @@ export function usePhoneVerification() {
     }
   }, [phoneNumber, verificationCode, setCurrentStep]);
 
-  const openKeyboard = useCallback((mode: 'phone' | 'verification') => {
-    setInputMode(mode);
-  }, []);
-
   return {
     isVerificationSent,
     inputMode,
@@ -83,6 +79,5 @@ export function usePhoneVerification() {
     isVerifying,
     handleSendVerification,
     handleVerify,
-    openKeyboard,
   };
 }

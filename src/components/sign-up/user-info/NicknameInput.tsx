@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+
+import { FilledInput } from '@/components/ui/filled-input';
 
 interface NicknameInputProps {
   nickname: string;
@@ -19,7 +20,7 @@ export function NicknameInput({
 }: NicknameInputProps) {
   return (
     <div className='space-y-2'>
-      <Input
+      <FilledInput
         label='닉네임'
         value={nickname}
         onChange={onChange}

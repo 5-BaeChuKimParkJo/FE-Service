@@ -1,6 +1,7 @@
-import { CheckCircle, Loader2 } from 'lucide-react';
-import { cn } from '@/lib/cn';
-import * as React from 'react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+import { FilledInput } from '@/components/ui/filled-input';
 
 interface UserIdInputProps {
   userId: string;
@@ -17,55 +18,31 @@ export function UserIdInput({
   isChecking,
   onChange,
 }: UserIdInputProps) {
-  const [isFocused, setIsFocused] = React.useState(false);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const handleContainerClick = () => {
-    inputRef.current?.focus();
-  };
-
   return (
-    <div className='space-y-1'>
-      <div
-        className={cn(
-          'relative pb-1 border-b transition-colors',
-          isFocused ? 'border-primary' : 'border-gray-300',
-          error && 'border-destructive',
-          isVerified && !error && 'border-green-500',
-        )}
-        onClick={handleContainerClick}
-      >
-        <label
-          className={cn(
-            'absolute transition-all duration-200 pointer-events-none',
-            isFocused || userId
-              ? 'text-xs text-muted-foreground top-0'
-              : 'text-base text-muted-foreground top-4',
-          )}
-        >
-          아이디
-        </label>
-        <div className='flex items-center'>
-          <input
-            ref={inputRef}
-            className='w-full pt-6 pb-1 bg-transparent focus:outline-none text-base'
-            type='text'
-            value={userId}
-            onChange={onChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          />
-          {isChecking && (
-            <Loader2 className='h-4 w-4 animate-spin text-muted-foreground' />
-          )}
-          {isVerified && !error && (
-            <CheckCircle className='h-4 w-4 text-green-500' />
-          )}
+    <div className='space-y-2'>
+      <FilledInput
+        label='아이디'
+        value={userId}
+        onChange={onChange}
+        error={error}
+      />
+
+      {isChecking && (
+        <div className='flex items-center text-muted-foreground text-sm'>
+          <Loader2 className='h-3 w-3 animate-spin mr-1' />
+          <span>아이디 확인 중...</span>
         </div>
-      </div>
-      {error && <p className='text-xs text-destructive'>{error}</p>}
+      )}
+
       {isVerified && !error && (
-        <p className='text-xs text-green-500'>사용 가능한 아이디입니다.</p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className='flex items-center text-green-600 text-sm'
+        >
+          <CheckCircle2 className='h-4 w-4 mr-1' />
+          <span>사용 가능한 아이디입니다.</span>
+        </motion.div>
       )}
     </div>
   );

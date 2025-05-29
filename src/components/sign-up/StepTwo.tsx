@@ -5,7 +5,6 @@ import { useRegisterStore } from '@/store/use-register-store';
 import { useUserInfoForm } from '@/hooks/use-user-info-form';
 import { NicknameInput } from './user-info/NicknameInput';
 import { UserIdInput } from './user-info/UserIdInput';
-import { FormStatusMessage } from './user-info/FormStatusMessage';
 import {
   validatePassword,
   validatePasswordMatch,
@@ -25,7 +24,6 @@ export function StepTwo() {
     isNicknameVerified,
   } = useRegisterStore();
 
-  const [allFieldsValid, setAllFieldsValid] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
 
@@ -85,7 +83,6 @@ export function StepTwo() {
       confirmError === '';
 
     setStepTwoValid(isValid);
-    setAllFieldsValid(isValid);
   }, [
     userId,
     nickname,
@@ -119,14 +116,6 @@ export function StepTwo() {
             onChange={handleUserIdChange}
           />
 
-          <NicknameInput
-            nickname={nickname}
-            error={nicknameError}
-            isVerified={isNicknameVerified}
-            isChecking={isCheckingNickname}
-            onChange={handleNicknameChange}
-          />
-
           <FilledInput
             label='비밀번호'
             type='password'
@@ -143,13 +132,12 @@ export function StepTwo() {
             error={confirmError}
           />
 
-          <p className='text-xs text-muted-foreground'>
-            8자 이상의 안전한 비밀번호를 입력해주세요.
-          </p>
-
-          <FormStatusMessage
-            isVisible={allFieldsValid}
-            message='모든 정보가 확인되었습니다. 다음 버튼을 눌러주세요.'
+          <NicknameInput
+            nickname={nickname}
+            error={nicknameError}
+            isVerified={isNicknameVerified}
+            isChecking={isCheckingNickname}
+            onChange={handleNicknameChange}
           />
         </div>
       </div>

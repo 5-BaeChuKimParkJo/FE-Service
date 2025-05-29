@@ -1,5 +1,7 @@
 'use server';
 
+// import { instance } from '../instance';
+
 /**
  * 닉네임 중복 확인 API
  * @param nickname 확인할 닉네임
@@ -8,9 +10,9 @@
 export async function checkNicknameAvailability(
   nickname: string,
 ): Promise<boolean> {
-  // 실제 API 호출 구현
-  // const response = await instance.get<{ available: boolean }>(`/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`);
-  // return response.available;
+  // return await instance.get<boolean>(
+  //   `/auth/exists/nickname?nickname=${nickname}`,
+  // );
 
   // 임시 구현 (API 연동 전)
   await new Promise((resolve) => setTimeout(resolve, 800));

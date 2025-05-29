@@ -48,7 +48,7 @@ export default function SignUpPage() {
               onClick={handleComplete}
               disabled={interests.length === 0 || isSubmitting}
             >
-              {isSubmitting ? '저장 중...' : '가입 완료'}
+              {isSubmitting ? 'Saving...' : 'SIGN UP'}
             </Button>
             <Button
               variant='ghost'
@@ -85,7 +85,7 @@ export default function SignUpPage() {
 
       <h1 className='text-2xl font-bold mt-10 mb-10 text-center'>SIGN UP</h1>
 
-      <nav aria-label='회원가입 진행 단계' className='mb-6'>
+      <nav aria-label='회원가입 진행 단계' className='ml-2 mr-2 mb-6'>
         <RegisterStepper />
       </nav>
 

@@ -18,7 +18,6 @@ export function useUserInfoForm() {
   const [isCheckingUserId, setIsCheckingUserId] = useState(false);
   const [isCheckingNickname, setIsCheckingNickname] = useState(false);
 
-  // 아이디 체크 함수
   const checkUserIdDuplicate = useCallback(
     async (value: string) => {
       if (!value || value.length < 4) return;
@@ -39,7 +38,6 @@ export function useUserInfoForm() {
     [setIsUserIdVerified],
   );
 
-  // 닉네임 체크 함수
   const checkNicknameDuplicate = useCallback(
     async (value: string) => {
       if (!value || value.length < 2) return;

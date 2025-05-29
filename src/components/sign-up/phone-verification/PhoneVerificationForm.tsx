@@ -11,6 +11,7 @@ interface PhoneVerificationFormProps {
   verificationCode: string;
   isVerificationSent: boolean;
   isVerified?: boolean;
+  isVerifying?: boolean;
   phoneError: string;
   verificationError: string;
   onPhoneChange: (value: string) => void;
@@ -27,6 +28,7 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
   verificationCode,
   isVerificationSent,
   isVerified = false,
+  isVerifying = false,
   phoneError,
   verificationError,
   onPhoneChange,
@@ -64,6 +66,7 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
               maxLength={6}
               inputMode='numeric'
               pattern='[0-9]*'
+              disabled={isVerifying}
             />
           </motion.div>
         )}
@@ -80,6 +83,7 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
         ) : (
           <VerificationButton
             isVerificationSent={isVerificationSent}
+            isVerifying={isVerifying}
             phoneNumber={phoneNumber}
             verificationCode={verificationCode}
             onSendVerification={onSendVerification}
@@ -93,6 +97,7 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
 
 interface VerificationButtonProps {
   isVerificationSent: boolean;
+  isVerifying: boolean;
   phoneNumber: string;
   verificationCode: string;
   onSendVerification: () => void;
@@ -101,6 +106,7 @@ interface VerificationButtonProps {
 
 const VerificationButton = memo(function VerificationButton({
   isVerificationSent,
+  isVerifying,
   phoneNumber,
   verificationCode,
   onSendVerification,
@@ -120,11 +126,11 @@ const VerificationButton = memo(function VerificationButton({
 
   return (
     <Button
-      label='인증 확인'
+      label={isVerifying ? '인증 확인 중...' : '인증 확인'}
       width='full'
       size='xl'
       onClick={onVerify}
-      disabled={!verificationCode}
+      disabled={!verificationCode || isVerifying}
     />
   );
 });

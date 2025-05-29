@@ -19,6 +19,7 @@ export function StepOne() {
     phoneError,
     verificationError,
     isVerified,
+    isVerifying,
     handleSendVerification,
     handleVerify,
   } = usePhoneVerification();
@@ -26,19 +27,10 @@ export function StepOne() {
   const verificationErrorMessage = verificationError[0];
 
   useEffect(() => {
-    const isValid =
-      isVerificationSent === true &&
-      typeof verificationCode === 'string' &&
-      verificationCode.length === 6 &&
-      verificationErrorMessage === '';
+    const isValid = isVerified === true && verificationErrorMessage === '';
 
     setStepOneValid(isValid);
-  }, [
-    isVerificationSent,
-    verificationCode,
-    verificationErrorMessage,
-    setStepOneValid,
-  ]);
+  }, [isVerified, verificationErrorMessage, setStepOneValid]);
 
   return (
     <section
@@ -54,6 +46,7 @@ export function StepOne() {
         verificationCode={verificationCode}
         isVerificationSent={isVerificationSent}
         isVerified={isVerified}
+        isVerifying={isVerifying}
         phoneError={phoneError[0]}
         verificationError={verificationError[0]}
         onPhoneChange={setPhoneNumber}

@@ -10,7 +10,7 @@
 export async function checkNicknameAvailability(
   nickname: string,
 ): Promise<boolean> {
-  // return await instance.get<boolean>(
+  // return await instance.post<boolean>(
   //   `/auth/exists/nickname?nickname=${nickname}`,
   // );
 

@@ -60,10 +60,10 @@ export function useUserInfoForm() {
 
   const createDebounce = useDebounce();
   const debouncedCheckUserId = useRef(
-    createDebounce((value: string) => checkUserIdDuplicate(value), 500),
+    createDebounce((value: string) => checkUserIdDuplicate(value), 1000),
   ).current;
   const debouncedCheckNickname = useRef(
-    createDebounce((value: string) => checkNicknameDuplicate(value), 500),
+    createDebounce((value: string) => checkNicknameDuplicate(value), 1000),
   ).current;
 
   const handleUserIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {

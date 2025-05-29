@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useRegisterStore } from '@/store/use-register-store';
-import { registerUser } from '@/actions/auth-service';
+import { createRegistrationService } from '@/services/registration.service';
 
 export function useRegistration() {
   const router = useRouter();
@@ -16,6 +16,17 @@ export function useRegistration() {
     stepTwoValid,
     setIsSubmitting,
   } = useRegisterStore();
+
+  const registrationService = useMemo(
+    () =>
+      createRegistrationService({
+        router,
+        setShowWelcomeDialog,
+        setShowWhaleTransition,
+        setIsSubmitting,
+      }),
+    [router, setIsSubmitting],
+  );
 
   const handleNext = () => {
     if (
@@ -32,66 +43,13 @@ export function useRegistration() {
     }
   };
 
-  const handleComplete = async () => {
-    setIsSubmitting(true);
-
-    try {
-      const userData = useRegisterStore.getState();
-
-      await registerUser({
-        userId: userData.userId,
-        phoneNumber: userData.phoneNumber,
-        nickname: userData.nickname,
-        password: userData.password,
-        interests: userData.interests,
-      });
-
-      // 회원가입 성공 후 WelcomeDialog 표시
-      setShowWelcomeDialog(true);
-    } catch (error) {
-      console.error('회원가입 중 오류 발생:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleSkip = async () => {
-    setIsSubmitting(true);
-
-    try {
-      const userData = useRegisterStore.getState();
-
-      await registerUser({
-        userId: userData.userId,
-        phoneNumber: userData.phoneNumber,
-        nickname: userData.nickname,
-        password: userData.password,
-      });
-
-      // 회원가입 성공 후 WelcomeDialog 표시
-      setShowWelcomeDialog(true);
-    } catch (error) {
-      console.error('회원가입 중 오류 발생:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleCloseWelcomeDialog = () => {
-    setShowWelcomeDialog(false);
-  };
-
-  const handleGoToLogin = () => {
-    // WelcomeDialog 닫고 고래 애니메이션 시작
-    setShowWelcomeDialog(false);
-    setShowWhaleTransition(true);
-  };
-
-  const handleWhaleTransitionComplete = () => {
-    // 고래 애니메이션 완료 후 페이지 이동
-    setShowWhaleTransition(false);
-    router.replace('/sign-in');
-  };
+  const handleComplete = () => registrationService.complete();
+  const handleSkip = () => registrationService.skip();
+  const handleCloseWelcomeDialog = () =>
+    registrationService.closeWelcomeDialog();
+  const handleGoToLogin = () => registrationService.startGoToLogin();
+  const handleWhaleTransitionComplete = () =>
+    registrationService.completeWhaleTransition();
 
   return {
     handleNext,

@@ -1,13 +1,8 @@
-import { useRef, useCallback, useState } from 'react';
-
-import { validateNickname, validateUserId } from '@/lib/validation.utils';
+import { useRef, useState, useMemo } from 'react';
 
 import { useRegisterStore } from '@/store/use-register-store';
-import useDebounce from '@/lib/debounce';
-import {
-  checkNicknameAvailability,
-  checkUserIdAvailability,
-} from '@/actions/auth-service';
+import useDebounce from '@/hooks/use-debounce';
+import { createUserInfoService } from '@/services/user-info.service';
 
 export function useUserInfoForm() {
   const { setUserId, setNickname, setIsNicknameVerified, setIsUserIdVerified } =
@@ -18,72 +13,52 @@ export function useUserInfoForm() {
   const [isCheckingUserId, setIsCheckingUserId] = useState(false);
   const [isCheckingNickname, setIsCheckingNickname] = useState(false);
 
-  const checkUserIdDuplicate = useCallback(
-    async (value: string) => {
-      if (!value || value.length < 4) return;
-
-      try {
-        setIsCheckingUserId(true);
-        const isAvailable = await checkUserIdAvailability(value);
-
-        setIsUserIdVerified(isAvailable);
-        setUserIdError(isAvailable ? '' : '이미 사용 중인 아이디입니다.');
-      } catch {
-        setUserIdError('아이디 확인 중 오류가 발생했습니다.');
-        setIsUserIdVerified(false);
-      } finally {
-        setIsCheckingUserId(false);
-      }
-    },
-    [setIsUserIdVerified],
-  );
-
-  const checkNicknameDuplicate = useCallback(
-    async (value: string) => {
-      if (!value || value.length < 2) return;
-
-      try {
-        setIsCheckingNickname(true);
-        const isAvailable = await checkNicknameAvailability(value);
-
-        setIsNicknameVerified(isAvailable);
-        setNicknameError(isAvailable ? '' : '이미 사용 중인 닉네임입니다.');
-      } catch {
-        setNicknameError('닉네임 확인 중 오류가 발생했습니다.');
-        setIsNicknameVerified(false);
-      } finally {
-        setIsCheckingNickname(false);
-      }
-    },
-    [setIsNicknameVerified],
+  const userInfoService = useMemo(
+    () =>
+      createUserInfoService({
+        setUserId,
+        setNickname,
+        setIsNicknameVerified,
+        setIsUserIdVerified,
+        setUserIdError,
+        setNicknameError,
+        setIsCheckingUserId,
+        setIsCheckingNickname,
+      }),
+    [setUserId, setNickname, setIsNicknameVerified, setIsUserIdVerified],
   );
 
   const createDebounce = useDebounce();
   const debouncedCheckUserId = useRef(
-    createDebounce((value: string) => checkUserIdDuplicate(value), 1000),
+    createDebounce(async (value: string) => {
+      const result = await userInfoService.validateAndCheckUserId(value);
+      setUserIdError(result.error);
+    }, 1000),
   ).current;
+
   const debouncedCheckNickname = useRef(
-    createDebounce((value: string) => checkNicknameDuplicate(value), 1000),
+    createDebounce(async (value: string) => {
+      const result = await userInfoService.validateAndCheckNickname(value);
+      setNicknameError(result.error);
+    }, 1000),
   ).current;
 
   const handleUserIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUserId(value);
-    setIsUserIdVerified(false);
-    const err = validateUserId(value);
-    setUserIdError(err);
+    const shouldCheckDuplicate = userInfoService.handleUserIdChange(value);
 
-    if (!err) debouncedCheckUserId(value);
+    if (shouldCheckDuplicate) {
+      debouncedCheckUserId(value);
+    }
   };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setNickname(value);
-    setIsNicknameVerified(false);
-    const err = validateNickname(value);
-    setNicknameError(err);
+    const shouldCheckDuplicate = userInfoService.handleNicknameChange(value);
 
-    if (!err) debouncedCheckNickname(value);
+    if (shouldCheckDuplicate) {
+      debouncedCheckNickname(value);
+    }
   };
 
   return {

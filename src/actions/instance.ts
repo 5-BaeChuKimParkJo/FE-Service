@@ -80,7 +80,6 @@ const fetchInstance = async <T = undefined>(
     ) {
       if (!response.ok) {
         throw {
-          errorCode: `HTTP_ERROR_${response.status}`,
           message: response.statusText,
         } as ErrorResponse;
       }
@@ -95,7 +94,6 @@ const fetchInstance = async <T = undefined>(
         const text = await response.text();
         if (!response.ok) {
           throw {
-            errorCode: 'HTTP_ERROR',
             message: text || `HTTP ${response.status}: ${response.statusText}`,
           } as ErrorResponse;
         }
@@ -106,7 +104,6 @@ const fetchInstance = async <T = undefined>(
       const blob = await response.blob();
       if (!response.ok) {
         throw {
-          errorCode: 'HTTP_ERROR',
           message: `HTTP ${response.status}: ${response.statusText}`,
         } as ErrorResponse;
       }
@@ -119,7 +116,6 @@ const fetchInstance = async <T = undefined>(
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       throw {
-        errorCode: 'PARSE_ERROR',
         message: 'Invalid JSON response',
       } as ErrorResponse;
     }
@@ -133,17 +129,12 @@ const fetchInstance = async <T = undefined>(
       });
 
       // 서버에서 이미 ErrorResponse 형식으로 반환한 경우
-      if (
-        data &&
-        typeof data.errorCode === 'string' &&
-        typeof data.message === 'string'
-      ) {
+      if (data && typeof data.message === 'string') {
         throw data as ErrorResponse;
       }
 
       // 기본 에러 형식
       throw {
-        errorCode: `HTTP_ERROR_${response.status}`,
         message:
           data?.message ||
           response.statusText ||
@@ -153,29 +144,23 @@ const fetchInstance = async <T = undefined>(
 
     return data as T;
   } catch (error) {
-    // AbortError (타임아웃) 처리
     if (error instanceof Error && error.name === 'AbortError') {
       console.error('Request timeout:', url);
       throw {
-        errorCode: 'TIMEOUT_ERROR',
         message: 'Request timeout',
       } as ErrorResponse;
     }
 
-    // 네트워크 에러 처리
     if (error instanceof TypeError) {
       console.error('Network error:', error);
       throw {
-        errorCode: 'NETWORK_ERROR',
         message: 'Network connection failed',
       } as ErrorResponse;
     }
 
-    // 일반 Error 객체 처리
     if (error instanceof Error) {
       console.error('Fetch error:', error);
       throw {
-        errorCode: 'FETCH_ERROR',
         message: error.message,
       } as ErrorResponse;
     }

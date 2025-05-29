@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+
 import { useRegisterStore } from '@/store/use-register-store';
 import { useUserInfoForm } from '@/hooks/use-user-info-form';
-
 import { NicknameInput } from './user-info/NicknameInput';
 import { UserIdInput } from './user-info/UserIdInput';
 import { FormStatusMessage } from './user-info/FormStatusMessage';
@@ -10,7 +10,7 @@ import {
   validatePassword,
   validatePasswordMatch,
 } from '@/lib/validation.utils';
-import { Input } from '../ui/input';
+import { FilledInput } from '../ui/filled-input';
 
 export function StepTwo() {
   const {
@@ -49,7 +49,6 @@ export function StepTwo() {
       setPasswordError('');
     }
 
-    // 비밀번호 확인 필드가 이미 입력되어 있다면 일치 여부 확인
     if (passwordConfirm) {
       const matchValidation = validatePasswordMatch(value, passwordConfirm);
       if (!matchValidation.isValid) {
@@ -128,7 +127,7 @@ export function StepTwo() {
             onChange={handleNicknameChange}
           />
 
-          <Input
+          <FilledInput
             label='비밀번호'
             type='password'
             value={password}
@@ -136,7 +135,7 @@ export function StepTwo() {
             error={passwordError}
           />
 
-          <Input
+          <FilledInput
             label='비밀번호 확인'
             type='password'
             value={passwordConfirm}

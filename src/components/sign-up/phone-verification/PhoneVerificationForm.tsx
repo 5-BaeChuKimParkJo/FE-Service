@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import { Input } from '../../ui/input';
+import { FilledInput } from '@/components/ui/filled-input';
 import { CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -13,8 +13,8 @@ interface PhoneVerificationFormProps {
   isVerified?: boolean;
   phoneError: string;
   verificationError: string;
-  onPhoneInputClick: () => void;
-  onVerificationInputClick: () => void;
+  onPhoneChange: (value: string) => void;
+  onVerificationCodeChange: (value: string) => void;
   onSendVerification: () => void;
   onVerify: () => void;
 }
@@ -29,20 +29,24 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
   isVerified = false,
   phoneError,
   verificationError,
-  onPhoneInputClick,
-  onVerificationInputClick,
+  onPhoneChange,
+  onVerificationCodeChange,
   onSendVerification,
   onVerify,
 }: PhoneVerificationFormProps) {
   return (
     <div className='flex-1'>
       <div className='space-y-6'>
-        <Input
+        <FilledInput
           label='휴대폰 번호'
           value={phoneNumber}
-          readOnly
-          onClick={onPhoneInputClick}
           error={phoneError}
+          type='tel'
+          onChange={(e) => onPhoneChange(e.target.value)}
+          maxLength={11}
+          inputMode='numeric'
+          pattern='[0-9]*'
+          disabled={isVerificationSent}
         />
 
         {isVerificationSent && (
@@ -51,12 +55,15 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Input
+            <FilledInput
               label='인증번호'
               value={verificationCode}
-              readOnly
-              onClick={onVerificationInputClick}
               error={verificationError}
+              type='tel'
+              onChange={(e) => onVerificationCodeChange(e.target.value)}
+              maxLength={6}
+              inputMode='numeric'
+              pattern='[0-9]*'
             />
           </motion.div>
         )}
@@ -104,6 +111,7 @@ const VerificationButton = memo(function VerificationButton({
       <Button
         label='인증번호 발송'
         width='full'
+        size='xl'
         onClick={onSendVerification}
         disabled={!phoneNumber}
       />
@@ -111,8 +119,12 @@ const VerificationButton = memo(function VerificationButton({
   }
 
   return (
-    <button onClick={onVerify} disabled={!verificationCode}>
-      인증 확인
-    </button>
+    <Button
+      label='인증 확인'
+      width='full'
+      size='xl'
+      onClick={onVerify}
+      disabled={!verificationCode}
+    />
   );
 });

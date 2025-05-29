@@ -4,32 +4,26 @@ import { useEffect } from 'react';
 import { useRegisterStore } from '@/store/use-register-store';
 import { usePhoneVerification } from './use-phone-verification';
 import { PhoneVerificationForm } from './phone-verification/PhoneVerificationForm';
-import { useKeyboard } from '../../hooks/use-keyboard';
-import { PhoneVerificationKeyboard } from './phone-verification/PhoneVerificationKeyboard';
 
 export function StepOne() {
-  const { phoneNumber, verificationCode, setStepOneValid } = useRegisterStore();
+  const {
+    phoneNumber,
+    verificationCode,
+    setStepOneValid,
+    setPhoneNumber,
+    setVerificationCode,
+  } = useRegisterStore();
 
   const {
     isVerificationSent,
-    inputMode,
-    isKeyboardOpen,
     phoneError,
     verificationError,
     isVerified,
     handleSendVerification,
     handleVerify,
-    openKeyboard,
-    setIsKeyboardOpen,
   } = usePhoneVerification();
 
   const verificationErrorMessage = verificationError[0];
-
-  const { handleKeyPress } = useKeyboard({
-    inputMode,
-    setPhoneError: phoneError[1],
-    setVerificationError: verificationError[1],
-  });
 
   useEffect(() => {
     const isValid =
@@ -62,16 +56,10 @@ export function StepOne() {
         isVerified={isVerified}
         phoneError={phoneError[0]}
         verificationError={verificationError[0]}
-        onPhoneInputClick={() => openKeyboard('phone')}
-        onVerificationInputClick={() => openKeyboard('verification')}
+        onPhoneChange={setPhoneNumber}
+        onVerificationCodeChange={setVerificationCode}
         onSendVerification={handleSendVerification}
         onVerify={handleVerify}
-      />
-
-      <PhoneVerificationKeyboard
-        isOpen={isKeyboardOpen}
-        onClose={() => setIsKeyboardOpen(false)}
-        onKeyPress={handleKeyPress}
       />
     </section>
   );

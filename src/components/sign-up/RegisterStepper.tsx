@@ -1,90 +1,83 @@
 'use client';
-import { Smartphone, User, Heart } from 'lucide-react';
-
 import { motion } from 'framer-motion';
+
 import { useRegisterStore } from '@/store/use-register-store';
 import { cn } from '@/lib/cn';
+import Whale from '@/assets/icons/common/whale.svg';
 
 export function RegisterStepper() {
   const { currentStep } = useRegisterStore();
 
   const steps = [
-    { icon: <Smartphone className='h-5 w-5' />, label: '휴대폰 인증' },
-    { icon: <User className='h-5 w-5' />, label: '계정 정보' },
-    { icon: <Heart className='h-5 w-5' />, label: '관심 카테고리' },
+    { label: '휴대폰 인증' },
+    { label: '계정 정보' },
+    { label: '관심 카테고리' },
   ];
+
+  const progressWidth = (currentStep * 100) / 2;
 
   return (
     <nav aria-label='회원가입 단계' className='w-full'>
-      <ol className='flex items-center justify-between relative'>
-        <div className='absolute top-5 left-0 right-0 h-[2px] bg-muted' />
+      <div className='flex items-center justify-between relative'>
+        <div className='absolute top-1/2 left-0 right-0 h-[2px] bg-muted ' />
 
-        {[1, 2].map((_, index) => (
+        <div className='absolute top-1/2 left-0 right-0'>
           <motion.div
-            key={`line-${index}`}
-            className='absolute top-5 h-[2px] bg-primary'
-            style={{
-              left: `${(index * 100) / 2}%`,
-              right: `${100 - ((index + 1) * 100) / 2}%`,
-            }}
-            initial={{ scaleX: 0, transformOrigin: 'left' }}
+            className='h-[2px] bg-primary-100 origin-left'
             animate={{
-              scaleX: index < currentStep ? 1 : 0,
+              width: `${progressWidth}%`,
             }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            initial={{ width: 0 }}
+            transition={{
+              duration: 0.8,
+              ease: 'easeInOut',
+            }}
           />
-        ))}
+          <motion.div
+            className='absolute top-0'
+            animate={{
+              left: `${progressWidth}%`,
+            }}
+            initial={{ left: 0 }}
+            transition={{
+              duration: 0.8,
+              ease: 'easeInOut',
+            }}
+          >
+            <motion.div
+              className='absolute -top-17 -translate-x-1/2'
+              animate={{
+                y: [0, -4, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatType: 'reverse',
+                ease: 'easeInOut',
+              }}
+            >
+              <Whale className='text-primary-100 scale-50' />
+            </motion.div>
+          </motion.div>
+        </div>
 
         {steps.map((step, index) => (
-          <li key={index} className='flex flex-col items-center z-10'>
-            <motion.div
-              className={cn(
-                'relative flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white',
-                index === currentStep
-                  ? 'border-primary'
-                  : index < currentStep
-                    ? 'border-primary bg-primary text-primary-foreground'
-                    : 'border-muted',
-              )}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {index < currentStep ? (
-                <motion.svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='20'
-                  height='20'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  <polyline points='20 6 9 17 4 12'></polyline>
-                </motion.svg>
-              ) : (
-                step.icon
-              )}
-            </motion.div>
-            <span
-              className={cn(
-                'mt-2 text-xs font-medium',
-                index === currentStep
-                  ? 'text-primary'
-                  : index < currentStep
-                    ? 'text-foreground'
-                    : 'text-muted-foreground',
-              )}
-            >
-              {step.label}
-            </span>
-          </li>
+          <div
+            key={index}
+            className={cn(
+              'relative z-10 flex flex-col items-center ',
+              'transition-colors duration-200',
+              index === currentStep
+                ? 'text-primary-200'
+                : index < currentStep
+                  ? 'text-foreground'
+                  : 'text-muted-foreground',
+            )}
+          >
+            <span className='text-xs font-medium mt-12'>{step.label}</span>
+          </div>
         ))}
-      </ol>
+      </div>
     </nav>
   );
 }

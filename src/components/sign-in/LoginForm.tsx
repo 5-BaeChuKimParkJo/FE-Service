@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useLoginForm } from '@/hooks/use-login-form';
+import { FilledInput } from '../ui/filled-input';
 
 export function LoginForm() {
   const { formData, errors, isLoading, handleChange, handleSubmit } =
@@ -17,7 +17,7 @@ export function LoginForm() {
           openKeyboard={openKeyboard}
         /> */}
 
-        <Input
+        <FilledInput
           label='your id'
           name='id'
           type='text'
@@ -26,7 +26,7 @@ export function LoginForm() {
           disabled={isLoading}
         />
 
-        <Input
+        <FilledInput
           label='password'
           name='password'
           type='password'

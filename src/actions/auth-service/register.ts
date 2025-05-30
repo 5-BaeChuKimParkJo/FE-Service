@@ -1,15 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
+'use server';
 
-/**
- * 회원가입 API
- * @param userData 사용자 데이터
- * @returns 가입 결과
- */
+import { instance } from '../instance';
+
 export interface RegisterUserData {
+  phoneNumber: string;
+  nickname: string;
   userId: string;
   password: string;
-  nickname: string;
-  phoneNumber: string;
   interests?: string[];
 }
 
@@ -19,26 +16,23 @@ export interface RegisterResponse {
   message?: string;
 }
 
-export async function registerUser(
-  userData: RegisterUserData,
-): Promise<RegisterResponse> {
+export async function registerUser(userData: RegisterUserData) {
   // 실제 API 호출 구현
-  // return await instance.post<RegisterResponse>('/auth/register', userData);
-
-  if (!userData) {
-    //나중에 지울 예정
-    console.log('');
-  }
-  // 임시 구현 (API 연동 전)
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-  return {
-    success: true,
-    userId: 'user_' + Math.random().toString(36).substr(2, 9),
-  };
-}
-
-export function useRegisterUser() {
-  return useMutation({
-    mutationFn: registerUser,
+  await instance.post<RegisterResponse>('/auth/sign-up', {
+    memberId: userData.userId,
+    password: userData.password,
+    nickname: userData.nickname,
+    phoneNumber: userData.phoneNumber,
   });
+
+  // if (!userData) {
+  //   //나중에 지울 예정
+  //   console.log('');
+  // }
+  // // 임시 구현 (API 연동 전)
+  // await new Promise((resolve) => setTimeout(resolve, 1500));
+  // return {
+  //   success: true,
+  //   userId: 'user_' + Math.random().toString(36).substr(2, 9),
+  // };
 }

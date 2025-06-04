@@ -1,18 +1,15 @@
 'use client';
 import Link from 'next/link';
+
 import Logo from '@/assets/icons/common/logo.svg';
 import Bell from '@/assets/icons/common/bell.svg';
 import Search from '@/assets/icons/common/search.svg';
-
 import { cn } from '@/lib/cn';
 
 export function TopNavigation() {
   return (
     <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50',
-        'w-full h-16 bg-primary-500 shadow-sm',
-      )}
+      className={cn('fixed top-0 left-0 right-0 z-50', 'w-full h-20 bg-white')}
       role='banner'
     >
       <nav
@@ -20,7 +17,7 @@ export function TopNavigation() {
         role='navigation'
         aria-label='메인 헤더'
       >
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 '>
           <Link href='/' aria-label='홈으로 이동'>
             <Logo />
           </Link>

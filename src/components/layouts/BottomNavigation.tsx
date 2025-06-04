@@ -1,6 +1,6 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Gavel, FileText, MessageCircle, User } from 'lucide-react';
+import { Home, Gavel, ShoppingBag, MessageCircle, User } from 'lucide-react';
 
 import { cn } from '@/lib/cn';
 
@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   {
     href: '/general',
     label: '일반',
-    icon: FileText,
+    icon: ShoppingBag,
   },
   {
     href: '/chat',

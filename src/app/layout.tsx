@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body>
         <QueryProvider>
-          <div className='w-full min-w-[320px] max-w-[480px] mx-auto px-4 pb-safe pt-safe scrollbar-hidden overflow-y-scroll overflow-x-hidden'>
+          <div className='w-full min-w-[320px] max-w-[480px] mx-auto pb-safe pt-safe scrollbar-hidden overflow-y-scroll overflow-x-hidden'>
             {children}
           </div>
         </QueryProvider>

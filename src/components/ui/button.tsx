@@ -31,9 +31,10 @@ const buttonVariants = cva(
         default: 'bg-primary-200 text-white shadow-xs hover:bg-primary-200/90',
         primary: 'bg-primary-100 text-white shadow-xs hover:bg-primary-100/90',
         secondary:
-          'bg-primary-300 text-white shadow-xs hover:bg-primary-300/90',
+          'bg-primary-100/15 text-primary-100 shadow-xs hover:bg-primary-10030',
         yellow_100: 'bg-yellow-100 text-white shadow-xs hover:bg-yellow-100/90',
-        yellow_200: 'bg-yellow-200 text-white shadow-xs hover:bg-yellow-200/90',
+        yellow_200:
+          'bg-yellow-200 text-primary-100 shadow-xs hover:bg-yellow-200/90',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
@@ -46,6 +47,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        xs: 'h-7 px-3 py-1.5 has-[>svg]:px-2.5',
         sm: 'h-8  gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-10  px-6 has-[>svg]:px-4',
         xl: 'h-12 px-8 has-[>svg]:px-6',

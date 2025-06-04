@@ -12,7 +12,7 @@ export async function checkUserIdAvailability(
 ): Promise<boolean> {
   // 실제 API 호출 구현
   const response = await instance.get<boolean>(
-    `/auth/exists/member-id/${userId}`,
+    `/auth-service/api/v1/auth/exists/member-id?memberId=${userId}`,
   );
   return !response;
 

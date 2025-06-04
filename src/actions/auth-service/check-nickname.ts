@@ -1,6 +1,6 @@
 'use server';
 
-// import { instance } from '../instance';
+import { instance } from '../instance';
 
 /**
  * 닉네임 중복 확인 API
@@ -10,14 +10,14 @@
 export async function checkNicknameAvailability(
   nickname: string,
 ): Promise<boolean> {
-  // return await instance.post<boolean>(
-  //   `/auth/exists/nickname?nickname=${nickname}`,
-  // );
+  return await instance.post<boolean>(
+    `/auth-service/api/v1/auth/exists/nickname?nickname=${nickname}`,
+  );
 
-  // 임시 구현 (API 연동 전)
-  await new Promise((resolve) => setTimeout(resolve, 800));
+  // // 임시 구현 (API 연동 전)
+  // await new Promise((resolve) => setTimeout(resolve, 800));
 
-  // 테스트를 위해 'admin'과 'test'는 중복으로 처리
-  const reservedNicknames = ['호초', '호촐', '김호철', '멋쟁이'];
-  return !reservedNicknames.includes(nickname.toLowerCase());
+  // // 테스트를 위해 'admin'과 'test'는 중복으로 처리
+  // const reservedNicknames = ['호초', '호촐', '김호철', '멋쟁이'];
+  // return !reservedNicknames.includes(nickname.toLowerCase());
 }

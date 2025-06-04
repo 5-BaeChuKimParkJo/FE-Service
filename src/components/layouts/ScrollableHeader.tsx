@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 interface ScrollableHeaderProps {
@@ -10,12 +11,21 @@ export function ScrollableHeader({ children }: ScrollableHeaderProps) {
   const { isVisible } = useScrollDirection({ threshold: 15 });
 
   return (
-    <div
-      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}
+    <motion.div
+      className='fixed top-0 left-0 right-0 z-50'
+      initial={{ y: 0, opacity: 1 }}
+      animate={{
+        y: isVisible ? 0 : '-100%',
+        opacity: isVisible ? 1 : 0,
+      }}
+      transition={{
+        type: 'spring',
+        stiffness: 300,
+        damping: 35,
+        mass: 0.8,
+      }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

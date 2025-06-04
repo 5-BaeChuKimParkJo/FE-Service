@@ -18,7 +18,7 @@ export interface RegisterResponse {
 
 export async function registerUser(userData: RegisterUserData) {
   // 실제 API 호출 구현
-  await instance.post<RegisterResponse>('/auth/sign-up', {
+  await instance.post<RegisterResponse>('/auth-service/api/v1/auth/sign-up', {
     memberId: userData.userId,
     password: userData.password,
     nickname: userData.nickname,

@@ -119,32 +119,46 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* 모든 스크롤바 숨김 */
+html,
 body {
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-h1 {
-  font-weight: 700;
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
-h2 {
-  font-weight: 600;
+
+body {
+  font-family: 'Pretendard', sans-serif;
 }
+
+h1,
+h2,
 p,
 span,
-div {
-  font-weight: 400;
-}
-button {
-  font-weight: 500;
-}
+div,
+button,
 input,
 textarea,
 select,
 option {
   font-family: 'Pretendard', sans-serif;
   font-weight: 400;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
 @layer base {

@@ -1,4 +1,4 @@
-import { validateNickname, validateUserId } from '@/lib/validation.utils';
+import { validateNickname, validateUserId } from '@/libs/validation.utils';
 import {
   checkNicknameAvailability,
   checkUserIdAvailability,

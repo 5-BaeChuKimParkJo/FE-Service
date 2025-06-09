@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { usePhoneVerification } from './use-phone-verification';
 import { PhoneVerificationForm } from './phone-verification/PhoneVerificationForm';
 

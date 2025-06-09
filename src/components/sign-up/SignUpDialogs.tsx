@@ -1,7 +1,7 @@
 import { WelcomeDialog } from '@/components/dialogs/WelcomeDialog';
 import { WhaleTransition } from '@/components/animations/WhaleTransition';
 import { useRegistration } from '@/hooks/use-registration';
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 
 export function SignUpDialogs() {
   const { nickname } = useRegisterStore();

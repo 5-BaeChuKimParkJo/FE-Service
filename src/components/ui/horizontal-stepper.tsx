@@ -2,7 +2,7 @@
 
 import type * as React from 'react';
 import { Check } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@/libs/cn';
 
 interface StepIconProps {
   icon: React.ReactNode;

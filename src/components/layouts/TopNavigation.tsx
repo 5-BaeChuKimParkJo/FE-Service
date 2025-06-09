@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Logo from '@/assets/icons/common/logo.svg';
 import Bell from '@/assets/icons/common/bell.svg';
 import Search from '@/assets/icons/common/search.svg';
-import { cn } from '@/lib/cn';
+import { cn } from '@/libs/cn';
 
 export function TopNavigation() {
   return (
@@ -33,10 +33,10 @@ export function TopNavigation() {
               'p-2 rounded-lg transition-all duration-200',
               'hover:bg-white/20 active:scale-95',
             )}
-            aria-label='알림 보기'
+            aria-label='검색하기'
             type='button'
           >
-            <Bell className='w-6 h-6 text-white' aria-hidden='true' />
+            <Search className='w-6 h-6 text-white' aria-hidden='true' />
           </button>
 
           <button
@@ -44,10 +44,10 @@ export function TopNavigation() {
               'p-2 rounded-lg transition-all duration-200',
               'hover:bg-white/20 active:scale-95',
             )}
-            aria-label='검색하기'
+            aria-label='알림 보기'
             type='button'
           >
-            <Search className='w-6 h-6 text-white' aria-hidden='true' />
+            <Bell className='w-6 h-6 text-white' aria-hidden='true' />
           </button>
         </div>
       </nav>

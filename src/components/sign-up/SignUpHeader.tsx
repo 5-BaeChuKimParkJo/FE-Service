@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import Back from '@/assets/icons/common/back.svg';
 
 export function SignUpHeader() {

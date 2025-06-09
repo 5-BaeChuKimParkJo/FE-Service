@@ -1,8 +1,11 @@
 import { useState, useCallback } from 'react';
 import { sendCode } from '@/actions/auth-service/send-code';
 import { verifyCode } from '@/actions/auth-service/verify-code';
-import { useRegisterStore } from '@/store/use-register-store';
-import { isValidPhoneNumber, isValidVerificationCode } from '@/lib/phone-utils';
+import { useRegisterStore } from '@/stores/use-register-store';
+import {
+  isValidPhoneNumber,
+  isValidVerificationCode,
+} from '@/libs/phone-utils';
 
 export function usePhoneVerification() {
   const { phoneNumber, verificationCode, setCurrentStep } = useRegisterStore();

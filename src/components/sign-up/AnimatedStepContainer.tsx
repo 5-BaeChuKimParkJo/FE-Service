@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { useStepAnimation } from '@/hooks/use-step-animation';
 import { StepOne } from '@/components/sign-up/StepOne';
 import { StepTwo } from '@/components/sign-up/StepTwo';

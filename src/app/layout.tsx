@@ -22,12 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body>
-        <QueryProvider>
-          <div className='w-full min-w-[320px] max-w-[480px] mx-auto pb-safe pt-safe overflow-y-auto scrollbar-hidden'>
-            {children}
-          </div>
-        </QueryProvider>
+      <body className='w-full min-w-[320px] max-w-[480px] mx-auto pb-safe pt-safe overflow-y-auto scrollbar-hidden'>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

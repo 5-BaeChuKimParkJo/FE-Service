@@ -4,7 +4,6 @@ export type PresignedUrlRequest = {
 };
 
 export type PresignedUrlResponse = {
-  uploadUrl: string;
+  url: string;
   fields: Record<string, string>;
-  key: string;
 };

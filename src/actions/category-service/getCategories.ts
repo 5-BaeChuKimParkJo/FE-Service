@@ -1,4 +1,4 @@
-import { instance } from '../instance';
+// import { instance } from '../instance';
 
 export type CategoryType = {
   categoryId: number;
@@ -7,8 +7,24 @@ export type CategoryType = {
   imageUrl?: string;
 };
 
+// export async function getCategories(): Promise<CategoryType[]> {
+//   return instance.get<CategoryType[]>(
+//     '/category-service/api/v1/category/list',
+//     {
+//       cache: 'force-cache',
+//       next: {
+//         revalidate: false,
+//       },
+//     },
+//   );
+// }
+
 export async function getCategories(): Promise<CategoryType[]> {
-  return instance.get<CategoryType[]>('/category/list', {
+  const categories = await fetch('http://localhost:8080/api/v1/category/list', {
     cache: 'force-cache',
+    next: {
+      revalidate: false,
+    },
   });
+  return categories.json();
 }

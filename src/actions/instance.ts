@@ -1,4 +1,3 @@
-import { revalidateTag } from 'next/cache';
 import { ErrorResponse } from '@/types/api';
 
 interface RequestOptions extends RequestInit {
@@ -38,7 +37,8 @@ const fetchInstance = async <T = undefined>(
       ...(options.headers as Record<string, string>),
     };
 
-    // 인증 헤더 설정 (나중에 구현)
+    // 인증 헤더 설정 (나중에 구현) 현재 그냥 더미로 넣음
+    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZjNjZjBmMy02MmI4LTQzNzEtYTAxNC02NDNmODIzMjNlZmQiLCJpYXQiOjE3NDgwODQ0MTZ9.tgqWbCcFhlGajZXiOSLa7tg9A3r0sYVNmGj8sx3nLJM`;
 
     // Content-Type 설정
     if (!(options.body instanceof FormData) && !headers['Content-Type']) {
@@ -185,15 +185,23 @@ const fetchInstance = async <T = undefined>(
   }
 };
 
-// 캐시 무효화 헬퍼 함수
-export const invalidateCache = (tag: string) => {
-  try {
-    revalidateTag(tag);
-    return true;
-  } catch (error) {
-    console.error('Error invalidating cache:', error);
-    return false;
+// 캐시 무효화 헬퍼 함수 (서버 컴포넌트에서만 작동)
+export const invalidateCache = async (tag: string) => {
+  // 서버 환경에서만 실행
+  if (typeof window === 'undefined') {
+    try {
+      // 동적 import를 사용하여 서버에서만 revalidateTag를 불러옴
+      const { revalidateTag } = await import('next/cache');
+      revalidateTag(tag);
+      return true;
+    } catch (error) {
+      console.error('Error invalidating cache:', error);
+      return false;
+    }
   }
+
+  // 클라이언트에서는 아무것도 하지 않음
+  return false;
 };
 
 export const instance = {

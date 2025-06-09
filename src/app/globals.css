@@ -119,7 +119,6 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* 모든 스크롤바 숨김 */
 html,
 body {
   -ms-overflow-style: none;
@@ -146,7 +145,6 @@ textarea,
 select,
 option {
   font-family: 'Pretendard', sans-serif;
-  font-weight: 400;
 }
 
 .scrollbar-hidden {
@@ -168,4 +166,34 @@ option {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-primary-100);
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-primary-100);
 }

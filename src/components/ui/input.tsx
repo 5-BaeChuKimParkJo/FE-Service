@@ -27,8 +27,8 @@ export function Input({
     <div className='space-y-1'>
       <div
         className={cn(
-          'relative pb-1 border-b transition-colors',
-          isFocused ? 'border-primary' : 'border-gray-300',
+          'relative border-b transition-colors',
+          isFocused ? 'border-primary-100 ' : 'border-gray-300',
           error && 'border-destructive',
           disabled && 'opacity-60 cursor-not-allowed',
           className,
@@ -39,7 +39,7 @@ export function Input({
           className={cn(
             'absolute transition-all duration-200 pointer-events-none',
             isFocused || props.value
-              ? 'text-xs text-muted-foreground top-0'
+              ? 'text-xs  top-0 text-primary-100'
               : 'text-base text-muted-foreground top-4',
           )}
         >
@@ -48,9 +48,13 @@ export function Input({
         <input
           ref={inputRef}
           className={cn(
-            'w-full pt-6 pb-1 bg-transparent focus:outline-none text-base',
+            'w-full pt-6 pb-3 bg-transparent focus:outline-none font-extrabold',
             disabled && 'cursor-not-allowed',
           )}
+          style={{
+            outline: 'none',
+            boxShadow: 'none',
+          }}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           disabled={disabled}

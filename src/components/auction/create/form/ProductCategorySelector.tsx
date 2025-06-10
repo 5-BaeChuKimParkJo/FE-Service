@@ -1,8 +1,8 @@
 'use client';
-
 import { useState } from 'react';
-import { Tag } from 'lucide-react';
 import Image from 'next/image';
+import { Tag } from 'lucide-react';
+
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
 import { CategorySelector } from '@/components/category';
 import { useCategories } from '@/hooks/useCategories';
@@ -45,7 +45,6 @@ export function ProductCategorySelector() {
           disabled={isLoadingCategories}
           className='w-full pt-6 pb-3 bg-transparent focus:outline-none text-left flex items-center justify-between font-medium'
           aria-describedby={errors.categoryId ? 'category-error' : undefined}
-          aria-invalid={!!errors.categoryId}
           aria-expanded={showCategoryModal}
           aria-haspopup='dialog'
         >

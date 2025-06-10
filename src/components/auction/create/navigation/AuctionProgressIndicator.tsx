@@ -24,7 +24,7 @@ export function AuctionProgressIndicator() {
 
   return (
     <section
-      className='bg-white border-b border-gray-200'
+      className='bg-white border-b border-gray-200 px-4'
       aria-labelledby='progress-title'
     >
       <div className='px-4 py-6'>
@@ -80,7 +80,7 @@ export function AuctionProgressIndicator() {
                 }}
               >
                 <motion.div
-                  className='absolute -top-25 -translate-x-1/2 ml-3'
+                  className='absolute -top-25 -translate-x-1/2 ml-1'
                   animate={{
                     y: [0, -4, 0],
                   }}
@@ -91,7 +91,7 @@ export function AuctionProgressIndicator() {
                     ease: 'easeInOut',
                   }}
                 >
-                  <Ray className='text-primary-100 scale-15' />
+                  <Ray className='text-primary-100 scale-15 ' />
                 </motion.div>
               </motion.div>
             </div>

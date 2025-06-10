@@ -22,6 +22,9 @@ export type CategoryType = {
 export async function getCategories(): Promise<CategoryType[]> {
   const categories = await fetch('http://localhost:8080/api/v1/category/list', {
     cache: 'force-cache',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     next: {
       revalidate: false,
     },

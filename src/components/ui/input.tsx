@@ -6,6 +6,7 @@ import * as React from 'react';
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
+  fontWeight?: string;
   className?: string;
 }
 
@@ -13,6 +14,7 @@ export function Input({
   label,
   error,
   className,
+  fontWeight,
   disabled,
   ...props
 }: InputProps) {
@@ -39,7 +41,7 @@ export function Input({
           className={cn(
             'absolute transition-all duration-200 pointer-events-none',
             isFocused || props.value
-              ? 'text-xs  top-0 text-primary-100'
+              ? 'text-sm  top-0 text-primary-100'
               : 'text-base text-muted-foreground top-4',
           )}
         >
@@ -48,7 +50,8 @@ export function Input({
         <input
           ref={inputRef}
           className={cn(
-            'w-full pt-6 pb-3 bg-transparent focus:outline-none font-extrabold',
+            'pl-2 w-full pt-6 pb-3 bg-transparent focus:outline-none',
+            fontWeight ? `font-${fontWeight}` : 'font-medium',
             disabled && 'cursor-not-allowed',
           )}
           style={{

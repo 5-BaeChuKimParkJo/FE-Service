@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export type ProductCondition = 'unopened' | 'new' | 'used';
+export type ProductCondition = 'unopened' | 'new' | 'used' | '';
 
 export type AuctionImage = {
   key: string;
@@ -95,7 +95,7 @@ const initialState: CreateAuctionState = {
   startAt: null,
   duration: 24, // 기본 24시간
   endAt: null,
-  productCondition: 'used',
+  productCondition: '',
   isDirectDeal: false,
   directDealLocation: '',
   currentStep: 1,
@@ -264,6 +264,10 @@ export const useCreateAuctionStore = create<
             }
             if (!state.categoryId) {
               state.setError('categoryId', '카테고리를 선택해주세요.');
+              return false;
+            }
+            if (state.productCondition === '') {
+              state.setError('productCondition', '상품 상태를 선택해주세요.');
               return false;
             }
             return true;

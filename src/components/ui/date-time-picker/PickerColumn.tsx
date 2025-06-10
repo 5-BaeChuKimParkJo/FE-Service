@@ -44,13 +44,13 @@ export function PickerColumn({
             onItemChange(newItem);
           }
         }}
-        className='flex-1'
+        className='flex-1 w-full'
       >
         {items.map((item) => (
-          <SwiperSlide key={item}>
+          <SwiperSlide key={item} className='w-full'>
             <div
               className={cn(
-                'h-10 flex items-center justify-center text-lg font-medium transition-colors',
+                'h-10 flex items-center justify-center text-lg font-medium transition-colors w-full',
                 selectedItem === item
                   ? 'text-gray-900 font-semibold'
                   : 'text-gray-400',
@@ -97,13 +97,13 @@ export function DatePickerColumn({
             onIndexChange(swiper.activeIndex);
           }
         }}
-        className='flex-1'
+        className='flex-1 w-full'
       >
         {items.map((item, index) => (
-          <SwiperSlide key={item.value}>
+          <SwiperSlide key={item.value} className='w-full'>
             <div
               className={cn(
-                'h-10 flex items-center justify-center text-lg font-medium transition-colors px-2 text-center',
+                'h-10 flex items-center justify-center text-lg font-medium transition-colors w-full',
                 selectedIndex === index
                   ? 'text-gray-900 font-semibold'
                   : 'text-gray-400',

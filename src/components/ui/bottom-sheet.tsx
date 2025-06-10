@@ -36,6 +36,26 @@ export function BottomSheet({
       document.removeEventListener('keydown', handleEscape);
     };
   }, [isOpen, onClose]);
+  // Body scroll lock when bottom sheet is open
+  React.useEffect(() => {
+    if (isOpen) {
+      // 현재 스크롤 위치 저장
+      const scrollY = window.scrollY;
+
+      // Body 스크롤 막기
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+
+      return () => {
+        // 스크롤 복원
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isOpen]);
 
   return (
     <AnimatePresence>

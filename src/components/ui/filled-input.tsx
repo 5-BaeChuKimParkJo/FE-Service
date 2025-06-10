@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/libs/cn';
 import type React from 'react';
 import { forwardRef } from 'react';
 

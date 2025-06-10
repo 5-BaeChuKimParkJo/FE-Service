@@ -2,7 +2,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { Home, Gavel, ShoppingBag, MessageCircle, User } from 'lucide-react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/libs/cn';
 
 interface NavItem {
   href: string;
@@ -53,7 +53,7 @@ export function BottomNavigation() {
         'w-full h-16 border-t border-gray-200/20',
       )}
     >
-      <div className='bg-primary-100 h-full flex items-center justify-around px-2 sm:px-4'>
+      <div className='bg-primary-100 h-full flex items-center justify-around px-2 sm:px-4 rounded-t-xl'>
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;

@@ -1,26 +1,72 @@
-'use client';
-
-import * as React from 'react';
-import * as LabelPrimitive from '@radix-ui/react-label';
+import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/libs/cn';
 
-import { cn } from '@/lib/cn';
+const labelVariants = cva('font-medium', {
+  variants: {
+    size: {
+      xs: 'text-xs',
+      sm: 'text-sm',
+      base: 'text-base',
+    },
+    weight: {
+      normal: 'font-normal',
+      medium: 'font-medium',
+      semibold: 'font-semibold',
+      bold: 'font-bold',
+    },
+    color: {
+      default: '',
+      primary: 'text-primary-100',
+      secondary: 'text-secondary-100',
+      muted: 'text-gray-500',
+      danger: 'text-red-500',
+    },
+    display: {
+      inline: '',
+      block: 'block',
+      'inline-block': 'inline-block',
+    },
+    required: {
+      true: 'after:content-["*"] after:text-red-500 after:ml-1',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+    weight: 'medium',
+    color: 'default',
+    display: 'block',
+    required: false,
+  },
+});
 
-const labelVariants = cva(
-  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-);
+interface LabelProps extends VariantProps<typeof labelVariants> {
+  children: React.ReactNode;
+  className?: string;
+  htmlFor?: string;
+  onClick?: () => void;
+}
 
-const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-    VariantProps<typeof labelVariants>
->(({ className, ...props }, ref) => (
-  <LabelPrimitive.Root
-    ref={ref}
-    className={cn(labelVariants(), className)}
-    {...props}
-  />
-));
-Label.displayName = LabelPrimitive.Root.displayName;
+export const Label = ({
+  size,
+  weight,
+  color,
+  display,
+  required,
+  className,
+  children,
+  htmlFor,
+  onClick,
+}: LabelProps) => {
+  const classes = cn(
+    labelVariants({ size, weight, color, display, required }),
+    className,
+  );
 
-export { Label };
+  return (
+    <label className={classes} htmlFor={htmlFor} onClick={onClick}>
+      {children}
+    </label>
+  );
+};

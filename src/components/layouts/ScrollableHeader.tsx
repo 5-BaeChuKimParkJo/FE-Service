@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useScrollDirection } from '@/hooks/useScrollDirection';
+import { useScrollDirection } from '@/hooks/use-scroll-direction';
 
 interface ScrollableHeaderProps {
   children: React.ReactNode;

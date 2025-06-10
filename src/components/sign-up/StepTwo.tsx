@@ -1,14 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { useUserInfoForm } from '@/hooks/use-user-info-form';
 import { NicknameInput } from './user-info/NicknameInput';
 import { UserIdInput } from './user-info/UserIdInput';
 import {
   validatePassword,
   validatePasswordMatch,
-} from '@/lib/validation.utils';
+} from '@/libs/validation.utils';
 import { FilledInput } from '../ui/filled-input';
 
 export function StepTwo() {

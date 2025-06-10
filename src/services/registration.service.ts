@@ -1,4 +1,4 @@
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { registerUser } from '@/actions/auth-service';
 
 export interface RegistrationServiceDependencies {

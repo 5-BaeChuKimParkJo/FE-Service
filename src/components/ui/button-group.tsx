@@ -2,7 +2,7 @@
 import type * as React from 'react';
 
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/cn';
+import { cn } from '@/libs/cn';
 
 interface ButtonGroupProps {
   className?: string;

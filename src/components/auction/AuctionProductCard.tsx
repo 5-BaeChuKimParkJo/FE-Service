@@ -3,7 +3,7 @@ import { Eye, Heart, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/libs/cn';
 import { Button } from '../ui/button';
 
 interface AuctionProductCardProps {
@@ -60,13 +60,12 @@ export function AuctionProductCard({
   return (
     <section
       className={cn(
-        'bg-white rounded-2xl shadow-sm overflow-hidden',
-        'transition-all duration-300 hover:shadow-md',
+        'overflow-hidden',
+        'transition-all duration-300 ',
         className,
       )}
     >
-      {/* 상품 이미지 */}
-      <div className='relative aspect-square overflow-hidden'>
+      <div className='rounded-lg relative aspect-square overflow-hidden'>
         <Image
           src={imageUrl}
           alt={title}
@@ -74,13 +73,12 @@ export function AuctionProductCard({
           className='object-cover transition-transform duration-300 hover:scale-105'
         />
 
-        {/* 좋아요 버튼 */}
         <button
           onClick={handleLike}
           className={cn(
             'absolute top-3 right-3 p-2 rounded-full',
             ' transition-all duration-200',
-            ' hover:scale-110 active:scale-95',
+            ' hover:scale-15 active:scale-100',
           )}
           aria-label='좋아요'
         >

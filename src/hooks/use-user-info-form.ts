@@ -1,6 +1,6 @@
 import { useRef, useState, useMemo } from 'react';
 
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import useDebounce from '@/hooks/use-debounce';
 import { createUserInfoService } from '@/services/user-info.service';
 

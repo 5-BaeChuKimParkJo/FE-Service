@@ -1,8 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
 
-import { useRegisterStore } from '@/store/use-register-store';
-import { cn } from '@/lib/cn';
+import { useRegisterStore } from '@/stores/use-register-store';
+import { cn } from '@/libs/cn';
 import Whale from '@/assets/icons/common/whale.svg';
 
 export function RegisterStepper() {

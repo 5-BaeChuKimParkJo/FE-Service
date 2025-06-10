@@ -1,7 +1,7 @@
 'use client';
 
 import { Label } from '@/components/ui/label';
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { Checkbox } from '../ui/checkbox';
 
 const CATEGORIES = [

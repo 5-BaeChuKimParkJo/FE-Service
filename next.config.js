@@ -9,6 +9,14 @@ const nextConfig = {
 
     return config;
   },
+
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
+
+  allowedDevOrigins: ['*'],
 };
 
 module.exports = nextConfig;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 
 export function useStepAnimation() {
   const stepVariants = {

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { useRegistration } from '@/hooks/use-registration';
 
 export function SignUpButtons() {

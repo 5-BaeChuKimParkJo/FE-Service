@@ -2,7 +2,7 @@
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useRegisterStore } from '@/store/use-register-store';
+import { useRegisterStore } from '@/stores/use-register-store';
 import { createRegistrationService } from '@/services/registration.service';
 
 export function useRegistration() {

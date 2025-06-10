@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
+import { AlertProvider } from '@/contexts/AlertContext';
+import { ToastProvider } from '@/contexts/ToastContext';
 import { QueryClient } from '@tanstack/react-query';
 import { getCategories } from '@/actions/category-service/getCategories';
 
@@ -32,7 +34,11 @@ export default async function RootLayout({
   return (
     <html lang='ko'>
       <body className='w-full min-w-[320px] max-w-[480px] mx-auto pb-safe pt-safe overflow-y-auto scrollbar-hidden'>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <AlertProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </AlertProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -12,7 +12,10 @@ export function AuctionNavigationFooter({
   onPrevStep,
   onNextStep,
 }: AuctionNavigationFooterProps) {
-  const { currentStep } = useCreateAuctionStore();
+  const { currentStep, isStepValid } = useCreateAuctionStore();
+
+  // 현재 스텝이 유효한지 확인
+  const canProceed = isStepValid(currentStep);
 
   const handleSubmit = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,6 +47,7 @@ export function AuctionNavigationFooter({
             width='half'
             size='lg'
             onClick={onNextStep}
+            disabled={!canProceed}
             aria-label='다음 단계로 이동'
           >
             다음

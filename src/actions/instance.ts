@@ -10,8 +10,7 @@ interface RequestOptions extends RequestInit {
   };
 }
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const DEFAULT_TIMEOUT = 10000; // 10초
 
 // 타임아웃 기능을 위한 헬퍼 함수

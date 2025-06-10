@@ -1,5 +1,4 @@
 export type PresignedUrlRequest = {
-  fileName: string;
   contentType: string;
 };
 

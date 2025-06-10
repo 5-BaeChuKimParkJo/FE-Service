@@ -7,12 +7,11 @@ export async function getPresignedUrls(requests: PresignedUrlRequest[]) {
   try {
     const promises = requests.map(async (req, index) => {
       const response = await instance.post<PresignedUrlResponse>(
-        'auction-service/api/v1/auctions/presigned-url',
+        '/auction-service/api/v1/auctions/presigned-url',
         req,
       );
 
       return {
-        fileName: req.fileName,
         uploadUrl: response.url,
         fields: response.fields,
         key: response.fields.key,

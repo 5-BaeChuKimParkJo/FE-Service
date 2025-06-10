@@ -64,6 +64,7 @@ export type CreateAuctionActions = {
   clearErrors: () => void;
   setIsSubmitting: (isSubmitting: boolean) => void;
   validateStep: (step: number) => boolean;
+  isStepValid: (step: number) => boolean;
   reset: () => void;
 
   // Final data preparation
@@ -244,6 +245,37 @@ export const useCreateAuctionStore = create<
 
       setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
 
+      // 실시간 유효성 검사 (에러 설정 없이 boolean만 반환)
+      isStepValid: (step) => {
+        const state = get();
+
+        switch (step) {
+          case 1:
+            return (
+              state.title.trim().length >= 5 &&
+              state.description.trim().length > 0 &&
+              state.images.length > 0 &&
+              state.categoryId !== null &&
+              state.productCondition !== ''
+            );
+
+          case 2:
+            const isMinimumBidValid =
+              state.minimumBid && parseFloat(state.minimumBid) >= 1000;
+            const isStartAtValid = state.startAt && state.startAt > new Date();
+            const isDirectDealValid =
+              !state.isDirectDeal || state.directDealLocation.trim().length > 0;
+
+            return isMinimumBidValid && isStartAtValid && isDirectDealValid;
+
+          case 3:
+            return state.isStepValid(1) && state.isStepValid(2);
+
+          default:
+            return true;
+        }
+      },
+
       validateStep: (step) => {
         const state = get();
         state.clearErrors();
@@ -252,6 +284,10 @@ export const useCreateAuctionStore = create<
           case 1:
             if (!state.title.trim()) {
               state.setError('title', '제목을 입력해주세요.');
+              return false;
+            }
+            if (state.title.trim().length < 5) {
+              state.setError('title', '제목은 최소 5자 이상 입력해주세요.');
               return false;
             }
             if (!state.description.trim()) {
@@ -275,6 +311,13 @@ export const useCreateAuctionStore = create<
           case 2:
             if (!state.minimumBid || parseFloat(state.minimumBid) <= 0) {
               state.setError('minimumBid', '최소 입찰가를 입력해주세요.');
+              return false;
+            }
+            if (state.minimumBid.length > 1000) {
+              state.setError(
+                'minimumBid',
+                '최소 입찰가는 1000원 이상이어야 합니다.',
+              );
               return false;
             }
             if (!state.startAt) {

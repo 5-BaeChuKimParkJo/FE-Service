@@ -2,8 +2,8 @@
 import { motion } from 'framer-motion';
 
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
-import { DateTimePicker } from '@/components/ui';
 import { getMinDateTime } from '../utils/auction-utils';
+import { DateTimePicker } from '@/components/ui/date-time-picker/index';
 
 interface AuctionStartTimeSelectorProps {
   animationDelay?: number;

@@ -5,8 +5,8 @@ import { Tag } from 'lucide-react';
 
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
 import { CategorySelector } from '@/components/category';
-import { useCategories } from '@/hooks/useCategories';
 import { findCategoryById } from '@/utils/category';
+import { useCategories } from '@/hooks/use-categories';
 
 export function ProductCategorySelector() {
   const { categoryId, errors, setCategoryId } = useCreateAuctionStore();

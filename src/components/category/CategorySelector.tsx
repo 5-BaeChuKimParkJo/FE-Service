@@ -99,7 +99,7 @@ export function CategorySelector({
                     onClick={() => handleSelect(category.categoryId)}
                     className={`relative p-3 rounded-xl border-2 flex flex-col items-center gap-2 transition-colors ${
                       selectedId === category.categoryId
-                        ? 'border-purple-500 bg-purple-50 text-purple-900'
+                        ? 'border-primary-100 bg-primary-100/10 text-primary-900'
                         : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                     }`}
                     whileHover={{ scale: 1.05 }}

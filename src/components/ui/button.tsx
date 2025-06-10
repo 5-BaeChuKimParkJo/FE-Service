@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 
 import { Slot } from '@radix-ui/react-slot';
@@ -31,7 +32,7 @@ const buttonVariants = cva(
         default: 'bg-primary-200 text-white shadow-xs hover:bg-primary-200/90',
         primary: 'bg-primary-100 text-white shadow-xs hover:bg-primary-100/90',
         secondary:
-          'bg-primary-100/15 text-primary-100 shadow-xs hover:bg-primary-10030',
+          'bg-primary-100/15 text-primary-100 shadow-xs hover:bg-primary-100/30',
         yellow_100: 'bg-yellow-100 text-white shadow-xs hover:bg-yellow-100/90',
         yellow_200:
           'bg-yellow-200 text-primary-100 shadow-xs hover:bg-yellow-200/90',

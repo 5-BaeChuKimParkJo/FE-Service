@@ -1,4 +1,5 @@
 import { getAuctionDetail } from '@/actions/auction-service/get-auction-detail';
+import { ItemImages } from '@/components/images';
 import React from 'react';
 
 export default async function AuctionPage({
@@ -9,7 +10,11 @@ export default async function AuctionPage({
   const { auctionUuid } = await params;
   console.log(auctionUuid);
   const auction = await getAuctionDetail(auctionUuid);
-  console.log(auction);
+  console.log(auction.images);
 
-  return <main className='min-h-screen bg-gray-50'></main>;
+  return (
+    <main className='min-h-screen flex'>
+      <ItemImages images={auction.images} />
+    </main>
+  );
 }

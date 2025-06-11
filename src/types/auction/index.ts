@@ -1,19 +1,27 @@
 export type AuctionDetailResponse = {
   auctionUuid: string;
+  categoryId: number;
   title: string;
   description: string;
-  images: string[];
-  currentPrice: number;
-  startPrice: number;
-  endPrice: number;
-  startDate: string;
-  endDate: string;
+  minimumBid: number;
+  startAt: string;
+  endAt: string;
+  isDirectDeal: boolean;
+  directDealLocation: string | null;
+  status: 'waiting' | 'active' | 'ended' | 'hidden' | 'cancelled';
+  productCondition: ProductCondition;
+  viewCount: number;
+  thumbnailUrl: string;
+  createdAt: string;
+  sellerUuid: string;
+  images: AuctionImage[];
 };
 
 export type ProductCondition = 'unopened' | 'new' | 'used';
 
 export interface AuctionImage {
-  key: string;
+  auctionImageId: number;
+  url: string;
   order: number;
 }
 
@@ -28,10 +36,25 @@ export interface CreateAuctionRequest {
   thumbnailKey: string;
   title: string;
   minimumBid: number;
-  images: AuctionImage[];
+  images: { key: string; order: number }[];
 }
 
 export interface CreateAuctionResponse {
   auctionId: number;
   message: string;
+}
+
+export type AuctionStatus =
+  | 'waiting'
+  | 'active'
+  | 'ended'
+  | 'hidden'
+  | 'cancelled';
+
+export interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  isEnded: boolean;
 }

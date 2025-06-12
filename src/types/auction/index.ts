@@ -15,6 +15,12 @@ export type AuctionDetailResponse = {
   createdAt: string;
   sellerUuid: string;
   images: AuctionImage[];
+  likes?: number;
+  profileImageUrl?: string;
+  nickname?: string;
+  honor?: string;
+  gradeName?: string;
+  gradeImageUrl?: string;
 };
 
 export type ProductCondition = 'unopened' | 'new' | 'used';
@@ -57,4 +63,16 @@ export interface TimeLeft {
   minutes: number;
   seconds: number;
   isEnded: boolean;
+}
+
+export interface AuctionBiddersResponse {
+  items: AuctionBidders[];
+  nextCursor: string | null;
+}
+
+export interface AuctionBidders {
+  auctionUuid: string;
+  bidderUuid: string;
+  bidAmount: number;
+  createdAt: string;
 }

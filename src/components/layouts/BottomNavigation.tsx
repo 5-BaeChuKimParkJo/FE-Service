@@ -1,5 +1,6 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Home, Gavel, ShoppingBag, MessageCircle, User } from 'lucide-react';
 
 import { cn } from '@/libs/cn';
@@ -40,11 +41,6 @@ const navItems: NavItem[] = [
 
 export function BottomNavigation() {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const handleNavigation = (href: string) => {
-    router.push(href);
-  };
 
   return (
     <nav
@@ -59,9 +55,9 @@ export function BottomNavigation() {
           const isActive = pathname === item.href;
 
           return (
-            <button
+            <Link
               key={item.href}
-              onClick={() => handleNavigation(item.href)}
+              href={item.href}
               className={cn(
                 'flex flex-col items-center justify-center gap-0.5 px-2 sm:px-3 py-2 rounded-lg',
                 'transition-all duration-200 min-w-0 flex-1',
@@ -84,7 +80,7 @@ export function BottomNavigation() {
               >
                 {item.label}
               </span>
-            </button>
+            </Link>
           );
         })}
       </div>

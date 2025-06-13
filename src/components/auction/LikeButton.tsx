@@ -13,7 +13,6 @@ export function LikeButton({ auctionUuid, onLike }: LikeButtonProps) {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
-    // 이벤트 전파 방지 (링크 클릭 방지)
     e.preventDefault();
     e.stopPropagation();
 
@@ -24,7 +23,7 @@ export function LikeButton({ auctionUuid, onLike }: LikeButtonProps) {
   return (
     <button
       onClick={handleLike}
-      className='absolute top-3 right-3 p-2 rounded-full transition-all duration-200 hover:scale-110 active:scale-100'
+      className='absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-all duration-200 hover:scale-110 active:scale-100'
       aria-label='좋아요'
     >
       <Heart

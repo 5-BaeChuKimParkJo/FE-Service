@@ -62,9 +62,9 @@ export function ItemInfoSection({
   return (
     <section className='px-4 py-6 '>
       {/* 제목과 좋아요 */}
-      <header className='flex items-start justify-between mb-4'>
+      <header className='flex items-start justify-between mb-1'>
         {/* 판매자 정보 */}
-        <div className='flex items-center gap-3 mb-6'>
+        <div className='flex items-center gap-3 '>
           <div className='relative w-12 h-12 rounded-full overflow-hidden'>
             <Image
               src={dummyData.profileImageUrl}
@@ -90,17 +90,17 @@ export function ItemInfoSection({
           <Heart size={24} fill='currentColor' />
           <span className='text-lg font-medium'>{dummyData.likes}</span>
         </button>
-        <div className='flex items-center justify-end gap-4 text-sm text-gray-600'>
-          <div className='flex items-center gap-1'>
-            <Users size={16} />
-            <span>{dummyData.bidderCount}</span>
-          </div>
-          <div className='flex items-center gap-1'>
-            <Eye size={16} />
-            <span>{dummyData.viewCount}</span>
-          </div>
-        </div>
       </header>
+      <div className='flex items-center justify-end gap-4 pb-2 text-sm text-gray-600'>
+        <div className='flex items-center gap-1'>
+          <Users size={16} />
+          <span>{dummyData.bidderCount}</span>
+        </div>
+        <div className='flex items-center gap-1'>
+          <Eye size={16} />
+          <span>{dummyData.viewCount}</span>
+        </div>
+      </div>
 
       <div className='flex items-center justify-between'>
         <h1 className='text-2xl font-bold text-gray-900 flex-1 mr-4'>
@@ -120,7 +120,7 @@ export function ItemInfoSection({
       </div>
 
       <span className='flex w-full justify-center gap-4'>
-        <AuctionTimer endAt={dummyData.endAt} />
+        <AuctionTimer startAt={dummyData.startAt} endAt={dummyData.endAt} />
       </span>
     </section>
   );

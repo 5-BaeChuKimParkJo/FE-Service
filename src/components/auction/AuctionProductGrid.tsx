@@ -2,31 +2,33 @@ import { AuctionProductCard } from './AuctionProductCard';
 import { cn } from '@/libs/cn';
 
 interface AuctionProduct {
-  id: string;
+  auctionUuid: string;
   title: string;
-  currentPrice: number;
-  imageUrl: string;
-  timeLeft: {
-    days: number;
-    hours: number;
-    minutes: number;
-  };
-  participants: number;
+  minimumBid: number;
+  startAt: string;
+  endAt: string;
+  status: string;
+  viewCount: number;
+  thumbnailUrl: string;
   likes: number;
-  views: number;
+  bidderCount: number;
+  bidAmount?: number; // 현재 입찰가 (없으면 minimumBid와 동일)
 }
 
 interface AuctionProductGridProps {
   products: AuctionProduct[];
-  onLike?: (id: string) => void;
-  onBid?: (id: string) => void;
+  LikeButtonComponent: React.ComponentType<{
+    auctionUuid: string;
+    onLike?: (auctionUuid: string) => void;
+  }>;
+  onLike?: (auctionUuid: string) => void;
   className?: string;
 }
 
 export function AuctionProductGrid({
   products,
+  LikeButtonComponent,
   onLike,
-  onBid,
   className,
 }: AuctionProductGridProps) {
   if (products.length === 0) {
@@ -52,10 +54,10 @@ export function AuctionProductGrid({
     >
       {products.map((product) => (
         <AuctionProductCard
-          key={product.id}
+          key={product.auctionUuid}
           {...product}
+          LikeButtonComponent={LikeButtonComponent}
           onLike={onLike}
-          onBid={onBid}
         />
       ))}
     </div>

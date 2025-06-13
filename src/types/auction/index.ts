@@ -45,11 +45,6 @@ export interface CreateAuctionRequest {
   images: { key: string; order: number }[];
 }
 
-export interface CreateAuctionResponse {
-  auctionId: number;
-  message: string;
-}
-
 export type AuctionStatus =
   | 'waiting'
   | 'active'
@@ -75,4 +70,29 @@ export interface AuctionBidders {
   bidderUuid: string;
   bidAmount: number;
   createdAt: string;
+}
+
+export interface AuctionImage {
+  auctionImageId: number;
+  url: string;
+  order: number;
+}
+
+export interface CreateAuctionResponse {
+  auctionUuid: string;
+  categoryId: number;
+  title: string;
+  description: string;
+  minimumBid: number;
+  startAt: string; // ISO 날짜 문자열
+  endAt: string; // ISO 날짜 문자열
+  isDirectDeal: boolean;
+  directDealLocation: string;
+  status: 'waiting' | 'ongoing' | 'finished'; // 필요한 경우 확장 가능
+  productCondition: 'unopened' | 'used' | 'new'; // 조건 추가 가능
+  viewCount: number;
+  thumbnailUrl: string;
+  createdAt: string; // ISO 날짜 문자열
+  sellerUuid: string;
+  images: AuctionImage[];
 }

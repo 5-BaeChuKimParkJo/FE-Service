@@ -1,5 +1,4 @@
 import { ErrorResponse } from '@/types/api';
-import { auth } from './auth-service';
 
 interface RequestOptions extends RequestInit {
   timeout?: number;
@@ -36,21 +35,6 @@ const fetchInstance = async <T = undefined>(
     const headers: Record<string, string> = {
       ...(options.headers as Record<string, string>),
     };
-
-    // 인증 헤더 설정 (나중에 구현) 현재 그냥 더미로 넣음
-    // headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZjNjZjBmMy02MmI4LTQzNzEtYTAxNC02NDNmODIzMjNlZmQiLCJpYXQiOjE3NDgwODQ0MTZ9.tgqWbCcFhlGajZXiOSLa7tg9A3r0sYVNmGj8sx3nLJM`;
-    // 인증 헤더 설정
-    try {
-      const session = await auth();
-      if (session?.user?.accessToken) {
-        headers.Authorization = `Bearer ${session.user.accessToken}`;
-      }
-      if (session?.user?.memberUuid) {
-        headers['X-Member-UUID'] = session.user.memberUuid;
-      }
-    } catch (authError) {
-      console.error('인증 오류:', authError);
-    }
 
     // Content-Type 설정
     if (!(options.body instanceof FormData) && !headers['Content-Type']) {

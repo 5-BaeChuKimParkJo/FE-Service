@@ -1,5 +1,5 @@
 import { useRegisterStore } from '@/stores/use-register-store';
-import { registerUser } from '@/actions/auth-service';
+import { registerUser } from '@/actions/auth-service/register';
 
 export interface RegistrationServiceDependencies {
   router: {

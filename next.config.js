@@ -12,8 +12,19 @@ const nextConfig = {
 
   experimental: {
     serverActions: {
-      bodySizeLimit: '10mb',
+      bodySizeLimit: '50mb',
     },
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_S3_HOSTNAME,
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 
   allowedDevOrigins: ['*'],

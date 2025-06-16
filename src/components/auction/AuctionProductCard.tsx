@@ -1,128 +1,121 @@
-'use client';
 import { Eye, Heart, Users } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/libs/cn';
-import { Button } from '../ui/button';
+import { MinimalAuctionTimer } from './MinimalAuctionTimer';
 
 interface AuctionProductCardProps {
-  id: string;
+  auctionUuid: string;
   title: string;
-  currentPrice: number;
-  imageUrl: string;
-  timeLeft: {
-    days: number;
-    hours: number;
-    minutes: number;
-  };
-  participants: number;
+  minimumBid: number;
+  startAt: string;
+  endAt: string;
+  status: string;
+  viewCount: number;
+  thumbnailUrl: string;
   likes: number;
-  views: number;
-  onLike?: (id: string) => void;
-  onBid?: (id: string) => void;
+  bidderCount: number;
+  bidAmount?: number;
+  LikeButtonComponent: React.ComponentType<{
+    auctionUuid: string;
+    onLike?: (auctionUuid: string) => void;
+  }>;
+  onLike?: (auctionUuid: string) => void;
   className?: string;
 }
 
 export function AuctionProductCard({
-  id,
+  auctionUuid,
   title,
-  currentPrice,
-  imageUrl,
-  timeLeft,
-  participants,
+  minimumBid,
+  startAt,
+  endAt,
+  status,
+  viewCount,
+  thumbnailUrl,
   likes,
-  views,
+  bidderCount,
+  bidAmount,
+  LikeButtonComponent,
   onLike,
-  onBid,
   className,
 }: AuctionProductCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    onLike?.(id);
-  };
-
-  const handleBid = () => {
-    onBid?.(id);
-  };
-
+  // 가격 포맷팅
   const formatPrice = (price: number) => {
     return price.toLocaleString('ko-KR');
   };
 
-  const formatTimeLeft = () => {
-    const { days, hours, minutes } = timeLeft;
-    return `${days}d ${hours}h ${minutes}m`;
-  };
+  // 현재 가격 (입찰가가 있으면 입찰가, 없으면 시작가)
+  const currentPrice = bidAmount || minimumBid;
+
+  // 경매 상태 확인 (서버에서 계산)
+  const now = Date.now();
+  const startTime = new Date(startAt).getTime();
+  const endTime = new Date(endAt).getTime();
+  const isExpired = now >= endTime;
+  const isNotStarted = now < startTime;
 
   return (
     <section
-      className={cn(
-        'overflow-hidden',
-        'transition-all duration-300 ',
-        className,
-      )}
+      className={cn('overflow-hidden transition-all duration-300', className)}
     >
-      <div className='rounded-lg relative aspect-square overflow-hidden'>
-        <Image
-          src={imageUrl}
-          alt={title}
-          fill
-          className='object-cover transition-transform duration-300 hover:scale-105'
-        />
-
-        <button
-          onClick={handleLike}
-          className={cn(
-            'absolute top-3 right-3 p-2 rounded-full',
-            ' transition-all duration-200',
-            ' hover:scale-15 active:scale-100',
-          )}
-          aria-label='좋아요'
-        >
-          <Heart
-            className={cn(
-              'w-5 h-5 transition-colors duration-200',
-              isLiked ? 'fill-red-500 text-red-500' : 'text-gray-600',
-            )}
+      <Link href={`/auction/${auctionUuid}`}>
+        <div className='relative aspect-square overflow-hidden rounded-lg'>
+          <Image
+            src={thumbnailUrl}
+            alt={title}
+            width={100}
+            height={100}
+            priority
+            className='object-cover transition-transform duration-300 hover:scale-105 w-full h-full'
           />
-        </button>
+
+          <LikeButtonComponent auctionUuid={auctionUuid} onLike={onLike} />
+
+          {(status === 'ended' || isExpired) && (
+            <div className='absolute inset-0 bg-black/50 flex items-center justify-center'>
+              <span className='text-white font-semibold text-lg'>
+                경매 종료
+              </span>
+            </div>
+          )}
+
+          {(status === 'waiting' || isNotStarted) && (
+            <div className='absolute inset-0 bg-black/20 flex items-center justify-center'>
+              <span className='text-white font-semibold text-lg'>
+                오픈 대기
+              </span>
+            </div>
+          )}
+        </div>
+
+        <h1 className='mt-2 mb-1 ml-2 leading-tight line-clamp-2 min-h-[2.5rem] flex items-center'>
+          {title}
+        </h1>
+      </Link>
+
+      <div className='ml-2 space-y-1'>
+        <p className='text-xl font-bold'>{formatPrice(currentPrice)}원</p>
+        <p className='text-sm text-gray-500 line-through'>
+          {formatPrice(minimumBid)}원
+        </p>
       </div>
 
-      <div className='px-4 py-2 space-y-2'>
-        <h1 className=' leading-tight line-clamp-2 min-h-[2.5rem] flex items-center'>
-          {title}
-        </h1>{' '}
-        {/* 현재 가격 */}
-        <div className='flex items-center justify-between gap-2'>
-          <p className='text-xl font-'>{formatPrice(currentPrice)}</p>
-          <Button onClick={handleBid} label='입찰' size='xs' />
-        </div>
-        {/* 남은 시간 */}
-        <div className='flex items-center justify-end gap-1 text-sm'>
-          <span className='bg-primary-100/15 text-primary-100 px-4 py-1 rounded-full'>
-            {formatTimeLeft()}
-          </span>
-        </div>
-        {/* 통계 정보 */}
-        <div className='flex items-center justify-end text-xs text-gray-500'>
-          <div className='flex items-center gap-2'>
-            <div className='flex items-center gap-1'>
-              <Users className='w-3 h-3' />
-              <span>{participants.toLocaleString()}</span>
-            </div>
-            <div className='flex items-center gap-1'>
-              <Heart className='w-3 h-3' />
-              <span>{likes.toLocaleString()}</span>
-            </div>
-            <div className='flex items-center gap-1'>
-              <Eye className='w-3 h-3' />
-              <span>{views.toLocaleString()}</span>
-            </div>
-          </div>
-        </div>
+      <MinimalAuctionTimer
+        startAt={startAt}
+        endAt={endAt}
+        status={status}
+        className='mx-2 my-1'
+      />
+
+      <div className='flex items-center mr-3 justify-end text-xs text-gray-500 gap-1'>
+        <Users className='w-3 h-3' />
+        <span>{bidderCount.toLocaleString()}</span>
+        <Heart className='w-3 h-3' />
+        <span>{likes.toLocaleString()}</span>
+        <Eye className='w-3 h-3' />
+        <span>{viewCount.toLocaleString()}</span>
       </div>
     </section>
   );

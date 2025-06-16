@@ -1,4 +1,5 @@
 import { ErrorResponse } from '@/types/api';
+import { cookies } from 'next/headers';
 
 interface RequestOptions extends RequestInit {
   timeout?: number;
@@ -8,6 +9,7 @@ interface RequestOptions extends RequestInit {
     tags?: string[];
     revalidate?: number | false;
   };
+  requireAuth?: boolean;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -36,9 +38,6 @@ const fetchInstance = async <T = undefined>(
       ...(options.headers as Record<string, string>),
     };
 
-    // 인증 헤더 설정 (나중에 구현) 현재 그냥 더미로 넣음
-    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZjNjZjBmMy02MmI4LTQzNzEtYTAxNC02NDNmODIzMjNlZmQiLCJpYXQiOjE3NDgwODQ0MTZ9.tgqWbCcFhlGajZXiOSLa7tg9A3r0sYVNmGj8sx3nLJM`;
-
     // Content-Type 설정
     if (!(options.body instanceof FormData) && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
@@ -51,12 +50,24 @@ const fetchInstance = async <T = undefined>(
       options.body = JSON.stringify(options.body);
     }
 
+    // 인증이 필요한 요청인 경우에만 헤더 추가
+    if (options.requireAuth) {
+      const cookieStore = await cookies();
+      const accessToken = cookieStore.get('accessToken')?.value;
+      const memberUuid = cookieStore.get('memberUuid')?.value;
+
+      if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
+      }
+      if (memberUuid) {
+        headers['X-Member-UUID'] = memberUuid;
+      }
+    }
+
     const timeout = options.timeout || DEFAULT_TIMEOUT;
     const fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
 
     // Next.js 캐싱 옵션 설정
-    // 기본값은 no-store (캐싱 없음)이지만,
-    // 서버 컴포넌트에서 사용할 때는 캐싱 옵션을 전달할 수 있음
     const fetchOptions: RequestInit & {
       next?: { tags?: string[]; revalidate?: number | false };
     } = {

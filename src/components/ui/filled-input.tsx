@@ -6,13 +6,14 @@ import { forwardRef } from 'react';
 
 interface FilledInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   _variant?: 'default' | 'gray-bg' | 'bordered';
+  type?: string;
   label?: string;
   error?: string;
 }
 
 export const FilledInput = forwardRef<HTMLInputElement, FilledInputProps>(
   (
-    { className, _variant = 'default', disabled, label, error, ...props },
+    { className, _variant = 'default', disabled, label, error, type, ...props },
     ref,
   ) => {
     return (
@@ -26,6 +27,7 @@ export const FilledInput = forwardRef<HTMLInputElement, FilledInputProps>(
           <input
             placeholder={label}
             ref={ref}
+            type={type || 'text'}
             className={cn(
               'flex-1  ml-3 focus:outline-none text-base text-blue-100 placeholder:text-blue-100',
               disabled && 'cursor-not-allowed',

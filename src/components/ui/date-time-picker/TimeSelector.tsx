@@ -5,9 +5,6 @@ import { isHourDisabled } from '@/utils/date-time';
 import { PickerColumn } from './PickerColumn';
 import { TimeSelectorProps } from './types';
 
-/**
- * 시간 선택 컴포넌트
- */
 export function TimeSelector({
   selectedDate,
   onDateChange,
@@ -17,20 +14,17 @@ export function TimeSelector({
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
-  // selectedDate가 변경될 때 selectedHour를 업데이트
   useEffect(() => {
     if (selectedDate) {
       setSelectedHour(selectedDate.getHours());
     }
   }, [selectedDate]);
 
-  // selectedHour가 변경될 때만 onDateChange 호출
   useEffect(() => {
     if (selectedDate) {
       const newDate = new Date(selectedDate);
       newDate.setHours(selectedHour, 0, 0, 0);
 
-      // 시간이 실제로 변경된 경우에만 업데이트
       if (newDate.getTime() !== selectedDate.getTime()) {
         onDateChange(newDate);
       }

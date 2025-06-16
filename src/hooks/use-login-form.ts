@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from '@/actions/auth-service/sign-in';
 
 export function useLoginForm() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export function useLoginForm() {
     };
 
     if (!formData.id) {
-      newErrors.id = '휴대폰 번호를 입력해주세요.';
+      newErrors.id = '아이디를 입력해주세요.';
     }
     if (!formData.password) {
       newErrors.password = '비밀번호를 입력해주세요.';
@@ -50,14 +51,19 @@ export function useLoginForm() {
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await signIn(formData.id, formData.password);
+
+      // 쿠키에 토큰 저장
+      document.cookie = `accessToken=${response.accessToken}; path=/; max-age=3600; secure; samesite=strict`;
+      document.cookie = `refreshToken=${response.refreshToken}; path=/; max-age=1209600; secure; samesite=strict`;
 
       router.push('/');
-    } catch {
+    } catch (error) {
       setErrors((prev) => ({
         ...prev,
-        general: '로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+        general: '로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.',
       }));
+      console.error('Login error:', error);
     } finally {
       setIsLoading(false);
     }

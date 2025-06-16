@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { exposeHandleSubmit } from '../utils/preview-utils';
-import { Loader2 } from 'lucide-react';
 import {
   ProductInfoPreview,
   AuctionSettingsPreview,
@@ -10,12 +9,20 @@ import {
   AuctionWarnings,
 } from '../preview';
 import { useAuctionSubmit } from '@/hooks/use-auction-submit';
+import { AuctionLoading } from '@/components/common/AuctionLoading';
+import { AuctionSuccessDialog } from '@/components/common/AuctionSuccessDialog';
 
 export function Step3Preview() {
-  const { handleSubmit, isLoading } = useAuctionSubmit();
+  const {
+    handleSubmit,
+    isLoading,
+    isSuccess,
+    auctionTitle,
+    goToAuctionDetail,
+    resetSubmitState,
+  } = useAuctionSubmit();
 
-  // Step3 컴포넌트에 handleSubmit 함수를 노출
-  React.useEffect(() => {
+  useEffect(() => {
     exposeHandleSubmit(handleSubmit);
   }, [handleSubmit]);
 
@@ -30,20 +37,17 @@ export function Step3Preview() {
         </div>
       </main>
 
-      {/* Loading Overlay */}
-      {isLoading && (
-        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm'>
-          <div className='bg-white rounded-2xl p-8 shadow-2xl'>
-            <div className='flex flex-col items-center space-y-4'>
-              <Loader2 className='w-8 h-8 text-primary-200 animate-spin' />
-              <p className='text-lg font-medium text-gray-900'>
-                경매 등록 중...
-              </p>
-              <p className='text-sm text-gray-500'>잠시만 기다려주세요</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 로딩 중 */}
+      {isLoading && <AuctionLoading />}
+
+      {/* 등록 완료 다이얼로그 */}
+      <AuctionSuccessDialog
+        isOpen={isSuccess}
+        onClose={resetSubmitState}
+        onGoToDetail={goToAuctionDetail}
+        auctionTitle={auctionTitle || undefined}
+        motionType='welcome'
+      />
     </>
   );
 }

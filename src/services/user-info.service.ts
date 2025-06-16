@@ -2,7 +2,7 @@ import { validateNickname, validateUserId } from '@/libs/validation.utils';
 import {
   checkNicknameAvailability,
   checkUserIdAvailability,
-} from '@/actions/auth-service';
+} from '@/actions/auth-service/index';
 
 export interface UserInfoServiceDependencies {
   setUserId: (userId: string) => void;

@@ -4,3 +4,4 @@ export * from './SortableImageItem';
 export * from './DragOverlayImage';
 export * from './use-drag-scroll-lock';
 export * from './ImageUploader';
+export * from './ItemImages';

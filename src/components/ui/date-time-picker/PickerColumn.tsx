@@ -8,9 +8,6 @@ import { cn } from '@/libs/cn';
 import { dateLabelMap } from '@/utils/date-time';
 import { PickerColumnProps, DatePickerColumnProps } from './types';
 
-/**
- * 공통 Picker Column 컴포넌트 (시간 선택용)
- */
 export function PickerColumn({
   items,
   selectedItem,
@@ -20,12 +17,11 @@ export function PickerColumn({
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
   const initialSlide = items.indexOf(selectedItem);
 
-  // swiper 동기화 최적화
   useEffect(() => {
     if (swiper && selectedItem !== undefined) {
       const index = items.indexOf(selectedItem);
       if (index !== -1 && swiper.activeIndex !== index) {
-        swiper.slideTo(index, 0); // 애니메이션 없이 즉시 이동
+        swiper.slideTo(index, 0);
       }
     }
   }, [selectedItem, swiper, items]);
@@ -44,13 +40,13 @@ export function PickerColumn({
             onItemChange(newItem);
           }
         }}
-        className='flex-1'
+        className='flex-1 w-full'
       >
         {items.map((item) => (
-          <SwiperSlide key={item}>
+          <SwiperSlide key={item} className='w-full'>
             <div
               className={cn(
-                'h-10 flex items-center justify-center text-lg font-medium transition-colors',
+                'h-10 flex items-center justify-center text-lg font-medium transition-colors w-full',
                 selectedItem === item
                   ? 'text-gray-900 font-semibold'
                   : 'text-gray-400',
@@ -65,9 +61,6 @@ export function PickerColumn({
   );
 }
 
-/**
- * 날짜 선택용 Picker Column 컴포넌트
- */
 export function DatePickerColumn({
   items,
   selectedIndex,
@@ -75,11 +68,10 @@ export function DatePickerColumn({
 }: DatePickerColumnProps) {
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
 
-  // swiper 동기화 최적화
   useEffect(() => {
     if (swiper && selectedIndex !== undefined) {
       if (swiper.activeIndex !== selectedIndex) {
-        swiper.slideTo(selectedIndex, 0); // 애니메이션 없이 즉시 이동
+        swiper.slideTo(selectedIndex, 0);
       }
     }
   }, [selectedIndex, swiper]);
@@ -97,13 +89,13 @@ export function DatePickerColumn({
             onIndexChange(swiper.activeIndex);
           }
         }}
-        className='flex-1'
+        className='flex-1 w-full'
       >
         {items.map((item, index) => (
-          <SwiperSlide key={item.value}>
+          <SwiperSlide key={item.value} className='w-full'>
             <div
               className={cn(
-                'h-10 flex items-center justify-center text-lg font-medium transition-colors px-2 text-center',
+                'h-10 flex items-center justify-center text-lg font-medium transition-colors w-full',
                 selectedIndex === index
                   ? 'text-gray-900 font-semibold'
                   : 'text-gray-400',

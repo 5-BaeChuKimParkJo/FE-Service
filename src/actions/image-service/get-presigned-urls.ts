@@ -9,6 +9,9 @@ export async function getPresignedUrls(requests: PresignedUrlRequest[]) {
       const response = await instance.post<PresignedUrlResponse>(
         '/auction-service/api/v1/auctions/presigned-url',
         req,
+        {
+          requireAuth: true,
+        },
       );
 
       return {

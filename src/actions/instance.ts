@@ -1,4 +1,5 @@
 import { ErrorResponse } from '@/types/api';
+import { auth } from './auth-service';
 
 interface RequestOptions extends RequestInit {
   timeout?: number;
@@ -37,7 +38,19 @@ const fetchInstance = async <T = undefined>(
     };
 
     // 인증 헤더 설정 (나중에 구현) 현재 그냥 더미로 넣음
-    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZjNjZjBmMy02MmI4LTQzNzEtYTAxNC02NDNmODIzMjNlZmQiLCJpYXQiOjE3NDgwODQ0MTZ9.tgqWbCcFhlGajZXiOSLa7tg9A3r0sYVNmGj8sx3nLJM`;
+    // headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZjNjZjBmMy02MmI4LTQzNzEtYTAxNC02NDNmODIzMjNlZmQiLCJpYXQiOjE3NDgwODQ0MTZ9.tgqWbCcFhlGajZXiOSLa7tg9A3r0sYVNmGj8sx3nLJM`;
+    // 인증 헤더 설정
+    try {
+      const session = await auth();
+      if (session?.user?.accessToken) {
+        headers.Authorization = `Bearer ${session.user.accessToken}`;
+      }
+      if (session?.user?.memberUuid) {
+        headers['X-Member-UUID'] = session.user.memberUuid;
+      }
+    } catch (authError) {
+      console.error('인증 오류:', authError);
+    }
 
     // Content-Type 설정
     if (!(options.body instanceof FormData) && !headers['Content-Type']) {
@@ -55,8 +68,6 @@ const fetchInstance = async <T = undefined>(
     const fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
 
     // Next.js 캐싱 옵션 설정
-    // 기본값은 no-store (캐싱 없음)이지만,
-    // 서버 컴포넌트에서 사용할 때는 캐싱 옵션을 전달할 수 있음
     const fetchOptions: RequestInit & {
       next?: { tags?: string[]; revalidate?: number | false };
     } = {

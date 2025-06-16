@@ -15,6 +15,8 @@ export type AuctionDetailResponse = {
   createdAt: string;
   sellerUuid: string;
   images: AuctionImage[];
+  bidAmount?: number;
+  bidderCount?: number;
   likes?: number;
   profileImageUrl?: string;
   nickname?: string;

@@ -45,3 +45,7 @@ export function formatCurrencyWithKorean(value: string | number): {
     korean,
   };
 }
+
+export function formatNumber(number: number): string {
+  return new Intl.NumberFormat('ko-KR').format(number);
+}

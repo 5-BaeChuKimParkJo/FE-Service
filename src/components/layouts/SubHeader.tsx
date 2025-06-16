@@ -15,7 +15,7 @@ export function SubHeader() {
 
   return (
     <header
-      className={cn('fixed top-0 left-0 right-0 z-50 w-full h-16 bg-white')}
+      className={cn('fixed top-0 left-0 right-0 z-50 w-full h-14 bg-white')}
       role='banner'
     >
       <nav

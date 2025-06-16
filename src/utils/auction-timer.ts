@@ -90,32 +90,33 @@ export function formatTime(time: number): string {
   return time.toString().padStart(2, '0');
 }
 
-// 남은 시간 텍스트 생성 함수
+// 남은 시간 텍스트 생성 함수 (목록용 - 24시간 이상일 때 분까지만)
 export function getTimeLeftText(timeData: AuctionTimeData): string {
   if (timeData.isExpired) {
-    // 경매 종료: 고정값 표시 (더 이상 렌더링 불필요)
     return '00h 00m 00s';
   }
 
   if (timeData.isNotStarted) {
-    // 경매 시작 전
     if (timeData.isMoreThan24Hours) {
-      // 24시간 이상: [일 시간 분]
       return `${formatTime(timeData.days)}d ${formatTime(timeData.hours)}h ${formatTime(timeData.minutes)}m`;
     } else {
-      // 24시간 미만: [시간 분 초]
       return `${formatTime(timeData.hours)}h ${formatTime(timeData.minutes)}m ${formatTime(timeData.seconds)}s`;
     }
   }
 
-  // 경매 진행 중
   if (timeData.isMoreThan24Hours) {
-    // 24시간 이상: [일 시간 분]
     return `${formatTime(timeData.days)}d ${formatTime(timeData.hours)}h ${formatTime(timeData.minutes)}m`;
   } else {
-    // 24시간 미만: [시간 분 초]
     return `${formatTime(timeData.hours)}h ${formatTime(timeData.minutes)}m ${formatTime(timeData.seconds)}s`;
   }
+}
+
+// 상세 페이지용 남은 시간 텍스트 생성 함수 (항상 초까지 표시)
+export function getDetailedTimeLeftText(timeData: AuctionTimeData): string {
+  if (timeData.isExpired) {
+    return '00h 00m 00s';
+  }
+  return `${formatTime(timeData.days)}d ${formatTime(timeData.hours)}h ${formatTime(timeData.minutes)}m ${formatTime(timeData.seconds)}s`;
 }
 
 // 타이머 스타일 클래스 생성 함수
@@ -143,13 +144,13 @@ export function getTimerStyles(timeData: AuctionTimeData) {
 
   return {
     containerClass: `p-4 w-full border-2 rounded-xl ${
-      isUrgent ? 'border-red-200 bg-red-50' : 'border-primary-200 bg-primary-50'
+      isUrgent
+        ? 'border-red-200 bg-red-50'
+        : 'border-primary-200 bg-primary-100/15'
     }`,
     titleClass: `text-sm font-medium mb-2 text-center ${
-      isUrgent ? 'text-red-600' : 'text-primary-600'
+      isUrgent ? 'text-red-600' : 'text-primary-100'
     }`,
-    timeClass: `text-lg font-bold ${
-      isUrgent ? 'text-red-600' : 'text-primary-600'
-    }`,
+    timeClass: `text-lg font-bold ${isUrgent ? 'text-red-600' : 'text-primary-100'}`,
   };
 }

@@ -3,32 +3,13 @@
 import Image from 'next/image';
 import { Heart, Eye, Users } from 'lucide-react';
 import { AuctionTimer } from './AuctionTimer';
-
-type ItemInfoSectionProps = {
-  title?: string;
-  likes?: number;
-  profileImageUrl?: string;
-  nickname?: string;
-  minimumBid?: number;
-  startAt?: string;
-  endAt?: string;
-  bidAmount?: number;
-  viewCount?: number;
-  bidderCount?: number;
-};
+import { AuctionDetailResponse } from '@/types/auction';
 
 export function ItemInfoSection({
-  title,
-  likes,
-  profileImageUrl,
-  nickname,
-  minimumBid,
-  startAt,
-  endAt,
-  bidAmount,
-  viewCount,
-  bidderCount,
-}: ItemInfoSectionProps) {
+  auction,
+}: {
+  auction: AuctionDetailResponse;
+}) {
   // 현재 시간 기준으로 테스트 가능한 시간 설정
   const now = new Date();
   const testEndTime = new Date(
@@ -42,16 +23,16 @@ export function ItemInfoSection({
   //   ); // 현재 시간 + 5시간 30분 45초 (24시간 이하 테스트용)
 
   const dummyData = {
-    title: title || 'BT21 Bag',
-    likes: likes || 130,
-    profileImageUrl: profileImageUrl || '/placeholder.svg',
-    nickname: nickname || 'BTS Forever',
-    minimumBid: minimumBid || 35000,
-    startAt: startAt || now.toISOString(),
-    endAt: endAt || testEndTime.toISOString(),
-    bidAmount: bidAmount || 39000,
-    viewCount: viewCount || 156,
-    bidderCount: bidderCount || 25,
+    title: auction.title || 'BT21 Bag',
+    likes: auction.likes || 130,
+    profileImageUrl: auction.profileImageUrl || '/placeholder.svg',
+    nickname: auction.nickname || 'BTS Forever',
+    minimumBid: auction.minimumBid || 35000,
+    startAt: auction.startAt || now.toISOString(),
+    endAt: auction.endAt || testEndTime.toISOString(),
+    bidAmount: auction.bidAmount || 39000,
+    viewCount: auction.viewCount || 156,
+    bidderCount: auction.bidderCount || 25,
   };
 
   // 숫자 포맷팅 (천단위 콤마)
@@ -119,9 +100,7 @@ export function ItemInfoSection({
         </div>
       </div>
 
-      <span className='flex w-full justify-center gap-4'>
-        <AuctionTimer startAt={dummyData.startAt} endAt={dummyData.endAt} />
-      </span>
+      <AuctionTimer startAt={dummyData.startAt} endAt={dummyData.endAt} />
     </section>
   );
 }

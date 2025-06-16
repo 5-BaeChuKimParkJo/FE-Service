@@ -1,4 +1,5 @@
 import { ErrorResponse } from '@/types/api';
+import { cookies } from 'next/headers';
 
 interface RequestOptions extends RequestInit {
   timeout?: number;
@@ -8,6 +9,7 @@ interface RequestOptions extends RequestInit {
     tags?: string[];
     revalidate?: number | false;
   };
+  requireAuth?: boolean;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -46,6 +48,20 @@ const fetchInstance = async <T = undefined>(
       delete headers['Content-Type'];
     } else if (typeof options.body === 'object' && options.body !== null) {
       options.body = JSON.stringify(options.body);
+    }
+
+    // 인증이 필요한 요청인 경우에만 헤더 추가
+    if (options.requireAuth) {
+      const cookieStore = await cookies();
+      const accessToken = cookieStore.get('accessToken')?.value;
+      const memberUuid = cookieStore.get('memberUuid')?.value;
+
+      if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
+      }
+      if (memberUuid) {
+        headers['X-Member-UUID'] = memberUuid;
+      }
     }
 
     const timeout = options.timeout || DEFAULT_TIMEOUT;

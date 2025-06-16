@@ -45,6 +45,8 @@ export function middleware(request: NextRequest) {
       headers: requestHeaders,
     },
   });
+
+  // return NextResponse.next();
 }
 
 export const config = {

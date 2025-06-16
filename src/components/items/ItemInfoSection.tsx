@@ -4,11 +4,16 @@ import Image from 'next/image';
 import { Heart, Eye, Users } from 'lucide-react';
 import { AuctionTimer } from './AuctionTimer';
 import { AuctionDetailResponse } from '@/types/auction';
+import { MemberInfo } from '@/actions/member-service';
 
 export function ItemInfoSection({
   auction,
+  memberInfo,
+  bidAmount,
 }: {
   auction: AuctionDetailResponse;
+  memberInfo: MemberInfo;
+  bidAmount: number;
 }) {
   // 현재 시간 기준으로 테스트 가능한 시간 설정
   const now = new Date();
@@ -25,12 +30,12 @@ export function ItemInfoSection({
   const dummyData = {
     title: auction.title || 'BT21 Bag',
     likes: auction.likes || 130,
-    profileImageUrl: auction.profileImageUrl || '/placeholder.svg',
-    nickname: auction.nickname || 'BTS Forever',
+    profileImageUrl: memberInfo.profileImageUrl || '/images/dummy/airpods.png',
+    nickname: memberInfo.nickname || 'BTS Forever',
     minimumBid: auction.minimumBid || 35000,
     startAt: auction.startAt || now.toISOString(),
     endAt: auction.endAt || testEndTime.toISOString(),
-    bidAmount: auction.bidAmount || 39000,
+    bidAmount: bidAmount || 39000,
     viewCount: auction.viewCount || 156,
     bidderCount: auction.bidderCount || 25,
   };

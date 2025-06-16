@@ -7,6 +7,11 @@ import { ErrorResponse } from '@/types/api';
 export async function getAuctionBidders(
   auctionUuid: string,
 ): Promise<AuctionBiddersResponse | ErrorResponse> {
+  // const bidders = await instance.get<AuctionBiddersResponse>(
+  //   `/auction-service/api/v1/auctions/${auctionUuid}/bidders`,
+  // );
+  // return bidders;
+
   try {
     const bidders = await instance.get<AuctionBiddersResponse>(
       `/auction-service/api/v1/auctions/${auctionUuid}/bidders`,

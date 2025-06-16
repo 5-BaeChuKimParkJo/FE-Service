@@ -40,7 +40,7 @@ export function AuctionNavigationFooter({
           </Button>
         )}
 
-        <div className='flex-1 m-1' aria-hidden='true' />
+        <div className='flex-1 mr-2' aria-hidden='true' />
 
         {currentStep < 3 ? (
           <Button

@@ -1,8 +1,9 @@
 import { getAuctionBidders, getAuctionDetail } from '@/actions/auction-service';
+import { BiddersSection } from '@/components/auction/detail';
+import { BidderForm } from '@/components/auction/detail/BidderForm';
 import { ItemImages } from '@/components/images';
-import { ItemInfoSection } from '@/components/items';
+import { ItemDescriptionSection, ItemInfoSection } from '@/components/items';
 import { isErrorResponse } from '@/utils/type-guards';
-import React from 'react';
 
 export default async function AuctionPage({
   params,
@@ -14,15 +15,21 @@ export default async function AuctionPage({
   const auction = await getAuctionDetail(auctionUuid);
   const bidders = await getAuctionBidders(auctionUuid);
 
-  console.log('bidders : ', bidders);
-  if (isErrorResponse(auction)) {
+  if (isErrorResponse(auction) || isErrorResponse(bidders)) {
     return <div>Auction not found</div>;
   }
 
   return (
     <main className='min-h-screen flex flex-col'>
       <ItemImages images={auction.images} />
-      <ItemInfoSection />
+      <ItemInfoSection auction={auction} />
+      <ItemDescriptionSection description={auction.description} />
+      <BiddersSection bidders={bidders.items} />
+      <BidderForm
+        auctionUuid={auctionUuid}
+        bidAmount={auction.bidAmount || auction.minimumBid}
+        status={auction.status}
+      />
     </main>
   );
 }

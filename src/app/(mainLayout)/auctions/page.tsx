@@ -8,8 +8,8 @@ const mockAuctionProducts = [
     auctionUuid: '1a1a1a1a-1111-1111-1111-111111111111',
     title: '에어팟 프로 2 블루투스 이어폰',
     minimumBid: 45000,
-    startAt: '2025-06-12T16:00:00.000Z', // 오늘 오후 4시 시작
-    endAt: '2025-06-13T16:00:00.000Z',
+    startAt: '2025-06-17T16:00:00.000Z', // 오늘 오후 4시 시작
+    endAt: '2025-06-18T16:00:00.000Z',
     status: 'waiting',
     viewCount: 156,
     thumbnailUrl: '/images/dummy/airpods.png',
@@ -20,8 +20,8 @@ const mockAuctionProducts = [
     auctionUuid: '2b2b2b2b-2222-2222-2222-222222222222',
     title: '아이폰 15 프로 맥스 (미개봉)',
     minimumBid: 1200000,
-    startAt: '2025-06-13T09:00:00.000Z', // 내일 오전 9시 시작
-    endAt: '2025-06-15T18:00:00.000Z',
+    startAt: '2025-06-15T09:00:00.000Z', // 내일 오전 9시 시작
+    endAt: '2025-06-20T18:00:00.000Z',
     status: 'waiting',
     viewCount: 892,
     thumbnailUrl: '/images/dummy/airpods.png',

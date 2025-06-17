@@ -8,8 +8,22 @@ import { QueryClient } from '@tanstack/react-query';
 import { getCategories } from '@/actions/category-service/getCategories';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.cabbage-secondhand.shop'),
   title: '중고 경매 플랫폼 찰낙찰낙',
   description: '중고물품 팔 땐 찰낙찰낙, 중고물품 경매할 땐 찰낙찰낙.',
+  icons: {
+    icon: '/assets/icons/common/logo.svg',
+  },
+  openGraph: {
+    url: 'https://www.cabbage-secondhand.shop',
+    title: '중고 경매 플랫폼 찰낙찰낙',
+    description: '중고물품 팔 땐 찰낙찰낙, 중고물품 경매할 땐 찰낙찰낙.',
+    images: [{ url: '/assets/images/logo.png' }],
+    type: 'website',
+    siteName: '중고 경매 플랫폼 찰낙찰낙',
+    locale: 'ko_KR',
+    countryName: 'KR',
+  },
 };
 
 export const viewport: Viewport = {

@@ -31,28 +31,36 @@ export async function signIn(memberId: string, password: string) {
     const data: SignInResponse = await response.json();
 
     const cookieStore = cookies();
-    (await cookieStore).set('accessToken', data.accessToken, {
+
+    // 쿠키 설정 수정 개발용
+    const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24, // 1시간
+      secure: false, // 개발환경에서는 false로 설정
+      sameSite: 'lax' as const, // strict에서 lax로 변경
       path: '/',
+    };
+
+    // 쿠키 설정 수정 운영용
+    // const cookieOptions = {
+    //   httpOnly: true,
+    //   secure: true, // 개발환경에서는 false로 설정
+    //   sameSite: 'strict' as const, // strict에서 lax로 변경
+    //   path: '/',
+    // };
+
+    (await cookieStore).set('accessToken', data.accessToken, {
+      ...cookieOptions,
+      maxAge: 60 * 60 * 24, // 1일
     });
 
     (await cookieStore).set('refreshToken', data.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 60 * 60 * 24 * 14, // 14일
-      path: '/',
     });
 
     (await cookieStore).set('memberUuid', data.memberUuid, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 12, // 1시간 정도 유효하게
-      path: '/',
+      ...cookieOptions,
+      maxAge: 60 * 60 * 24, // 1일
     });
 
     return data;

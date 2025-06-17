@@ -3,6 +3,10 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Build argument 추가
+ARG NEXT_PUBLIC_S3_HOSTNAME
+ENV NEXT_PUBLIC_S3_HOSTNAME=$NEXT_PUBLIC_S3_HOSTNAME
+
 # 패키지 설치
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
@@ -16,6 +20,10 @@ FROM node:18-alpine AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
+
+# Production 환경변수 설정
+ARG NEXT_PUBLIC_S3_HOSTNAME
+ENV NEXT_PUBLIC_S3_HOSTNAME=$NEXT_PUBLIC_S3_HOSTNAME
 
 RUN npm install -g pnpm
 

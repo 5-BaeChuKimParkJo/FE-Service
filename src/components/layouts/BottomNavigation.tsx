@@ -18,12 +18,12 @@ const navItems: NavItem[] = [
     icon: Home,
   },
   {
-    href: '/auction',
+    href: '/auctions',
     label: '경매',
     icon: Gavel,
   },
   {
-    href: '/general',
+    href: '/products',
     label: '일반',
     icon: ShoppingBag,
   },

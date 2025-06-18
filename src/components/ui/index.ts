@@ -5,3 +5,5 @@ export * from './dialog';
 export * from './label';
 export * from './input';
 export * from './date-time-picker';
+export * from './p';
+export * from './count-up';

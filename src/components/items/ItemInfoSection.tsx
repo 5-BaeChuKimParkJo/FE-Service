@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Heart, Eye, Users } from 'lucide-react';
 import { AuctionTimer } from './AuctionTimer';
 import { AuctionDetailResponse } from '@/types/auction';
-import { MemberInfo } from '@/actions/member-service';
+import { MemberInfo } from '@/types/member';
 
 export function ItemInfoSection({
   auction,

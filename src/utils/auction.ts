@@ -46,6 +46,7 @@ export const productConditionLabels: Record<ProductCondition, string> = {
   new: '새상품',
   used: '중고상품',
   unopened: '미개봉',
+  '': '',
 };
 
 export const calculateTimeLeft = (endAt: string): TimeLeft => {

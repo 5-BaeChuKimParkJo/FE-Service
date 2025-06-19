@@ -1,10 +1,13 @@
 'use server';
 
-import { getPresignedUrls } from './get-presigned-urls';
+import { getProductPresignedUrls } from './get-product-presigned-urls';
 import { uploadFileToS3 } from './upload-to-s3';
 import { getFileContentType } from '@/utils/image-upload';
 
-export async function uploadImages(files: File[]): Promise<string[]> {
+/**
+ * 여러 이미지를 병렬로 업로드합니다
+ */
+export async function uploadProductImages(files: File[]): Promise<string[]> {
   if (files.length === 0) {
     throw new Error('업로드할 이미지가 없습니다.');
   }
@@ -15,7 +18,7 @@ export async function uploadImages(files: File[]): Promise<string[]> {
     contentType: getFileContentType(file),
   }));
 
-  const presignedResults = await getPresignedUrls(presignedRequests);
+  const presignedResults = await getProductPresignedUrls(presignedRequests);
 
   // 2. 병렬로 모든 파일 업로드
   const uploadPromises = files.map(async (file, index) => {

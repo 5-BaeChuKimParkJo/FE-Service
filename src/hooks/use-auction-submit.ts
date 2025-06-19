@@ -88,7 +88,14 @@ export function useAuctionSubmit() {
       setIsLoading(false);
       setIsSubmitting(false);
     }
-  }, [getCreateAuctionCommand, setIsSubmitting, images, tags, setTagIds]);
+  }, [
+    getCreateAuctionCommand,
+    setIsSubmitting,
+    images,
+    tags,
+    setTagIds,
+    tagIds,
+  ]);
 
   const goToAuctionDetail = useCallback(() => {
     if (createdAuctionUuid) {

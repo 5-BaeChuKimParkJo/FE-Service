@@ -3,7 +3,7 @@
 import { PresignedUrlRequest, PresignedUrlResponse } from '@/types/image';
 import { instance } from '../instance';
 
-export async function getPresignedUrls(requests: PresignedUrlRequest[]) {
+export async function getProductPresignedUrls(requests: PresignedUrlRequest[]) {
   try {
     const promises = requests.map(async (req) => {
       const response = await instance.post<PresignedUrlResponse>(
@@ -30,7 +30,7 @@ export async function getPresignedUrls(requests: PresignedUrlRequest[]) {
 }
 
 // 단일 이미지용 (기존 호환성 유지)
-export async function getPresignedUrl(request: PresignedUrlRequest) {
-  const results = await getPresignedUrls([request]);
+export async function getProductPresignedUrl(request: PresignedUrlRequest) {
+  const results = await getProductPresignedUrls([request]);
   return results[0];
 }

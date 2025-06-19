@@ -73,14 +73,6 @@ export function TagInput({ tags, setTags, tagIds, setTagIds }: TagInputProps) {
         >
           추가
         </button>
-        {/* <Button
-          variant='primary'
-          size='xl'
-          onClick={addTag}
-          disabled={!input.trim() || tags.length >= 3 || loading}
-        >
-          추가
-        </Button> */}
       </div>
     </section>
   );

@@ -60,7 +60,7 @@ const fetchInstance = async <T = undefined>(
         headers['Authorization'] = `Bearer ${accessToken}`;
       }
       if (memberUuid) {
-        headers['X-Member-UUID'] = memberUuid;
+        headers['memberUuid'] = memberUuid;
       }
     }
 

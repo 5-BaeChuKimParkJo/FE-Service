@@ -1,15 +1,20 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import {
-  useCreateAuctionStore,
-  ProductCondition,
-} from '@/stores/use-create-auction-store';
 
-export function ProductConditionSelector() {
-  const { productCondition, errors, setProductCondition } =
-    useCreateAuctionStore();
+export type ProductCondition = 'unopened' | 'new' | 'used' | '';
 
+interface ProductConditionSelectorProps {
+  productCondition: ProductCondition;
+  setProductCondition: (v: ProductCondition) => void;
+  error?: string;
+}
+
+export function ProductConditionSelector({
+  productCondition,
+  setProductCondition,
+  error,
+}: ProductConditionSelectorProps) {
   const productConditions: {
     value: ProductCondition;
     label: string;
@@ -42,9 +47,9 @@ export function ProductConditionSelector() {
         >
           상품 상태
         </label>
-        {errors.productCondition && (
+        {error && (
           <p className='text-xs text-red-500' role='alert'>
-            {errors.productCondition}
+            {error}
           </p>
         )}
       </div>
@@ -58,7 +63,7 @@ export function ProductConditionSelector() {
             className={`w-full p-4 text-left border-2 border-gray-300 rounded-xl transition-all duration-200 ${
               productCondition === condition.value
                 ? 'border-primary-100 bg-primary-50/30'
-                : errors.productCondition
+                : error
                   ? 'border-red-500'
                   : 'border-gray-300 hover:border-gray-400'
             }`}

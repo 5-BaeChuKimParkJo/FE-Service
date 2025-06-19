@@ -3,13 +3,21 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Tag } from 'lucide-react';
 
-import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
 import { CategorySelector } from '@/components/category';
 import { findCategoryById } from '@/utils/category';
 import { useCategories } from '@/hooks/use-categories';
 
-export function ProductCategorySelector() {
-  const { categoryId, errors, setCategoryId } = useCreateAuctionStore();
+interface ProductCategorySelectorProps {
+  categoryId: number | null;
+  setCategoryId: (id: number) => void;
+  error?: string;
+}
+
+export function ProductCategorySelector({
+  categoryId,
+  setCategoryId,
+  error,
+}: ProductCategorySelectorProps) {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -23,7 +31,7 @@ export function ProductCategorySelector() {
       <div
         className={`relative border-b transition-colors ${
           isFocused ? 'border-primary-100' : 'border-gray-300'
-        } ${errors.categoryId ? 'border-red-500' : ''} ${
+        } ${error ? 'border-red-500' : ''} ${
           isLoadingCategories ? 'opacity-60 cursor-not-allowed' : ''
         }`}
       >
@@ -44,7 +52,7 @@ export function ProductCategorySelector() {
           onBlur={() => setIsFocused(false)}
           disabled={isLoadingCategories}
           className='w-full pt-6 pb-3 bg-transparent focus:outline-none text-left flex items-center justify-between font-medium'
-          aria-describedby={errors.categoryId ? 'category-error' : undefined}
+          aria-describedby={error ? 'category-error' : undefined}
           aria-expanded={showCategoryModal}
           aria-haspopup='dialog'
         >
@@ -76,9 +84,9 @@ export function ProductCategorySelector() {
         </button>
       </div>
 
-      {errors.categoryId && (
+      {error && (
         <p id='category-error' className='text-xs text-red-500' role='alert'>
-          {errors.categoryId}
+          {error}
         </p>
       )}
 

@@ -91,7 +91,7 @@ export function CategorySelector({
               </button>
             </div>
 
-            <div className='p-4 max-h-[60vh] overflow-y-auto'>
+            <div className='p-4 max-h-[60vh] overflow-y-auto scrollbar-hide'>
               <div className='grid grid-cols-3 gap-3'>
                 {categories.map((category) => (
                   <motion.button

@@ -8,8 +8,14 @@ import { convertStoreDataToApiRequest } from '@/utils/auction';
 import { createAuction } from '@/actions/auction-service/create-auction';
 
 export function useAuctionSubmit() {
-  const { getCreateAuctionCommand, setIsSubmitting, images } =
-    useCreateAuctionStore();
+  const {
+    getCreateAuctionCommand,
+    setIsSubmitting,
+    images,
+    tags,
+    setTagIds,
+    tagIds,
+  } = useCreateAuctionStore();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -46,7 +52,7 @@ export function useAuctionSubmit() {
       // 1. 이미지 업로드
       const uploadedKeys = await uploadImages(files);
 
-      // 2. 경매 등록
+      // 3. 경매 등록
       const apiRequest = convertStoreDataToApiRequest(
         {
           ...storeData,
@@ -54,6 +60,7 @@ export function useAuctionSubmit() {
             | 'unopened'
             | 'new'
             | 'used',
+          tagIds,
         },
         uploadedKeys,
       );
@@ -81,11 +88,11 @@ export function useAuctionSubmit() {
       setIsLoading(false);
       setIsSubmitting(false);
     }
-  }, [getCreateAuctionCommand, setIsSubmitting, images]);
+  }, [getCreateAuctionCommand, setIsSubmitting, images, tags, setTagIds]);
 
   const goToAuctionDetail = useCallback(() => {
     if (createdAuctionUuid) {
-      router.replace(`/auction/${createdAuctionUuid}`);
+      router.replace(`/auctions/${createdAuctionUuid}`);
       resetSubmitState();
     }
   }, [createdAuctionUuid, router]);

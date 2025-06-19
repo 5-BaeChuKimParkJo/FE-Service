@@ -45,6 +45,7 @@ export interface CreateAuctionRequest {
   title: string;
   minimumBid: number;
   images: { key: string; order: number }[];
+  tagIds: number[];
 }
 
 export type AuctionStatus =

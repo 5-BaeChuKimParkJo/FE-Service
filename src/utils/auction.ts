@@ -17,6 +17,7 @@ export function convertStoreDataToApiRequest(
     title: string;
     minimumBid: bigint;
     images: { key: string; order: number }[];
+    tagIds: number[];
   },
   uploadedImageKeys: string[],
 ): CreateAuctionRequest {
@@ -37,6 +38,7 @@ export function convertStoreDataToApiRequest(
       key,
       order: index,
     })),
+    tagIds: storeData.tagIds,
   };
 }
 

@@ -5,7 +5,7 @@ import { AlertProvider } from '@/contexts/AlertContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import { GlobalTimerProvider } from '@/contexts/GlobalTimerContext';
 import { QueryClient } from '@tanstack/react-query';
-import { getCategories } from '@/actions/category-service/getCategories';
+import { getCategories } from '@/actions/category-service/get-categories';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.cabbage-secondhand.shop'),

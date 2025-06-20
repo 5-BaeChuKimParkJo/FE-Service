@@ -9,7 +9,7 @@ interface RequestOptions extends RequestInit {
     tags?: string[];
     revalidate?: number | false;
   };
-  requireAuth?: boolean;
+  requireAuth?: boolean | true;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -60,7 +60,7 @@ const fetchInstance = async <T = undefined>(
         headers['Authorization'] = `Bearer ${accessToken}`;
       }
       if (memberUuid) {
-        headers['memberUuid'] = memberUuid;
+        headers['X-Member-Uuid'] = memberUuid;
       }
     }
 

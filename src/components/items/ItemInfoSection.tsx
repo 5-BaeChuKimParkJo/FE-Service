@@ -3,15 +3,15 @@
 import Image from 'next/image';
 import { Heart, Eye, Users } from 'lucide-react';
 import { AuctionTimer } from './AuctionTimer';
-import { AuctionDetailResponse } from '@/types/auction';
 import { MemberInfo } from '@/types/member';
+import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
 
 export function ItemInfoSection({
   auction,
   memberInfo,
   bidAmount,
 }: {
-  auction: AuctionDetailResponse;
+  auction: CatalogAuctionResponseDto;
   memberInfo: MemberInfo;
   bidAmount: number;
 }) {

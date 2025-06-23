@@ -24,7 +24,7 @@ export default async function AuctionPage({
     return <div>Bidders not found</div>;
   }
 
-  const memberInfo = await getMemberInfo(auction.sellerUuid);
+  const memberInfo = await getMemberInfo(auction.seller.memberUuid);
   if (isErrorResponse(memberInfo)) {
     return <div>Member not found</div>;
   }

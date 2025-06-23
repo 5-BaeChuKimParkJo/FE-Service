@@ -16,6 +16,8 @@ export interface Category {
   imageUrl: string | null;
 }
 
+export type AuctionStatus = 'waiting' | 'active' | 'ended';
+
 export interface MemberResponseDto {
   memberUuid: string;
   nickname: string;
@@ -23,6 +25,12 @@ export interface MemberResponseDto {
   honor: MemberHonor;
   state: MemberState;
   profileImageUrl: string | null;
+}
+
+export interface ImageResponseDto {
+  auctionImageId: number;
+  url: string;
+  order: number;
 }
 
 export interface CatalogAuctionResponseDto {
@@ -40,10 +48,14 @@ export interface CatalogAuctionResponseDto {
   createdAt: string;
   version: number;
   currentBid: number;
+  status: AuctionStatus;
   type: AuctionType;
   category: Category | null;
   tags: TagResponseDto[];
   seller: MemberResponseDto;
+  images: ImageResponseDto[];
+  likes?: number;
+  bidderCount?: number;
 }
 
 export interface CatalogAuctionResponseWithDates

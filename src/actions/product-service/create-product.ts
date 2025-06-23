@@ -2,10 +2,17 @@
 
 import { CreateProductRequest } from '@/types/product';
 import { instance } from '../instance';
+import { ErrorResponse } from '@/types/api';
 
-export async function createProduct(request: CreateProductRequest) {
+type CreateProductResponse = {
+  productUuid: string;
+};
+
+export async function createProduct(
+  request: CreateProductRequest,
+): Promise<CreateProductResponse | ErrorResponse> {
   try {
-    const response = await instance.post(
+    const response = await instance.post<CreateProductResponse>(
       '/product-service/api/v1/product',
       request,
       {

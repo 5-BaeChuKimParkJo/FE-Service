@@ -53,7 +53,7 @@ export function ItemInfoSection({
         <div className='flex items-center gap-3 '>
           <div className='relative w-12 h-12 rounded-full overflow-hidden'>
             <Image
-              src={dummyData.profileImageUrl}
+              src={dummyData.profileImageUrl || '/images/dummy/profile.png'}
               alt={`${dummyData.nickname} 프로필`}
               fill
               className='object-cover'

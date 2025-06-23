@@ -4,7 +4,7 @@ export interface CreateProductRequest {
   categoryId: string;
   description: string;
   price: number;
-  productImageKeyList: string[];
+  imageKeyList: string[];
   tagIdList: number[];
   isDirectDeal: boolean;
   directDealLocation: string;
@@ -42,3 +42,22 @@ export type ProductFormAction =
   | { type: 'ADD_IMAGE'; image: ProductImage }
   | { type: 'SET_IMAGES'; images: ProductImage[] }
   | { type: 'REMOVE_IMAGE'; idx: number };
+
+export type ProductDetailResponse = {
+  productUuid: string;
+  saleMemberUuid: string;
+  title: string;
+  categoryId: number;
+  productCondition: ProductCondition;
+  description: string;
+  isDirectDeal: boolean;
+  directDealLocation?: string;
+  isHide: boolean;
+  status: 'ACTIVE' | 'ENDED';
+  thumbnailUrl: string;
+  viewCount: number;
+  price: number;
+  ticketUuid?: string;
+  createdAt: string;
+  imageUrlList: string[];
+};

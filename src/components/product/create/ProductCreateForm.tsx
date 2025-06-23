@@ -24,6 +24,7 @@ export function ProductCreateForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [createdProductTitle, setCreatedProductTitle] = useState<string>('');
+  const [createdProductUuid, setCreatedProductUuid] = useState<string>('');
   const router = useRouter();
 
   const isValid = validateProductForm(state);
@@ -43,7 +44,7 @@ export function ProductCreateForm() {
         categoryId: String(state.categoryId!),
         description: state.description,
         price: Number(state.price.replace(/,/g, '')),
-        productImageKeyList: uploadedKeys,
+        imageKeyList: uploadedKeys,
         tagIdList: tagIds,
         isDirectDeal: state.isDirectDeal,
         directDealLocation: state.directDealLocation,
@@ -53,8 +54,13 @@ export function ProductCreateForm() {
       const result = await createProduct(request);
       console.log(result);
 
-      setCreatedProductTitle(state.title);
-      setIsSuccess(true);
+      if ('productUuid' in result) {
+        setCreatedProductTitle(state.title);
+        setCreatedProductUuid(result.productUuid);
+        setIsSuccess(true);
+      } else {
+        throw new Error('상품 등록에 실패했습니다.');
+      }
     } catch (error) {
       alert(error);
     } finally {
@@ -63,7 +69,7 @@ export function ProductCreateForm() {
   };
 
   const handleGoToDetail = () => {
-    router.push('/');
+    router.push(`/products/${createdProductUuid}`);
   };
 
   const handleCloseSuccess = () => {

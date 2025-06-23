@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { cn } from '@/libs/cn';
 import { MinimalAuctionTimer } from './MinimalAuctionTimer';
+import { formatNumber } from '@/utils/format';
 
 interface AuctionProductCardProps {
   auctionUuid: string;
@@ -41,11 +42,6 @@ export function AuctionProductCard({
   onLike,
   className,
 }: AuctionProductCardProps) {
-  // 가격 포맷팅
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('ko-KR');
-  };
-
   // 현재 가격 (입찰가가 있으면 입찰가, 없으면 시작가)
   const currentPrice = bidAmount || minimumBid;
 
@@ -96,9 +92,9 @@ export function AuctionProductCard({
       </Link>
 
       <div className='ml-2 space-y-1'>
-        <p className='text-xl font-bold'>{formatPrice(currentPrice)}원</p>
+        <p className='text-xl font-bold'>{formatNumber(currentPrice)}원</p>
         <p className='text-sm text-gray-500 line-through'>
-          {formatPrice(minimumBid)}원
+          {formatNumber(minimumBid)}원
         </p>
       </div>
 
@@ -111,11 +107,11 @@ export function AuctionProductCard({
 
       <div className='flex items-center mr-3 justify-end text-xs text-gray-500 gap-1'>
         <Users className='w-3 h-3' />
-        <span>{bidderCount.toLocaleString()}</span>
+        <span>{formatNumber(bidderCount)}</span>
         <Heart className='w-3 h-3' />
-        <span>{likes.toLocaleString()}</span>
+        <span>{formatNumber(likes)}</span>
         <Eye className='w-3 h-3' />
-        <span>{viewCount.toLocaleString()}</span>
+        <span>{formatNumber(viewCount)}</span>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CountUp } from '../ui';
 import { MinimalAuctionTimer } from '@/components/auction/MinimalAuctionTimer';
+import { formatNumber } from '@/utils/format';
 
 // 경매 미리보기 타입 정의
 export interface AuctionPreview {
@@ -34,9 +35,6 @@ export function AuctionPreviewCard({
 }: {
   auction?: AuctionPreview;
 }) {
-  // 가격 포맷팅
-  const formatPrice = (price: number) => price.toLocaleString('ko-KR');
-
   return (
     <Link
       href={`/auction/${auction.auctionUuid}`}
@@ -54,7 +52,7 @@ export function AuctionPreviewCard({
         <div className='text-base font-bold truncate'>{auction.title}</div>
         <div className='flex justify-end items-end gap-2 pr-3'>
           <span className='text-gray-400 line-through text-sm'>
-            {formatPrice(auction.minimumBid)}
+            {formatNumber(auction.minimumBid)}원
           </span>
           <span className='text-xl h-6 font-bold text-black'>
             <CountUp

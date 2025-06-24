@@ -9,12 +9,12 @@ import { isErrorResponse } from '@/utils/type-guards';
 export default async function AuctionPage({
   params,
 }: {
-  params: Promise<{ auctionUuid: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { auctionUuid } = await params;
+  const { id } = await params;
 
-  const auction = await getAuctionDetail(auctionUuid);
-  const bidders = await getAuctionBidders(auctionUuid);
+  const auction = await getAuctionDetail(id);
+  const bidders = await getAuctionBidders(id);
   console.log(auction);
 
   if (isErrorResponse(auction) || isErrorResponse(bidders)) {
@@ -44,7 +44,7 @@ export default async function AuctionPage({
       <ItemDescriptionSection description={auction.description} />
       <BiddersSection bidders={bidders.items} />
       <BidderForm
-        auctionUuid={auctionUuid}
+        auctionUuid={id}
         bidAmount={
           bidders.items.length > 0
             ? bidders.items[0].bidAmount

@@ -17,6 +17,7 @@ export async function createAuction(
 
     return response;
   } catch (error) {
+    console.log(error);
     if (
       error &&
       typeof error === 'object' &&

@@ -25,7 +25,7 @@ export type AuctionDetailResponse = {
   gradeImageUrl?: string;
 };
 
-export type ProductCondition = 'unopened' | 'new' | 'used';
+export type ProductCondition = 'unopened' | 'new' | 'used' | '';
 
 export interface AuctionImage {
   auctionImageId: number;
@@ -45,6 +45,7 @@ export interface CreateAuctionRequest {
   title: string;
   minimumBid: number;
   images: { key: string; order: number }[];
+  tagIds: number[];
 }
 
 export type AuctionStatus =

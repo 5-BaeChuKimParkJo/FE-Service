@@ -270,12 +270,12 @@ const mockAuctionProducts = [
 
 export default async function AuctionPage() {
   return (
-    <div className='container mx-auto px-4 py-6'>
+    <>
       {/* 필터링 영역 추가 예정 */}
       <AuctionProductGrid
         products={mockAuctionProducts}
         LikeButtonComponent={LikeButton}
       />
-    </div>
+    </>
   );
 }

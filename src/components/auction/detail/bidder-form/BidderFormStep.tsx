@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui';
 import { FilledInput } from '@/components/ui/filled-input';
+import { formatNumber } from '@/utils/format';
 
 type BidderFormStepProps = {
   bidAmount: number;
@@ -49,11 +50,11 @@ export function BidderFormStep({
       <div className='w-full text-left mb-2'>
         <div className='text-sm text-gray-500 mb-1'>현재 입찰가</div>
         <div className='text-xl font-bold text-primary-100 mb-2'>
-          {bidAmount.toLocaleString()} 원
+          {formatNumber(bidAmount)} 원
         </div>
         <div className='text-sm text-gray-500 mb-1'>최대 입찰 가능 금액</div>
         <div className='text-xl font-bold text-primary-100 mb-2'>
-          {Math.floor(bidAmount * 1.3).toLocaleString()} 원
+          {formatNumber(Math.floor(bidAmount * 1.3))} 원
         </div>
       </div>
 

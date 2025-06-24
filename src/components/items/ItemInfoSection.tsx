@@ -3,46 +3,30 @@
 import Image from 'next/image';
 import { Heart, Eye, Users } from 'lucide-react';
 import { AuctionTimer } from './AuctionTimer';
-import { AuctionDetailResponse } from '@/types/auction';
-import { MemberInfo } from '@/actions/member-service';
+import { MemberInfo } from '@/types/member';
+import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
+import { formatNumber } from '@/utils/format';
 
 export function ItemInfoSection({
   auction,
   memberInfo,
   bidAmount,
 }: {
-  auction: AuctionDetailResponse;
+  auction: CatalogAuctionResponseDto;
   memberInfo: MemberInfo;
   bidAmount: number;
 }) {
-  // 현재 시간 기준으로 테스트 가능한 시간 설정
-  const now = new Date();
-  const testEndTime = new Date(
-    now.getTime() +
-      2 * 24 * 60 * 60 * 1000 +
-      3 * 60 * 60 * 1000 +
-      15 * 60 * 1000,
-  ); // 현재 시간 + 2일 3시간 15분
-  //   const testEndTime = new Date(
-  //     now.getTime() + 5 * 60 * 60 * 1000 + 30 * 60 * 1000 + 45 * 1000,
-  //   ); // 현재 시간 + 5시간 30분 45초 (24시간 이하 테스트용)
-
   const dummyData = {
-    title: auction.title || 'BT21 Bag',
+    title: auction.title,
     likes: auction.likes || 130,
     profileImageUrl: memberInfo.profileImageUrl || '/images/dummy/airpods.png',
-    nickname: memberInfo.nickname || 'BTS Forever',
-    minimumBid: auction.minimumBid || 35000,
-    startAt: auction.startAt || now.toISOString(),
-    endAt: auction.endAt || testEndTime.toISOString(),
-    bidAmount: bidAmount || 39000,
-    viewCount: auction.viewCount || 156,
+    nickname: memberInfo.nickname,
+    minimumBid: auction.minimumBid,
+    startAt: auction.startAt,
+    endAt: auction.endAt,
+    bidAmount: bidAmount,
+    viewCount: auction.viewCount,
     bidderCount: auction.bidderCount || 25,
-  };
-
-  // 숫자 포맷팅 (천단위 콤마)
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('ko-KR');
   };
 
   return (
@@ -53,7 +37,7 @@ export function ItemInfoSection({
         <div className='flex items-center gap-3 '>
           <div className='relative w-12 h-12 rounded-full overflow-hidden'>
             <Image
-              src={dummyData.profileImageUrl}
+              src={dummyData.profileImageUrl || '/images/dummy/profile.png'}
               alt={`${dummyData.nickname} 프로필`}
               fill
               className='object-cover'
@@ -97,11 +81,11 @@ export function ItemInfoSection({
       <div className='mb-6'>
         <div className='text-right mb-2'>
           <span className='text-2xl font-bold text-gray-900'>
-            {formatPrice(dummyData.bidAmount)} 원
+            {formatNumber(dummyData.bidAmount)} 원
           </span>
         </div>
         <div className='text-right text-sm mb-2 text-gray-500'>
-          시작가: {formatPrice(dummyData.minimumBid)} 원
+          시작가: {formatNumber(dummyData.minimumBid)} 원
         </div>
       </div>
 

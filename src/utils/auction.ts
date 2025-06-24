@@ -17,6 +17,7 @@ export function convertStoreDataToApiRequest(
     title: string;
     minimumBid: bigint;
     images: { key: string; order: number }[];
+    tagIds: number[];
   },
   uploadedImageKeys: string[],
 ): CreateAuctionRequest {
@@ -37,6 +38,7 @@ export function convertStoreDataToApiRequest(
       key,
       order: index,
     })),
+    tagIds: storeData.tagIds,
   };
 }
 
@@ -44,6 +46,7 @@ export const productConditionLabels: Record<ProductCondition, string> = {
   new: '새상품',
   used: '중고상품',
   unopened: '미개봉',
+  '': '',
 };
 
 export const calculateTimeLeft = (endAt: string): TimeLeft => {

@@ -31,6 +31,9 @@ export type CreateAuctionState = {
   currentStep: number;
   isSubmitting: boolean;
   errors: Record<string, string>;
+
+  tags: string[];
+  tagIds: number[];
 };
 
 export type CreateAuctionActions = {
@@ -48,7 +51,8 @@ export type CreateAuctionActions = {
   removeImage: (index: number) => void;
   reorderImages: (dragIndex: number, hoverIndex: number) => void;
   setThumbnailKey: (key: string) => void;
-
+  setTags: (tags: string[]) => void;
+  setTagIds: (tagIds: number[]) => void;
   // Step 2 actions
   setMinimumBid: (bid: string) => void;
   setStartAt: (date: Date | null) => void;
@@ -83,6 +87,8 @@ export type CreateAuctionActions = {
       key: string;
       order: number;
     }[];
+    tags: string[];
+    tagIds: number[];
   } | null;
 };
 
@@ -102,6 +108,8 @@ const initialState: CreateAuctionState = {
   currentStep: 1,
   isSubmitting: false,
   errors: {},
+  tags: [],
+  tagIds: [],
 };
 
 export const useCreateAuctionStore = create<
@@ -182,6 +190,10 @@ export const useCreateAuctionStore = create<
       },
 
       setThumbnailKey: (key) => set({ thumbnailKey: key }),
+
+      setTags: (tags) => set({ tags }),
+
+      setTagIds: (tagIds) => set({ tagIds }),
 
       // Step 2 actions
       setMinimumBid: (bid) => {

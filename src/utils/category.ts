@@ -1,4 +1,4 @@
-import { CategoryType } from '@/actions/category-service/getCategories';
+import { CategoryType } from '@/actions/category-service/get-categories';
 
 export function findCategoryById(
   categories: CategoryType[],

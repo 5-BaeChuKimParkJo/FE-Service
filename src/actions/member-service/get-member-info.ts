@@ -2,16 +2,7 @@
 
 import { ErrorResponse } from '@/types/api';
 import { instance } from '../instance';
-
-export interface MemberInfo {
-  memberUuid: string;
-  nickname: string;
-  gradeUuid: string;
-  honor: string;
-  state: string;
-  profileImageUrl: string;
-  point: number;
-}
+import { MemberInfo } from '@/types/member';
 
 export async function getMemberInfo(
   memberUuid: string,

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import Image from 'next/image';
-import { CategoryType } from '@/actions/category-service/getCategories';
+import { CategoryType } from '@/actions/category-service/get-categories';
 
 interface CategorySelectorProps {
   categories: CategoryType[];
@@ -91,7 +91,7 @@ export function CategorySelector({
               </button>
             </div>
 
-            <div className='p-4 max-h-[60vh] overflow-y-auto'>
+            <div className='p-4 max-h-[60vh] overflow-y-auto scrollbar-hide'>
               <div className='grid grid-cols-3 gap-3'>
                 {categories.map((category) => (
                   <motion.button

@@ -9,9 +9,7 @@ export async function createBid(auctionUuid: string, bidAmount: number) {
   //   {
   //     bidAmount,
   //   },
-  //   {
-  //     requireAuth: true,
-  //   },
+
   // );
   // return response;
 
@@ -20,9 +18,6 @@ export async function createBid(auctionUuid: string, bidAmount: number) {
       `/auction-service/api/v1/auctions/${auctionUuid}/bidders`,
       {
         bidAmount,
-      },
-      {
-        requireAuth: true,
       },
     );
     console.log(response, 'response');

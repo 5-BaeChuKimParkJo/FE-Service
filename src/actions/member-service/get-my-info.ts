@@ -18,7 +18,6 @@ export async function getMyInfo(): Promise<MemberInfo | ErrorResponse> {
     const response = await instance.get<MemberInfo>(
       `/member-service/api/v1/member/${memberUuid}`,
       {
-        requireAuth: true,
         cache: 'no-cache',
       },
     );

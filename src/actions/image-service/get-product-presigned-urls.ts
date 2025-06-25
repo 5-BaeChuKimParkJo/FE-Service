@@ -9,9 +9,6 @@ export async function getProductPresignedUrls(requests: PresignedUrlRequest[]) {
       const response = await instance.post<PresignedUrlResponse>(
         '/product-service/api/v1/product/presigned-url',
         req,
-        {
-          requireAuth: true,
-        },
       );
 
       return {

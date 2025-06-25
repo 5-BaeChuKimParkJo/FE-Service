@@ -15,9 +15,6 @@ export async function createProduct(
     const response = await instance.post<CreateProductResponse>(
       '/product-service/api/v1/product',
       request,
-      {
-        requireAuth: true,
-      },
     );
 
     return response;

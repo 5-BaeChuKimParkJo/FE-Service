@@ -10,9 +10,6 @@ export async function createAuction(
     const response = await instance.post<CreateAuctionResponse>(
       '/auction-service/api/v1/auctions',
       request,
-      {
-        requireAuth: true,
-      },
     );
 
     return response;

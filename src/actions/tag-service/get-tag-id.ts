@@ -16,7 +16,6 @@ export async function getTagId(name: string): Promise<number | ErrorResponse> {
     const response = await instance.get<TagIdResponse>(
       `/tag-service/api/v1/tag/name/${name}`,
       {
-        requireAuth: true,
         cache: 'force-cache',
       },
     );

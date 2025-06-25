@@ -9,7 +9,6 @@ interface RequestOptions extends RequestInit {
     tags?: string[];
     revalidate?: number | false;
   };
-  requireAuth?: boolean | true;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -38,30 +37,25 @@ const fetchInstance = async <T = undefined>(
       ...(options.headers as Record<string, string>),
     };
 
-    // Content-Type 설정
     if (!(options.body instanceof FormData) && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
     }
 
-    // FormData인 경우 Content-Type 헤더 제거 (브라우저가 자동 설정)
     if (options.body instanceof FormData) {
       delete headers['Content-Type'];
     } else if (typeof options.body === 'object' && options.body !== null) {
       options.body = JSON.stringify(options.body);
     }
 
-    // 인증이 필요한 요청인 경우에만 헤더 추가
-    if (options.requireAuth) {
-      const cookieStore = await cookies();
-      const accessToken = cookieStore.get('accessToken')?.value;
-      const memberUuid = cookieStore.get('memberUuid')?.value;
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get('accessToken')?.value;
+    const memberUuid = cookieStore.get('memberUuid')?.value;
 
-      if (accessToken) {
-        headers['Authorization'] = `Bearer ${accessToken}`;
-      }
-      if (memberUuid) {
-        headers['X-Member-Uuid'] = memberUuid;
-      }
+    if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    if (memberUuid) {
+      headers['X-Member-Uuid'] = memberUuid;
     }
 
     const timeout = options.timeout || DEFAULT_TIMEOUT;

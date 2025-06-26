@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { ChatMessage as ChatMessageType } from './types';
+import type { ChatMessageType } from './types';
 import Image from 'next/image';
 import ProfileImage from './ProfileImage';
 import ImageModal from './ImageModal';
@@ -60,7 +60,6 @@ export function ChatMessage(props: ChatMessageProps) {
     </div>
   );
 
-  // 이미지 메시지 컴포넌트
   const ImageMessage = () => (
     <>
       <div
@@ -85,11 +84,9 @@ export function ChatMessage(props: ChatMessageProps) {
     </>
   );
 
-  // 메시지 내용 (텍스트 또는 이미지)
   const MessageContent = () =>
     message.messageType === 'TEXT' ? <TextMessage /> : <ImageMessage />;
 
-  // 내가 보낸 메시지 레이아웃
   if (isFromMe) {
     return (
       <div className='flex flex-col items-end'>
@@ -101,7 +98,6 @@ export function ChatMessage(props: ChatMessageProps) {
     );
   }
 
-  // 상대방이 보낸 메시지 레이아웃
   return (
     <div className='flex flex-row items-start gap-2'>
       <div className='w-10 h-10 flex-shrink-0'>

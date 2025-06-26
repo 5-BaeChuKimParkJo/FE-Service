@@ -13,7 +13,7 @@ export function ChatList({ chatList }: { chatList: ChatRoomSummary[] }) {
         {chatList.map((chat) => (
           <li key={chat.chatRoomUuid} className='py-1 '>
             <Link
-              href={`/chat/${chat.chatRoomUuid}`}
+              href={`/chat/${chat.chatRoomUuid}&opponentUuid=${chat.opponentUuid}`}
               className='block rounded-xl transition'
             >
               <ChatSummary chat={chat} />

@@ -36,3 +36,8 @@ export function formatChatDate(date: Date | null) {
   }
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
+
+export function formatChatDateDivider(date: Date) {
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
+}

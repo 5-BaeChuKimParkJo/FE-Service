@@ -15,8 +15,8 @@ export interface ChatMessage {
   message: string;
   messageType: 'TEXT' | 'IMAGE';
   sentAt: string;
-  replyToMessageUuid?: string; // 선택적
-  replyPreview?: ReplyPreview; // 선택적
+  replyToMessageUuid?: string;
+  replyPreview?: ReplyPreview;
 }
 
 export interface ReplyPreview {

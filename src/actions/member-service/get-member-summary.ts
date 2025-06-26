@@ -6,13 +6,13 @@ import { ErrorResponse } from '@/types/api';
 
 export async function getMemberSummary(
   memberUuid: string,
-): Promise<MemberSummary | ErrorResponse> {
+): Promise<MemberSummary> {
   try {
     const response = await instance.get<MemberSummary>(
       `/member-service/api/v1/member/${memberUuid}`,
     );
     return response as MemberSummary;
   } catch (error) {
-    return error as ErrorResponse;
+    throw error as ErrorResponse;
   }
 }

@@ -1,4 +1,4 @@
-export interface ChatMessageResponse {
+export interface ChatMessageResponseType {
   items: ChatMessageType[];
   nextCursor: NextCursor;
 }
@@ -15,8 +15,8 @@ export interface ChatMessageType {
   message: string;
   messageType: 'TEXT' | 'IMAGE';
   sentAt: string;
-  replyToMessageUuid?: string;
-  replyPreview?: ReplyPreview;
+  replyToMessageUuid?: string; // 선택적
+  replyPreview?: ReplyPreview; // 선택적
 }
 
 export interface ReplyPreview {

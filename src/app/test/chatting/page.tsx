@@ -2,40 +2,19 @@
 
 import React from 'react';
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Client } from '@stomp/stompjs';
-import type { ChatMessageType, ReadAckData } from './types';
 import { ChatMessage } from './ChatMessage';
-import ChatInput from './ChatInput';
-import { formatChatDateDivider } from '@/utils/date';
 import {
   exitChatRoom,
-  getChatPresignedUrl,
   getReadCheckPoint,
   getChatHistory,
 } from '@/actions/chat-service';
+import { ChatDateDivider } from '@/components/chat/ChatDateDivider';
+import { ChatLoadingSpinner } from '@/components/chat/ChatLoadingSpinner';
+import { ChatInput } from '@/components/chat/ChatInput';
+import { ChatMessageType, ReadAckData } from '@/types/chat';
+import { ChatService, ChatServiceConfig } from '@/services/chat.service';
 
-function ChatDateDivider({ date }: { date: Date }) {
-  return (
-    <div className='flex justify-center my-4 select-none'>
-      <div className='bg-primary-100/15 text-primary-100 text-sm px-4 py-1 rounded-full'>
-        <span className='inline-flex items-center gap-1'>
-          {formatChatDateDivider(date)}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// 로딩 스피너 컴포넌트
-function LoadingSpinner() {
-  return (
-    <div className='flex justify-center py-4'>
-      <div className='animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500'></div>
-    </div>
-  );
-}
-
-export default function TestChatRoom() {
+export default function ImprovedChatRoom() {
   // 상태 관리
   const [memberUuid, setMemberUuid] = useState(
     'f47efbd1-b1b4-4cb5-93ad-c023c689587e',
@@ -58,9 +37,7 @@ export default function TestChatRoom() {
 
   // Refs
   const chatWindowRef = useRef<HTMLDivElement>(null);
-  const stompClientRef = useRef<Client | null>(null);
-  const socketRef = useRef<WebSocket | null>(null);
-  const subscriptionRef = useRef<{ unsubscribe: () => void } | null>(null);
+  const chatServiceRef = useRef<ChatService | null>(null);
   const lastMessageIdRef = useRef<string | null>(null);
   const lastMessageSentAtRef = useRef<string | null>(null);
   const lastReadTimeByOpponentRef = useRef<Date>(new Date(0));
@@ -126,22 +103,11 @@ export default function TestChatRoom() {
   );
 
   // 읽음 확인 전송
-  const sendReadAck = useCallback(
-    (sentAt: string) => {
-      if (stompClientRef.current?.active) {
-        stompClientRef.current.publish({
-          destination: '/pub/chat/read',
-          body: JSON.stringify({
-            chatRoomUuid,
-            memberUuid,
-            lastReadMessageSentAt: sentAt,
-          }),
-        });
-        console.log('sendReadAck', chatRoomUuid, memberUuid, sentAt);
-      }
-    },
-    [chatRoomUuid, memberUuid],
-  );
+  const sendReadAck = useCallback((sentAt: string) => {
+    if (chatServiceRef.current) {
+      chatServiceRef.current.sendReadAck(sentAt);
+    }
+  }, []);
 
   // 상대방 마지막 읽은 시간 가져오기
   const fetchOpponentCheckPoint = useCallback(async () => {
@@ -223,7 +189,7 @@ export default function TestChatRoom() {
         setLoading(false);
       }
     },
-    [loading, hasMoreMessages, chatRoomUuid, memberUuid, addMessage],
+    [loading, hasMoreMessages, chatRoomUuid, addMessage],
   );
 
   useEffect(() => {
@@ -254,62 +220,39 @@ export default function TestChatRoom() {
 
   // 연결 초기화
   const initConnection = useCallback(() => {
-    const stompClient = new Client({
-      brokerURL: `ws://api.cabbage-secondhand.shop/chat-service/ws/chat?memberUuid=${memberUuid}&chatRoomUuid=${chatRoomUuid}`,
-      heartbeatIncoming: 10000,
-      heartbeatOutgoing: 10000,
-    });
-    console.log('채팅방 입장 성공', memberUuid, chatRoomUuid);
-
-    stompClientRef.current = stompClient;
-
-    stompClient.onConnect = () => {
-      setIsConnected(true);
-      setError(null);
-
-      // 채팅 메시지 구독
-      subscriptionRef.current = stompClient.subscribe(
-        `/topic/chatroom/${chatRoomUuid}`,
-        (message) => {
-          const msg: ChatMessageType = JSON.parse(message.body);
-          const type = (msg.messageType || 'TEXT').toUpperCase() as
-            | 'TEXT'
-            | 'IMAGE';
-          addMessage(msg.senderUuid, msg.message, msg.sentAt, false, type);
-          if (msg.senderUuid !== memberUuid) {
-            sendReadAck(msg.sentAt);
-          }
-        },
-      );
-
-      // 읽음 확인 구독
-      stompClient.subscribe('/user/queue/chatroom/read', (message) => {
-        const data: ReadAckData = JSON.parse(message.body);
+    const config: ChatServiceConfig = {
+      memberUuid,
+      chatRoomUuid,
+      onMessageReceived: (msg: ChatMessageType) => {
+        const type = (msg.messageType || 'TEXT').toUpperCase() as
+          | 'TEXT'
+          | 'IMAGE';
+        addMessage(msg.senderUuid, msg.message, msg.sentAt, false, type);
+        if (msg.senderUuid !== memberUuid) {
+          sendReadAck(msg.sentAt);
+        }
+      },
+      onReadAckReceived: (data: ReadAckData) => {
         const readTime = new Date(data.lastReadMessageSentAt);
         setLastReadTimeByOpponent(readTime);
         lastReadTimeByOpponentRef.current = readTime;
         console.log('읽음 확인 구독', data.lastReadMessageSentAt);
-      });
-
-      // 에러 구독
-      stompClient.subscribe('/user/queue/errors', (message) => {
-        const errorData = JSON.parse(message.body);
-        setError(`에러 (${errorData.code}): ${errorData.message}`);
-      });
-
-      fetchOpponentCheckPoint();
-      fetchMessages(true);
+      },
+      onError: (error: string) => {
+        setError(error);
+      },
+      onConnectionStatusChange: (connected: boolean) => {
+        setIsConnected(connected);
+        if (connected) {
+          setError(null);
+          fetchOpponentCheckPoint();
+          fetchMessages(true);
+        }
+      },
     };
 
-    stompClient.onStompError = (frame) => {
-      console.error('STOMP error', frame);
-      setError(
-        '채팅방 입장 실패: 유저 UUID 또는 채팅방 UUID가 잘못되었습니다.',
-      );
-      setIsConnected(false);
-    };
-
-    stompClient.activate();
+    chatServiceRef.current = new ChatService(config);
+    chatServiceRef.current.connect();
   }, [
     memberUuid,
     chatRoomUuid,
@@ -331,16 +274,11 @@ export default function TestChatRoom() {
     setHasMoreMessages(true);
     lastMessageIdRef.current = null;
 
-    if (subscriptionRef.current) {
-      subscriptionRef.current.unsubscribe();
+    if (chatServiceRef.current) {
+      chatServiceRef.current.disconnect();
     }
 
-    if (stompClientRef.current?.connected) {
-      stompClientRef.current.deactivate();
-      initConnection();
-    } else {
-      initConnection();
-    }
+    initConnection();
   }, [memberUuid, chatRoomUuid, opponentUuid, initConnection]);
 
   // 채팅방 나가기
@@ -355,19 +293,10 @@ export default function TestChatRoom() {
 
       console.log('퇴장 처리 완료');
 
-      // WebSocket 연결 정리
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe();
-        subscriptionRef.current = null;
-      }
-
-      if (stompClientRef.current?.active) {
-        stompClientRef.current.deactivate();
-      }
-
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
+      // ChatService 연결 정리
+      if (chatServiceRef.current) {
+        chatServiceRef.current.disconnect();
+        chatServiceRef.current = null;
       }
 
       // 상태 초기화
@@ -375,7 +304,6 @@ export default function TestChatRoom() {
       setIsConnected(false);
       setError(null);
       setHasMoreMessages(true);
-      stompClientRef.current = null;
       lastMessageIdRef.current = null;
       setLastReadTimeByOpponent(new Date(0));
       lastReadTimeByOpponentRef.current = new Date(0);
@@ -390,62 +318,20 @@ export default function TestChatRoom() {
   // 텍스트 메시지 전송
   const sendMessage = useCallback(() => {
     const message = messageInput.trim();
-    if (!message || !stompClientRef.current?.connected) return;
+    if (!message || !chatServiceRef.current) return;
 
-    stompClientRef.current.publish({
-      destination: '/pub/chat/send',
-      body: JSON.stringify({
-        chatRoomUuid,
-        senderUuid: memberUuid,
-        message,
-        messageType: 'TEXT',
-      }),
-    });
-
-    setMessageInput('');
-  }, [messageInput, chatRoomUuid, memberUuid]);
+    const success = chatServiceRef.current.sendTextMessage(message);
+    if (success) {
+      setMessageInput('');
+    }
+  }, [messageInput]);
 
   // 이미지 전송
-  const sendImage = useCallback(
-    async (file: File) => {
-      if (!file || !stompClientRef.current?.connected) return;
+  const sendImage = useCallback(async (file: File) => {
+    if (!file || !chatServiceRef.current) return;
 
-      try {
-        const contentType = file.type;
-
-        const response = await getChatPresignedUrl(contentType);
-
-        const { url, fields } = response;
-
-        // 파일 업로드
-        const formData = new FormData();
-        for (const key in fields) {
-          formData.append(key, fields[key]);
-        }
-        formData.append('file', file);
-
-        await fetch(url, {
-          method: 'POST',
-          body: formData,
-        });
-
-        // 이미지 메시지 전송
-        stompClientRef.current.publish({
-          destination: '/pub/chat/send',
-          body: JSON.stringify({
-            chatRoomUuid,
-            senderUuid: memberUuid,
-            message: fields.key,
-            messageType: 'IMAGE',
-          }),
-        });
-      } catch (error) {
-        console.error('이미지 업로드 실패', error);
-        setError('이미지 업로드에 실패했습니다.');
-      }
-    },
-    [chatRoomUuid, memberUuid],
-  );
+    await chatServiceRef.current.sendImageMessage(file);
+  }, []);
 
   // 읽지 않은 메시지 확인
   const isMessageUnread = useCallback(
@@ -546,7 +432,7 @@ export default function TestChatRoom() {
           <div ref={loadTriggerRef} className='h-1'></div>
 
           {/* 로딩 및 에러 표시 */}
-          {loading && <LoadingSpinner />}
+          {loading && <ChatLoadingSpinner />}
           {error && (
             <div className='flex flex-col items-center py-4 text-red-500'>
               <p className='text-sm mb-2'>{error}</p>
@@ -575,7 +461,8 @@ export default function TestChatRoom() {
               msg.senderUuid === 'test-buyer-uuid'
                 ? '/placeholder.svg?height=32&width=32'
                 : '/placeholder.svg?height=32&width=32';
-            const senderName = msg.senderUuid;
+            const senderName =
+              msg.senderUuid === 'test-buyer-uuid' ? '구매자' : '판매자';
 
             // 시간 표시 여부
             const nextMsg = messages[index + 1];

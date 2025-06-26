@@ -1,32 +1,7 @@
-export interface ChatMessageResponseType {
-  items: ChatMessageType[];
-  nextCursor: NextCursor;
-}
-
-export type NextCursor = {
-  lastMessageUuid: string;
-  lastMessageSentAt: string;
-};
-
-export interface ChatMessageType {
-  messageUuid: string;
-  chatRoomUuid: string;
-  senderUuid: string;
-  message: string;
-  messageType: 'TEXT' | 'IMAGE';
-  sentAt: string;
-  replyToMessageUuid?: string; // 선택적
-  replyPreview?: ReplyPreview; // 선택적
-}
-
 export interface ReplyPreview {
   senderUuid: string;
   message: string;
   messageType: string;
-}
-
-export interface ReadAckData {
-  lastReadMessageSentAt: string;
 }
 
 export interface ErrorMessage {

@@ -1,7 +1,7 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 import { MemberInfo } from '@/types/member';
 
 export async function getMemberInfo(

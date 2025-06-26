@@ -1,7 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 import { MemberInfo } from '@/types/member';
 import { ErrorResponse } from '@/types/api';
 

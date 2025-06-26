@@ -1,7 +1,7 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 type TagIdResponse = {
   tagId: number;

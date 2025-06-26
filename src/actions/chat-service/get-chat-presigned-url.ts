@@ -1,7 +1,7 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 type GetChatPresignedUrlResponse = {
   url: string;
@@ -10,7 +10,7 @@ type GetChatPresignedUrlResponse = {
 
 export async function getChatPresignedUrl(contentType: string) {
   try {
-    const response = instance.get<GetChatPresignedUrlResponse | ErrorResponse>(
+    const response = await instance.get<GetChatPresignedUrlResponse>(
       `/chat-service/api/v1/pre-signed-url?contentType=${encodeURIComponent(contentType)}`,
     );
 

@@ -1,7 +1,7 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function createBid(auctionUuid: string, bidAmount: number) {
   // const response = await instance.post<null | ErrorResponse>(

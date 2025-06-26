@@ -1,32 +1,23 @@
 'use server';
 
-import { ChatMessage } from '@/types/chat';
-import { instance } from '../instance';
+import { GetChatHistoryResponse } from '@/types/chat';
+import { instance } from '@/actions/instance';
 import { ErrorResponse } from '@/types/api';
 
-type GetChatHistoryResponse = {
-  items: ChatMessage[];
-  nextCursor: NextCursorType;
-};
-
-type NextCursorType = {
-  messageId: string;
-};
-
-// 무한스크롤 방식 바뀌면 수정요함
 export async function getChatHistory(
   chatRoomUuid: string,
   lastMessageUuid?: string,
-) {
+  lastMessageSentAt?: string,
+): Promise<GetChatHistoryResponse> {
   try {
-    if (lastMessageUuid) {
-      const response = instance.get<GetChatHistoryResponse | ErrorResponse>(
-        `/chat-service/api/v1/chat/messages/history?chatRoomUuid=${chatRoomUuid}&lastMessageUuid=${lastMessageUuid}`,
+    if (lastMessageUuid && lastMessageSentAt) {
+      const response = await instance.get<GetChatHistoryResponse>(
+        `/chat-service/api/v1/chat/messages/history?chatRoomUuid=${chatRoomUuid}&lastMessageUuid=${lastMessageUuid}&lastMessageSentAt=${lastMessageSentAt}`,
       );
       return response;
     }
 
-    const response = instance.get<GetChatHistoryResponse | ErrorResponse>(
+    const response = await instance.get<GetChatHistoryResponse>(
       `/chat-service/api/v1/chat/messages/history?chatRoomUuid=${chatRoomUuid}`,
     );
     return response;

@@ -1,7 +1,7 @@
 'use server';
 
 import { CreateAuctionRequest, CreateAuctionResponse } from '@/types/auction';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function createAuction(
   request: CreateAuctionRequest,

@@ -1,7 +1,7 @@
 'use server';
 
 import { CreateProductRequest } from '@/types/product';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 import { ErrorResponse } from '@/types/api';
 
 type CreateProductResponse = {

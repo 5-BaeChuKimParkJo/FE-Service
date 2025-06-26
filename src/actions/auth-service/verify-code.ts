@@ -1,6 +1,6 @@
 'use server';
 
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function verifyCode(
   phoneNumber: string,

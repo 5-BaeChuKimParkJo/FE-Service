@@ -1,15 +1,15 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function exitChatRoom(chatRoomUuid: string) {
   try {
-    const response = instance.post<void | ErrorResponse>(
+    const response = await instance.post<void>(
       `/chat-service/api/v1/chatroom/exit/${chatRoomUuid}`,
     );
 
-    return response;
+    return response as void;
   } catch (error) {
     throw error as ErrorResponse;
   }

@@ -1,5 +1,5 @@
 export interface ChatMessageResponse {
-  items: ChatMessage[];
+  items: ChatMessageType[];
   nextCursor: NextCursor;
 }
 
@@ -8,7 +8,7 @@ export type NextCursor = {
   lastMessageSentAt: string;
 };
 
-export interface ChatMessage {
+export interface ChatMessageType {
   messageUuid: string;
   chatRoomUuid: string;
   senderUuid: string;

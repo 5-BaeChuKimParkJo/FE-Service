@@ -277,6 +277,7 @@ export const useChat = ({
     disconnect,
     sendMessage,
     sendImage,
+    sendReadAck,
     isMessageUnread,
     retryFetchMessages,
 

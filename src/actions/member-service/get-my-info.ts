@@ -1,7 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 import { MemberInfo } from '@/types/member';
 import { ErrorResponse } from '@/types/api';
 
@@ -18,7 +18,6 @@ export async function getMyInfo(): Promise<MemberInfo | ErrorResponse> {
     const response = await instance.get<MemberInfo>(
       `/member-service/api/v1/member/${memberUuid}`,
       {
-        requireAuth: true,
         cache: 'no-cache',
       },
     );

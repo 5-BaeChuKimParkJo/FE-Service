@@ -1,6 +1,6 @@
 'use server';
 
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function sendCode(phoneNumber: string) {
   await instance.post(`/auth-service/api/v1/identity-verification/sms/send`, {

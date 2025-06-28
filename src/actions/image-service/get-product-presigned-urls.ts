@@ -1,7 +1,7 @@
 'use server';
 
 import { PresignedUrlRequest, PresignedUrlResponse } from '@/types/image';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function getProductPresignedUrls(requests: PresignedUrlRequest[]) {
   try {
@@ -9,9 +9,6 @@ export async function getProductPresignedUrls(requests: PresignedUrlRequest[]) {
       const response = await instance.post<PresignedUrlResponse>(
         '/product-service/api/v1/product/presigned-url',
         req,
-        {
-          requireAuth: true,
-        },
       );
 
       return {

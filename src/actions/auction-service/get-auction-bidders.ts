@@ -1,7 +1,7 @@
 'use server';
 
 import { AuctionBiddersResponse } from '@/types/auction';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 import { ErrorResponse } from '@/types/api';
 
 export async function getAuctionBidders(

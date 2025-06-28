@@ -20,10 +20,44 @@ export interface AuctionPreview {
 // 더미 데이터 예시
 const dummyAuction: AuctionPreview = {
   auctionUuid: '1',
-  title: '경매상품 테스트 제목',
+  title: '하트모양 가방',
+  imageUrl: '/images/dummy/dummy1.png',
+  minimumBid: 17000,
+  currentPrice: 29000,
+  startAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2시간 전 시작
+  endAt: new Date(Date.now() + 1000 * 60 * 60 * 2 + 1000 * 36).toISOString(), // 2시간 36초 후 종료
+  status: 'active',
+  isLiked: true,
+};
+
+const dummyAuction2: AuctionPreview = {
+  auctionUuid: '2',
+  title: '인형 세트(낱개 판매 가능)',
   imageUrl: '/images/dummy/dummy2.png',
   minimumBid: 215000,
   currentPrice: 700000,
+  startAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2시간 전 시작
+  endAt: new Date(Date.now() + 1000 * 60 * 60 + 1000 * 36).toISOString(), // 2시간 36초 후 종료
+  status: 'active',
+  isLiked: true,
+};
+const dummyAuction3: AuctionPreview = {
+  auctionUuid: '3',
+  title: '쿠로미 응원봉',
+  imageUrl: '/images/dummy/dummy3.png',
+  minimumBid: 15000,
+  currentPrice: 34500,
+  startAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2시간 전 시작
+  endAt: new Date(Date.now() + 1000 * 60 * 60 + 1000 * 36).toISOString(), // 2시간 36초 후 종료
+  status: 'active',
+  isLiked: true,
+};
+const dummyAuction4: AuctionPreview = {
+  auctionUuid: '4',
+  title: '에어팟 3세대',
+  imageUrl: '/images/dummy/dummy4.png',
+  minimumBid: 100000,
+  currentPrice: 150000,
   startAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2시간 전 시작
   endAt: new Date(Date.now() + 1000 * 60 * 60 * 2 + 1000 * 36).toISOString(), // 2시간 36초 후 종료
   status: 'active',
@@ -31,10 +65,21 @@ const dummyAuction: AuctionPreview = {
 };
 
 export function AuctionPreviewCard({
-  auction = dummyAuction,
+  number,
 }: {
   auction?: AuctionPreview;
+  number: number;
 }) {
+  let auction = dummyAuction;
+  if (number === 1) {
+    auction = dummyAuction;
+  } else if (number === 2) {
+    auction = dummyAuction2;
+  } else if (number === 3) {
+    auction = dummyAuction3;
+  } else if (number === 4) {
+    auction = dummyAuction4;
+  }
   return (
     <Link
       href={`/auction/${auction.auctionUuid}`}

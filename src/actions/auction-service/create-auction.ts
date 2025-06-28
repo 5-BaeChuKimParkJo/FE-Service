@@ -1,7 +1,7 @@
 'use server';
 
 import { CreateAuctionRequest, CreateAuctionResponse } from '@/types/auction';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function createAuction(
   request: CreateAuctionRequest,
@@ -10,9 +10,6 @@ export async function createAuction(
     const response = await instance.post<CreateAuctionResponse>(
       '/auction-service/api/v1/auctions',
       request,
-      {
-        requireAuth: true,
-      },
     );
 
     return response;

@@ -1,6 +1,6 @@
 'use server';
 
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 import { ErrorResponse } from '@/types/api';
 // import { AuctionDetailResponse } from '@/types/auction';
 import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';

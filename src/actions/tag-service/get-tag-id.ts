@@ -1,7 +1,7 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 type TagIdResponse = {
   tagId: number;
@@ -16,7 +16,6 @@ export async function getTagId(name: string): Promise<number | ErrorResponse> {
     const response = await instance.get<TagIdResponse>(
       `/tag-service/api/v1/tag/name/${name}`,
       {
-        requireAuth: true,
         cache: 'force-cache',
       },
     );

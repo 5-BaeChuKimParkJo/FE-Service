@@ -1,7 +1,7 @@
 'use server';
 
 import { PresignedUrlRequest, PresignedUrlResponse } from '@/types/image';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function getPresignedUrls(requests: PresignedUrlRequest[]) {
   try {
@@ -9,9 +9,6 @@ export async function getPresignedUrls(requests: PresignedUrlRequest[]) {
       const response = await instance.post<PresignedUrlResponse>(
         '/auction-service/api/v1/auctions/presigned-url',
         req,
-        {
-          requireAuth: true,
-        },
       );
 
       return {

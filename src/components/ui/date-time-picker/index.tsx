@@ -46,9 +46,7 @@ export function DateTimePicker({
       <div
         className={cn(
           'w-full px-4 py-4 text-base border rounded-xl transition-colors duration-200',
-          disabled
-            ? 'opacity-50 cursor-not-allowed'
-            : 'cursor-pointer hover:border-gray-400',
+          disabled ? 'opacity-50 cursor-not-allowed' : ' hover:border-gray-400',
           className,
         )}
         onClick={handleOpen}

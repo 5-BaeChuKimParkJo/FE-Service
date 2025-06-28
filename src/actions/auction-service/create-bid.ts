@@ -1,7 +1,7 @@
 'use server';
 
 import { ErrorResponse } from '@/types/api';
-import { instance } from '../instance';
+import { instance } from '@/actions/instance';
 
 export async function createBid(auctionUuid: string, bidAmount: number) {
   // const response = await instance.post<null | ErrorResponse>(
@@ -9,9 +9,7 @@ export async function createBid(auctionUuid: string, bidAmount: number) {
   //   {
   //     bidAmount,
   //   },
-  //   {
-  //     requireAuth: true,
-  //   },
+
   // );
   // return response;
 
@@ -20,9 +18,6 @@ export async function createBid(auctionUuid: string, bidAmount: number) {
       `/auction-service/api/v1/auctions/${auctionUuid}/bidders`,
       {
         bidAmount,
-      },
-      {
-        requireAuth: true,
       },
     );
     console.log(response, 'response');

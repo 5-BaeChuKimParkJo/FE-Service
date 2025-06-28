@@ -6,6 +6,7 @@ import { ToastProvider } from '@/contexts/ToastContext';
 import { GlobalTimerProvider } from '@/contexts/GlobalTimerContext';
 import { QueryClient } from '@tanstack/react-query';
 import { getCategories } from '@/actions/category-service/get-categories';
+import { SseProvider } from '@/providers/SseProvider';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.cabbage-secondhand.shop'),
@@ -52,7 +53,9 @@ export default async function RootLayout({
         <QueryProvider>
           <AlertProvider>
             <ToastProvider>
-              <GlobalTimerProvider>{children}</GlobalTimerProvider>
+              <SseProvider>
+                <GlobalTimerProvider>{children}</GlobalTimerProvider>
+              </SseProvider>
             </ToastProvider>
           </AlertProvider>
         </QueryProvider>

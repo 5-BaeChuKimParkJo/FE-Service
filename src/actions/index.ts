@@ -1,2 +1,2 @@
-export { auth } from './auth-service';
 export * from './instance';
+export * from './auth';

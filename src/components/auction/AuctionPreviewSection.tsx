@@ -21,10 +21,9 @@ export function AuctionPreviewSection() {
         </Link>
       </div>
       <section className='flex flex-nowrap overflow-x-auto gap-x-2 scrollbar-hide -mx-4 px-4'>
-        <AuctionPreviewCard />
-        <AuctionPreviewCard />
-        <AuctionPreviewCard />
-        <AuctionPreviewCard />
+        {Array.from({ length: 2 }).map((_, index) => (
+          <AuctionPreviewCard key={index} number={index + 1} />
+        ))}
       </section>
       {/* 관심 상품 섹션 */}
       <div className='flex gap-x-2'>
@@ -41,10 +40,9 @@ export function AuctionPreviewSection() {
         </Link>
       </div>
       <section className='flex flex-nowrap overflow-x-auto gap-x-2 scrollbar-hide -mx-4 px-4'>
-        <AuctionPreviewCard />
-        <AuctionPreviewCard />
-        <AuctionPreviewCard />
-        <AuctionPreviewCard />
+        {Array.from({ length: 2 }).map((_, index) => (
+          <AuctionPreviewCard key={index} number={index + 3} />
+        ))}
       </section>
     </>
   );

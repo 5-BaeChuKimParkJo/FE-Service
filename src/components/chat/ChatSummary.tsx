@@ -1,18 +1,14 @@
 import Image from 'next/image';
 import type { ChatRoomSummary } from '@/types/chat';
-import { getMemberSummary } from '@/actions/member-service';
-import { isErrorResponse } from '@/utils/type-guards';
+import type { MemberSummary } from '@/types/member';
 import { formatChatDate } from '@/utils/date';
 
 interface ChatSummaryProps {
   chat: ChatRoomSummary;
+  memberInfo: MemberSummary;
 }
 
-export async function ChatSummary({ chat }: ChatSummaryProps) {
-  const memberInfo = await getMemberSummary(chat.opponentUuid);
-  if (isErrorResponse(memberInfo)) {
-    return <div>채팅 상대 정보 불러오기 실패</div>;
-  }
+export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
   const profileUrl = memberInfo.profileImageUrl || '/images/dummy/dummy2.png';
   const nickname = memberInfo.nickname;
   const preview = chat.lastMessage;
@@ -22,7 +18,7 @@ export async function ChatSummary({ chat }: ChatSummaryProps) {
   const productImage = '/images/dummy/dummy1.png';
 
   return (
-    <article className='flex items-center justify-between gap-4 py-3 '>
+    <article className='flex items-center justify-between gap-4 py-3'>
       <section className='flex items-center gap-4 flex-1 min-w-0'>
         <figure className='flex-shrink-0 w-14 h-14 rounded-full overflow-hidden bg-gray-200'>
           <Image

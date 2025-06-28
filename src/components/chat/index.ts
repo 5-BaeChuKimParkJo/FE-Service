@@ -5,3 +5,4 @@ export * from './ChatSummary';
 export * from './ChatDateDivider';
 export * from './ChatLoadingSpinner';
 export * from './ChatInput';
+export * from './ChatPageClient';

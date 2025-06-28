@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import type { ChatMessageType } from './types';
+import React, { memo, useState } from 'react';
+import type { ChatMessageType } from '@/types/chat';
 import Image from 'next/image';
-import ProfileImage from './ProfileImage';
-import ImageModal from './ImageModal';
+import ProfileImage from '../../app/test/chatting/ProfileImage';
+import ImageModal from '../../app/test/chatting/ImageModal';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -14,7 +14,7 @@ interface ChatMessageProps {
   showTime?: boolean;
 }
 
-export function ChatMessage(props: ChatMessageProps) {
+export const ChatMessage = memo<ChatMessageProps>((props) => {
   const {
     message,
     isFromMe,
@@ -83,6 +83,8 @@ export function ChatMessage(props: ChatMessageProps) {
       />
     </>
   );
+  // 삭제 예정
+  console.log(profileUrl);
 
   const MessageContent = () =>
     message.messageType === 'TEXT' ? <TextMessage /> : <ImageMessage />;
@@ -102,7 +104,12 @@ export function ChatMessage(props: ChatMessageProps) {
     <div className='flex flex-row items-start gap-2'>
       <div className='w-10 h-10 flex-shrink-0'>
         {profileVisible && (
-          <ProfileImage src={profileUrl} alt={senderName} size={40} />
+          <ProfileImage
+            // src={profileUrl || '/images/dummy/dummy1.png'}
+            src={'/images/dummy/dummy1.png'}
+            alt={senderName}
+            size={40}
+          />
         )}
       </div>
       <div className='flex flex-col items-start'>
@@ -116,4 +123,6 @@ export function ChatMessage(props: ChatMessageProps) {
       </div>
     </div>
   );
-}
+});
+
+ChatMessage.displayName = 'ChatMessage';

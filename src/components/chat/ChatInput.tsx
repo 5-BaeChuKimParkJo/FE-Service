@@ -1,6 +1,6 @@
 'use client';
 import { ImageUpIcon } from 'lucide-react';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import SendIcon from '@/assets/icons/common/send.svg';
 
 interface ChatInputProps {
@@ -19,11 +19,27 @@ export function ChatInput({
   disabled = false,
 }: ChatInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      onSendMessage();
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      const scrollHeight = textarea.scrollHeight;
+      const lineHeight = 24;
+      const maxHeight = lineHeight * 4;
+
+      textarea.style.height = Math.min(scrollHeight, maxHeight) + 'px';
     }
+  }, [message]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSendMessage();
+  };
+
+  const handleSendClick = () => {
+    onSendMessage();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,19 +51,13 @@ export function ChatInput({
   };
 
   return (
-    <footer className='p-2 border-t bg-white'>
-      <form
-        className='flex gap-2 mb-2'
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSendMessage();
-        }}
-      >
+    <div className='p-2 border-t bg-white'>
+      <form className='flex gap-2 items-end' onSubmit={handleSubmit}>
         <button
           type='button'
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
-          className='px-2  text-primary-200 rounded-full disabled:cursor-not-allowed'
+          className='px-2 text-primary-200 rounded-full disabled:cursor-not-allowed mb-2'
           aria-label='이미지 업로드'
         >
           <input
@@ -60,25 +70,26 @@ export function ChatInput({
           />
           <ImageUpIcon className='w-4 h-4' />
         </button>
-        <input
-          type='text'
+        <textarea
+          ref={textareaRef}
           value={message}
           onChange={(e) => onMessageChange(e.target.value)}
-          onKeyPress={handleKeyPress}
           placeholder='메시지 입력'
           disabled={disabled}
-          className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100'
+          rows={1}
+          className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 resize-none leading-6 min-h-[2.5rem] max-h-24 overflow-y-auto'
           aria-label='메시지 입력창'
         />
         <button
-          type='submit'
+          type='button'
+          onClick={handleSendClick}
           disabled={disabled || !message.trim()}
-          className='  text-primary-200    disabled:cursor-not-allowed'
+          className='text-primary-200 disabled:cursor-not-allowed mb-2'
           aria-label='메시지 전송'
         >
           <SendIcon className='w-5 h-5 text-primary-200' />
         </button>
       </form>
-    </footer>
+    </div>
   );
 }

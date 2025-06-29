@@ -25,6 +25,7 @@ export interface MemberResponseDto {
   honor: MemberHonor;
   state: MemberState;
   profileImageUrl: string | null;
+  point?: number;
 }
 
 export interface ImageResponseDto {

@@ -32,15 +32,7 @@ export default async function AuctionPage({
   return (
     <main className='min-h-screen flex flex-col'>
       <ItemImages images={auction.images} />
-      <ItemInfoSection
-        auction={auction}
-        memberInfo={memberInfo}
-        bidAmount={
-          bidders.items.length > 0
-            ? bidders.items[0].bidAmount
-            : auction.minimumBid
-        }
-      />
+      <ItemInfoSection auction={auction} />
       <ItemDescriptionSection description={auction.description} />
       <BiddersSection bidders={bidders.items} />
       <BidderForm

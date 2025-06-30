@@ -8,11 +8,13 @@ import { useOptimizedMessages } from '@/hooks/chat/use-optimized-messages';
 import type {
   ChatMessageResponseType,
   ChatroomInfoResponse,
+  ChatMessageType,
 } from '@/types/chat';
 import type { MemberSummary } from '@/types/member';
 
 interface ChatRoomProps {
-  initialChat: ChatMessageResponseType;
+  initialChat: ChatMessageType[];
+  initialNextCursor: ChatMessageResponseType['nextCursor'];
   opponentInfo: MemberSummary;
   chatroomInfo: ChatroomInfoResponse;
   memberUuid: string;
@@ -20,6 +22,7 @@ interface ChatRoomProps {
 
 export const ChatRoom = ({
   initialChat,
+  initialNextCursor,
   opponentInfo,
   chatroomInfo,
   memberUuid,
@@ -44,21 +47,22 @@ export const ChatRoom = ({
     chatRoomUuid: chatroomInfo.chatRoomUuid,
     opponentUuid: opponentInfo.memberUuid,
     chatWindowRef,
-    initialMessages: initialChat.items || [], // 서버에서 받은 초기 메시지들
+    initialMessages: initialChat,
+    initialNextCursor,
     autoConnect: true, // 자동 연결
   });
 
   // 채팅방 접속 시 읽음 처리
   useEffect(() => {
-    if (isConnected && initialChat.items && initialChat.items.length > 0) {
+    if (isConnected && initialChat.length > 0) {
       // 가장 최근 메시지 (상대방이 보낸 메시지)의 시간으로 읽음 처리
-      const latestMessage = initialChat.items[0]; // 최신 메시지는 첫 번째
+      const latestMessage = initialChat[0]; // 최신 메시지는 첫 번째
       if (latestMessage && latestMessage.senderUuid !== memberUuid) {
         console.log('채팅방 접속 시 읽음 처리:', latestMessage.sentAt);
         sendReadAck(latestMessage.sentAt);
       }
     }
-  }, [isConnected, initialChat.items, memberUuid, sendReadAck]);
+  }, [isConnected, initialChat, memberUuid, sendReadAck]);
 
   // 메시지 최적화 훅 사용
   const optimizedMessages = useOptimizedMessages(

@@ -24,14 +24,15 @@ export default async function ChatRoomPage({
   )?.memberUuid;
 
   return (
-    <>
+    <div className='flex flex-col h-screen bg-white'>
       <ChatRoomHeader />
       <ChatRoom
-        initialChat={initialChat}
+        initialChat={initialChat.items}
+        initialNextCursor={initialChat.nextCursor}
         opponentInfo={opponentInfo}
         chatroomInfo={chatroomInfo}
         memberUuid={memberUuid as string}
       />
-    </>
+    </div>
   );
 }

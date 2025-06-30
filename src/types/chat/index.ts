@@ -19,11 +19,11 @@ export interface ReadAckData {
 
 export interface ChatRoomSummary {
   chatRoomUuid: string;
+  opponentUuid: string;
   lastMessage: string;
   messageType: 'TEXT' | 'IMAGE' | 'SYSTEM';
   lastMessageSentAt: string;
   unreadCount: number;
-  opponentMemberInfo: MemberSummary;
 }
 
 export interface ChatMessageType {
@@ -33,14 +33,14 @@ export interface ChatMessageType {
   message: string;
   messageType: 'TEXT' | 'IMAGE' | 'SYSTEM';
   sentAt: string;
-  replyToMessageUuid?: string; // 선택적
+  replyToMessageUuid?: string;
 }
 
 export interface ChatMessageResponseType {
   nextCursor: {
     lastMessageUuid: string;
     lastMessageSentAt: string;
-  };
+  } | null;
   items: ChatMessageType[];
 }
 

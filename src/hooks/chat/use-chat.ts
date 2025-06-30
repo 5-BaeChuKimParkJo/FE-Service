@@ -19,6 +19,10 @@ export interface UseChatParams {
   maxMessages?: number;
   enableInfinityScroll?: boolean;
   initialMessages?: ChatMessageType[];
+  initialNextCursor?: {
+    lastMessageUuid: string;
+    lastMessageSentAt: string;
+  } | null;
   autoConnect?: boolean;
 }
 
@@ -30,6 +34,7 @@ export const useChat = ({
   maxMessages = 500,
   enableInfinityScroll = true,
   initialMessages = [],
+  initialNextCursor = null,
   autoConnect = false,
 }: UseChatParams) => {
   const [messageInput, setMessageInput] = useState('');
@@ -236,13 +241,19 @@ export const useChat = ({
   useEffect(() => {
     let mounted = true;
 
+    // 초기 메시지 및 커서 설정
     if (initialMessages.length > 0 && mounted) {
       clearMessages();
       initialMessages.forEach((msg) => addMessage(msg, true));
 
-      const lastMsg = initialMessages[0];
-      if (lastMsg) {
-        setCursor(lastMsg.messageUuid, lastMsg.sentAt);
+      if (initialNextCursor) {
+        setCursor(
+          initialNextCursor.lastMessageUuid,
+          initialNextCursor.lastMessageSentAt,
+        );
+      } else {
+        // initialMessages는 있는데 nextCursor가 없다면, 더 이상 메시지가 없는 것
+        setHasMoreMessages(false);
       }
 
       setTimeout(() => {
@@ -252,9 +263,14 @@ export const useChat = ({
       }, 100);
     }
 
+    // 소켓 연결 및 상대방 읽음 시간 확인
     if (autoConnect && memberUuid && chatRoomUuid && opponentUuid && mounted) {
       connectSocket();
       fetchOpponentCheckPoint();
+      // initialMessages가 없을 때만 fetchMessages 호출
+      if (initialMessages.length === 0) {
+        fetchMessages(true);
+      }
     }
 
     return () => {

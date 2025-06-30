@@ -20,7 +20,6 @@ export default async function AuctionPage({
 
   const auction = await getAuctionDetail(id);
   const bidders = await getAuctionBidders(id);
-  console.log(auction);
 
   if (isErrorResponse(auction) || isErrorResponse(bidders)) {
     return <ErrorText>Auction not found</ErrorText>;

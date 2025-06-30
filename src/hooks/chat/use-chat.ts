@@ -168,7 +168,7 @@ export const useChat = ({
     chatRoomUuid,
     onMessageReceived: (msg: ChatMessageType) => {
       addMessage(msg);
-      if (msg.senderUuid !== memberUuid) {
+      if (msg.senderUuid !== memberUuid || msg.messageType === 'SYSTEM') {
         sendReadAck(msg.sentAt);
       }
     },

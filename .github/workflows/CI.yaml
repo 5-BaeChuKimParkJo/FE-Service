@@ -11,6 +11,7 @@ env:
   ECR_REPOSITORY: cabbage/frontend-service
   SERVICE_NAME: frontend-service
   NEXT_PUBLIC_S3_HOSTNAME: ${{ secrets.NEXT_PUBLIC_S3_HOSTNAME }}
+  NEXT_S3_HOSTNAME: ${{ secrets.NEXT_S3_HOSTNAME }}
 
 jobs:
   build:

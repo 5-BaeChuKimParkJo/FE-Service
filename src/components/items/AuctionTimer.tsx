@@ -21,7 +21,6 @@ export function AuctionTimer({ startAt, endAt }: AuctionTimerProps) {
     setMounted(true);
   }, []);
 
-  // 실시간으로 시간 계산 (상태 없이)
   const timeData = calculateAuctionTime(startAt, endAt, now);
   const timeText = getDetailedTimeLeftText(timeData);
   const styles = getTimerStyles(timeData);

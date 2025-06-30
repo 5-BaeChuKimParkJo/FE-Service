@@ -19,6 +19,10 @@ export interface UseChatParams {
   maxMessages?: number;
   enableInfinityScroll?: boolean;
   initialMessages?: ChatMessageType[];
+  initialNextCursor?: {
+    lastMessageUuid: string;
+    lastMessageSentAt: string;
+  } | null;
   autoConnect?: boolean;
 }
 
@@ -30,11 +34,13 @@ export const useChat = ({
   maxMessages = 500,
   enableInfinityScroll = true,
   initialMessages = [],
+  initialNextCursor = null,
   autoConnect = false,
 }: UseChatParams) => {
   const [messageInput, setMessageInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isInitialScrollDone, setIsInitialScrollDone] = useState(false);
 
   const {
     messages,
@@ -168,7 +174,7 @@ export const useChat = ({
     chatRoomUuid,
     onMessageReceived: (msg: ChatMessageType) => {
       addMessage(msg);
-      if (msg.senderUuid !== memberUuid) {
+      if (msg.senderUuid !== memberUuid || msg.messageType === 'SYSTEM') {
         sendReadAck(msg.sentAt);
       }
     },
@@ -236,25 +242,30 @@ export const useChat = ({
   useEffect(() => {
     let mounted = true;
 
+    // 초기 메시지 및 커서 설정
     if (initialMessages.length > 0 && mounted) {
       clearMessages();
       initialMessages.forEach((msg) => addMessage(msg, true));
 
-      const lastMsg = initialMessages[0];
-      if (lastMsg) {
-        setCursor(lastMsg.messageUuid, lastMsg.sentAt);
+      if (initialNextCursor) {
+        setCursor(
+          initialNextCursor.lastMessageUuid,
+          initialNextCursor.lastMessageSentAt,
+        );
+      } else {
+        // initialMessages는 있는데 nextCursor가 없다면, 더 이상 메시지가 없는 것
+        setHasMoreMessages(false);
       }
-
-      setTimeout(() => {
-        if (mounted && chatWindowRef.current) {
-          chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-        }
-      }, 100);
     }
 
+    // 소켓 연결 및 상대방 읽음 시간 확인
     if (autoConnect && memberUuid && chatRoomUuid && opponentUuid && mounted) {
       connectSocket();
       fetchOpponentCheckPoint();
+      // initialMessages가 없을 때만 fetchMessages 호출
+      if (initialMessages.length === 0) {
+        fetchMessages(true);
+      }
     }
 
     return () => {
@@ -262,6 +273,13 @@ export const useChat = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (messages.length > 0 && !isInitialScrollDone && chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+      setIsInitialScrollDone(true);
+    }
+  }, [messages, isInitialScrollDone, chatWindowRef]);
 
   return {
     messageInput,

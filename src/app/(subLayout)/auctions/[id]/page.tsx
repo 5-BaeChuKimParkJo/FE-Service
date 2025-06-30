@@ -3,7 +3,12 @@ import { getMemberInfo } from '@/actions/member-service';
 import { BiddersSection } from '@/components/auction/detail';
 import { BidderForm } from '@/components/auction/detail/BidderForm';
 import { ItemImages } from '@/components/images';
-import { ItemDescriptionSection, ItemInfoSection } from '@/components/items';
+import {
+  AuctionTimer,
+  ItemDescriptionSection,
+  ItemInfoSection,
+} from '@/components/items';
+import ErrorText from '@/components/ui/error-text';
 import { isErrorResponse } from '@/utils/type-guards';
 
 export default async function AuctionPage({
@@ -15,10 +20,9 @@ export default async function AuctionPage({
 
   const auction = await getAuctionDetail(id);
   const bidders = await getAuctionBidders(id);
-  console.log(auction);
 
   if (isErrorResponse(auction) || isErrorResponse(bidders)) {
-    return <div>Auction not found</div>;
+    return <ErrorText>Auction not found</ErrorText>;
   }
   if (isErrorResponse(bidders)) {
     return <div>Bidders not found</div>;
@@ -32,15 +36,10 @@ export default async function AuctionPage({
   return (
     <main className='min-h-screen flex flex-col'>
       <ItemImages images={auction.images} />
-      <ItemInfoSection
-        auction={auction}
-        memberInfo={memberInfo}
-        bidAmount={
-          bidders.items.length > 0
-            ? bidders.items[0].bidAmount
-            : auction.minimumBid
-        }
-      />
+      <ItemInfoSection auction={auction} />
+      <div className=' px-4'>
+        <AuctionTimer startAt={auction.startAt} endAt={auction.endAt} />
+      </div>
       <ItemDescriptionSection description={auction.description} />
       <BiddersSection bidders={bidders.items} />
       <BidderForm

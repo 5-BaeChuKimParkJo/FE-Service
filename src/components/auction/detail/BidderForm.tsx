@@ -97,36 +97,23 @@ export function BidderForm({
     }, 0);
   };
 
-  let bidButtonText = '입찰하기';
-  let bidButtonDisabled = loading;
   const numAmount = parseInt(inputAmount, 10);
-  if (status === 'waiting') {
-    bidButtonText = '입찰 대기';
-    bidButtonDisabled = true;
-  } else if (status !== 'active') {
-    bidButtonText = '입찰 마감';
-    bidButtonDisabled = true;
-  }
-  if (
+  const isAmountInvalid =
     inputAmount === '' ||
     isNaN(numAmount) ||
     numAmount < bidAmount ||
-    numAmount > Math.floor(bidAmount * 1.3)
-  ) {
-    bidButtonDisabled = true;
+    numAmount > Math.floor(bidAmount * 1.3);
+  const bidButtonDisabled = loading || isAmountInvalid;
+
+  if (status !== 'active') {
+    return null;
   }
 
   return (
     <footer className='fixed bottom-0 left-0 w-full z-30'>
       <div className='flex justify-center mx-10 my-2'>
-        <Button
-          width='full'
-          size='xl'
-          onClick={() => setOpen(true)}
-          disabled={status !== 'active'}
-          className={status !== 'active' ? 'opacity-50 cursor-not-allowed' : ''}
-        >
-          {bidButtonText}
+        <Button width='full' size='xl' onClick={() => setOpen(true)}>
+          입찰하기
         </Button>
       </div>
       <Dialog isOpen={open} onClose={handleClose} size='md' showCloseButton>
@@ -162,7 +149,7 @@ export function BidderForm({
                   handleBid();
                 }}
                 inputRef={inputRef}
-                bidButtonText={bidButtonText}
+                bidButtonText='입찰하기'
                 bidButtonDisabled={bidButtonDisabled}
               />
             )}

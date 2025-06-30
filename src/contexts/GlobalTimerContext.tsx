@@ -1,41 +1,101 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 // 글로벌 타이머 Context
-const GlobalTimerContext = createContext<number>(0);
+const GlobalTimerContext = createContext<{
+  now: number;
+  subscribe: (callback: () => void) => () => void;
+} | null>(null);
 
-// 글로벌 타이머 Provider (App.tsx나 최상위에서 사용)
+// 글로벌 타이머 Provider
 export function GlobalTimerProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [now, setNow] = useState(() => Date.now());
+  const listenersRef = useRef(new Set<() => void>());
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // 구독자 관리
+  const subscribe = (callback: () => void) => {
+    listenersRef.current.add(callback);
+
+    // 첫 번째 구독자가 생기면 타이머 시작
+    if (listenersRef.current.size === 1 && !timerRef.current) {
+      timerRef.current = setInterval(() => {
+        const newTime = Date.now();
+        setNow(newTime);
+        // 구독자들에게 알림
+        listenersRef.current.forEach((cb) => cb());
+      }, 1000);
+    }
+
+    // cleanup 함수 반환
+    return () => {
+      listenersRef.current.delete(callback);
+      // 마지막 구독자가 사라지면 타이머 정리
+      if (listenersRef.current.size === 0 && timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  };
+
+  // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
-    // 항상 1초마다 업데이트 (UI 일관성을 위해)
-    // 개별 컴포넌트에서 24시간 이상일 때는 분 단위로만 표시하므로
-    // 실제로는 초 단위 변화가 UI에 반영되지 않음
-    const timer = setInterval(() => {
-      setNow(Date.now());
-    }, 1000);
-
-    return () => clearInterval(timer);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, []);
 
   return (
-    <GlobalTimerContext.Provider value={now}>
+    <GlobalTimerContext.Provider value={{ now, subscribe }}>
       {children}
     </GlobalTimerContext.Provider>
   );
 }
 
-// 글로벌 타이머 훅
+// 최적화된 글로벌 타이머 훅
 export const useGlobalTimer = () => {
-  const now = useContext(GlobalTimerContext);
-  if (now === undefined) {
+  const context = useContext(GlobalTimerContext);
+  if (!context) {
     throw new Error('useGlobalTimer must be used within GlobalTimerProvider');
   }
+
+  const [localNow, setLocalNow] = useState(context.now);
+
+  useEffect(() => {
+    // 현재 시간으로 초기화
+    setLocalNow(context.now);
+
+    // 구독 시작
+    const unsubscribe = context.subscribe(() => {
+      setLocalNow(context.now);
+    });
+
+    return unsubscribe;
+  }, [context]);
+
+  return localNow;
+};
+
+// 선택적 사용을 위한 개별 타이머 훅
+export const useLocalTimer = (intervalMs: number = 1000) => {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, intervalMs);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [intervalMs]);
+
   return now;
 };

@@ -4,6 +4,7 @@ import React from 'react';
 import { ChatMessage } from '@/components/chat/ChatMessage';
 import { ChatDateDivider } from '@/components/chat/ChatDateDivider';
 import { ChatLoadingSpinner } from '@/components/chat/ChatLoadingSpinner';
+import { SystemMessage } from './SystemMessage';
 import type { OptimizedMessage } from '@/hooks/chat/use-optimized-messages';
 
 interface MessageListProps {
@@ -36,15 +37,19 @@ export const MessageList = React.memo<MessageListProps>(
         {messages.map((item) => (
           <React.Fragment key={`${item.msg.sentAt}-${item.index}`}>
             {item.showDateDivider && <ChatDateDivider date={item.curDate} />}
-            <ChatMessage
-              message={item.msg}
-              isFromMe={item.isFromMe}
-              isUnread={item.isUnread}
-              profileVisible={item.profileVisible}
-              profileUrl={item.profileUrl}
-              senderName={item.senderName}
-              showTime={item.showTime}
-            />
+            {item.msg.messageType === 'SYSTEM' ? (
+              <SystemMessage message={item.msg.message} />
+            ) : (
+              <ChatMessage
+                message={item.msg}
+                isFromMe={item.isFromMe}
+                isUnread={item.isUnread}
+                profileVisible={item.profileVisible}
+                profileUrl={item.profileUrl}
+                senderName={item.senderName}
+                showTime={item.showTime}
+              />
+            )}
           </React.Fragment>
         ))}
       </>

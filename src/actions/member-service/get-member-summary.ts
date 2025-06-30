@@ -9,7 +9,7 @@ export async function getMemberSummary(
 ): Promise<MemberSummary> {
   try {
     const response = await instance.get<MemberSummary>(
-      `/member-service/api/v1/member/${memberUuid}`,
+      `/member-service/api/v1/member/chatroom/${memberUuid}`,
     );
     return response as MemberSummary;
   } catch (error) {

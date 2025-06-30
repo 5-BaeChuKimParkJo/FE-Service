@@ -32,7 +32,9 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
         <div className='flex-1 min-w-0'>
           <header className='font-bold text-lg truncate'>{nickname}</header>
           <p className='text-gray-500 text-sm truncate max-w-xs'>
-            {messageType === 'TEXT' ? preview : '사진'}
+            {messageType === 'TEXT' || messageType === 'SYSTEM'
+              ? preview
+              : '사진'}
           </p>
         </div>
       </section>

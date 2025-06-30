@@ -1,6 +1,7 @@
 import { BottomNavigation } from './BottomNavigation';
 import { TopNavigation } from './TopNavigation';
 import { ScrollableHeader } from './ScrollableHeader';
+import { CreateProductFAB } from '@/components/common';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         {children}
       </main>
 
+      <CreateProductFAB />
       <BottomNavigation />
     </div>
   );

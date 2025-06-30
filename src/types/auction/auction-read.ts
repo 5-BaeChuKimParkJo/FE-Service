@@ -51,7 +51,7 @@ export interface CatalogAuctionResponseDto {
   currentBid: number;
   status: AuctionStatus;
   type: AuctionType;
-  category: Category | null;
+  category: Category;
   tags: TagResponseDto[];
   seller: MemberResponseDto;
   images: ImageResponseDto[];

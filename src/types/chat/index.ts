@@ -44,31 +44,21 @@ export interface ChatMessageResponseType {
   items: ChatMessageType[];
 }
 
+export interface ChatRoomMember {
+  memberUuid: string;
+  role: 'SELLER' | 'BUYER';
+}
+
 export interface ChatroomInfoResponse {
   chatRoomUuid: string;
-  productInfo: {
-    productUuid: string;
-    thumbnail: string;
-    title: string;
-    price: number;
-    status: 'SELLING' | 'RESERVED' | 'SOLD';
-  };
-  members: {
-    memberUuid: string;
-    nickname: string;
-    profileImageUrl: string;
-    lastReadMessageSentAt: string;
-  }[];
+  postUuid: string;
+  chatRoomType: string;
+  members: ChatRoomMember[];
 }
 
 export type NextCursorType = {
   lastMessageUuid: string;
   lastMessageSentAt: string;
-};
-
-export type ChatRoomMember = {
-  memberUuid: string;
-  role: 'SELLER' | 'BUYER';
 };
 
 export interface ChatConnectResponse {

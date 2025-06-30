@@ -49,14 +49,12 @@ export const ChatRoom = ({
     chatWindowRef,
     initialMessages: initialChat,
     initialNextCursor,
-    autoConnect: true, // 자동 연결
+    autoConnect: true,
   });
 
-  // 채팅방 접속 시 읽음 처리
   useEffect(() => {
     if (isConnected && initialChat.length > 0) {
-      // 가장 최근 메시지 (상대방이 보낸 메시지)의 시간으로 읽음 처리
-      const latestMessage = initialChat[0]; // 최신 메시지는 첫 번째
+      const latestMessage = initialChat[0];
       if (latestMessage && latestMessage.senderUuid !== memberUuid) {
         console.log('채팅방 접속 시 읽음 처리:', latestMessage.sentAt);
         sendReadAck(latestMessage.sentAt);
@@ -64,7 +62,6 @@ export const ChatRoom = ({
     }
   }, [isConnected, initialChat, memberUuid, sendReadAck]);
 
-  // 메시지 최적화 훅 사용
   const optimizedMessages = useOptimizedMessages(
     messages,
     memberUuid,
@@ -73,10 +70,10 @@ export const ChatRoom = ({
   );
 
   return (
-    <div className='flex flex-col h-screen max-h-screen'>
+    <div className='flex flex-col h-full'>
       <div
         ref={chatWindowRef}
-        className='flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col space-y-4 min-h-0'
+        className='flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col space-y-2 min-h-0'
       >
         <MessageList
           messages={optimizedMessages}

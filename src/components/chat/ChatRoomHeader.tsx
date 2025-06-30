@@ -20,7 +20,7 @@ export function ChatRoomHeader() {
 
   return (
     <header className='sticky top-0 z-10 bg-white shadow-sm'>
-      <div className='flex h-16 items-center justify-between border-b px-2'>
+      <div className='flex h-16 items-center justify-between border-b px-4'>
         <div className='flex items-center gap-2'>
           <Link href='/chat' passHref>
             <button aria-label='뒤로가기' className='p-2'>
@@ -45,7 +45,7 @@ export function ChatRoomHeader() {
         </h2>
         <Link
           href={`/products/${product.id}`}
-          className='flex items-center gap-4 border-b p-4 transition-colors hover:bg-gray-50'
+          className='flex items-center gap-4 border-b px-4 py-2 transition-colors hover:bg-gray-50'
         >
           <div className='relative h-16 w-16 flex-shrink-0'>
             <Image

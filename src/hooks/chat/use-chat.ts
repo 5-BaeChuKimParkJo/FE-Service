@@ -40,6 +40,7 @@ export const useChat = ({
   const [messageInput, setMessageInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isInitialScrollDone, setIsInitialScrollDone] = useState(false);
 
   const {
     messages,
@@ -255,12 +256,6 @@ export const useChat = ({
         // initialMessages는 있는데 nextCursor가 없다면, 더 이상 메시지가 없는 것
         setHasMoreMessages(false);
       }
-
-      setTimeout(() => {
-        if (mounted && chatWindowRef.current) {
-          chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-        }
-      }, 100);
     }
 
     // 소켓 연결 및 상대방 읽음 시간 확인
@@ -278,6 +273,13 @@ export const useChat = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (messages.length > 0 && !isInitialScrollDone && chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+      setIsInitialScrollDone(true);
+    }
+  }, [messages, isInitialScrollDone, chatWindowRef]);
 
   return {
     messageInput,

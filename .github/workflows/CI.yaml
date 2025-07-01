@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - BVFH-93-develop
-      - BVFH-320-auctions-readDB
 
 env:
   AWS_REGION: ap-northeast-2

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 type MainImageCarouselProps = {
-  images: { auctionImageId: number; url: string; order: number }[];
+  images: { imageId: number; url: string; order: number }[];
   emblaRef: (node: HTMLElement | null) => void;
 };
 
@@ -21,7 +21,7 @@ export function MainImageCarousel({
         <div className='flex'>
           {images.map((image, index) => (
             <div
-              key={image.auctionImageId}
+              key={image.imageId}
               className='flex-0-0-100 min-w-0 relative aspect-square'
             >
               <Image

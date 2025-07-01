@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - BVFH-93-develop
-      - cicd
+      - BVFH-320-auctions-readDB
 
 env:
   AWS_REGION: ap-northeast-2
@@ -16,7 +16,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -35,7 +34,7 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Install dependencies and build (optional pre-build check)
+      - name: Install dependencies and Build
         run: |
           pnpm install
           pnpm build
@@ -43,7 +42,8 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t ${{ env.ECR_REPOSITORY }}:latest \
-            --build-arg NEXT_PUBLIC_S3_HOSTNAME=${{ secrets.NEXT_PUBLIC_S3_HOSTNAME }} .
+            --build-arg NEXT_PUBLIC_S3_HOSTNAME=${{ secrets.NEXT_PUBLIC_S3_HOSTNAME }} \
+            --build-arg NEXT_S3_HOSTNAME=${{ secrets.NEXT_S3_HOSTNAME }} .
 
       - name: Tag & Push to ECR
         run: |

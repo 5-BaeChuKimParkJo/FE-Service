@@ -26,13 +26,13 @@ import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
 // read DB에서 글어올 때
 export async function getAuctionDetail(
   auctionUuid: string,
-): Promise<CatalogAuctionResponseDto | ErrorResponse> {
+): Promise<CatalogAuctionResponseDto> {
   try {
     const auction = await instance.get<CatalogAuctionResponseDto>(
       `/catalog-query-service/api/v1/auctions/${auctionUuid}`,
     );
     return auction;
   } catch (error) {
-    return error as ErrorResponse;
+    throw error as ErrorResponse;
   }
 }

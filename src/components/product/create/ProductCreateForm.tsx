@@ -11,6 +11,7 @@ import {
 import { TagInput } from '@/components/auction/create/TagInput';
 import { ProductPriceInput } from '@/components/product/ProductPriceInput';
 import { ProductImageUploaderForProduct } from '@/components/images/ProductImageUploaderForProduct';
+import { DirectDealSettings } from './DirectDealSettings';
 import { createProduct } from '@/actions/product-service/create-product';
 import { CreateProductRequest } from '@/types/product';
 import { ProductLoading, ProductSuccessDialog } from '@/components/common/';
@@ -36,7 +37,7 @@ export function ProductCreateForm() {
     setIsLoading(true);
     try {
       const files = state.images.map((img: { file: File }) => img.file);
-      const uploadedKeys = await uploadProductImages(files);
+      const uploadedImages = await uploadProductImages(files);
 
       const request: CreateProductRequest = {
         title: state.title,
@@ -44,11 +45,10 @@ export function ProductCreateForm() {
         categoryId: String(state.categoryId!),
         description: state.description,
         price: Number(state.price.replace(/,/g, '')),
-        imageKeyList: uploadedKeys,
+        imageList: uploadedImages,
         tagIdList: tagIds,
         isDirectDeal: state.isDirectDeal,
         directDealLocation: state.directDealLocation,
-        ticketUuid: '',
       };
 
       const result = await createProduct(request);
@@ -123,11 +123,27 @@ export function ProductCreateForm() {
               dispatch({ type: 'SET_FIELD', field: 'price', value: v })
             }
           />
+
           <ProductImageUploaderForProduct
             images={state.images}
             setImages={(imgs) => dispatch({ type: 'SET_IMAGES', images: imgs })}
             addImage={(image) => dispatch({ type: 'ADD_IMAGE', image })}
             removeImage={(idx) => dispatch({ type: 'REMOVE_IMAGE', idx })}
+          />
+
+          <DirectDealSettings
+            isDirectDeal={state.isDirectDeal}
+            directDealLocation={state.directDealLocation}
+            onDirectDealChange={(v: boolean) =>
+              dispatch({ type: 'SET_FIELD', field: 'isDirectDeal', value: v })
+            }
+            onLocationChange={(v: string) =>
+              dispatch({
+                type: 'SET_FIELD',
+                field: 'directDealLocation',
+                value: v,
+              })
+            }
           />
         </div>
         <div className='max-w-2xl mx-auto w-full px-4 pb-6'>

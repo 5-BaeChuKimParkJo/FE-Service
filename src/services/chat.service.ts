@@ -20,12 +20,11 @@ export class ChatService {
     this.config = config;
   }
 
-  // STOMP 클라이언트 초기화 및 연결
   connect(): void {
     const { memberUuid, chatRoomUuid } = this.config;
 
     this.stompClient = new Client({
-      brokerURL: `ws://api.cabbage-secondhand.shop/chat-service/ws/chat?memberUuid=${memberUuid}&chatRoomUuid=${chatRoomUuid}`,
+      brokerURL: `wss://api.cabbage-secondhand.shop/chat-service/ws/chat?memberUuid=${memberUuid}&chatRoomUuid=${chatRoomUuid}`,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
     });
@@ -37,7 +36,6 @@ export class ChatService {
 
       if (!this.stompClient) return;
 
-      // 채팅 메시지 구독
       this.subscription = this.stompClient.subscribe(
         `/topic/chatroom/${chatRoomUuid}`,
         (message) => {
@@ -46,13 +44,11 @@ export class ChatService {
         },
       );
 
-      // 읽음 확인 구독
       this.stompClient.subscribe('/user/queue/chatroom/read', (message) => {
         const data = JSON.parse(message.body);
         this.config.onReadAckReceived(data);
       });
 
-      // 에러 구독
       this.stompClient.subscribe('/user/queue/errors', (message) => {
         const errorData = JSON.parse(message.body);
         this.config.onError(`에러 (${errorData.code}): ${errorData.message}`);
@@ -70,7 +66,6 @@ export class ChatService {
     this.stompClient.activate();
   }
 
-  // 연결 해제
   disconnect(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -85,7 +80,6 @@ export class ChatService {
     this.config.onConnectionStatusChange(false);
   }
 
-  // 텍스트 메시지 전송
   sendTextMessage(message: string): boolean {
     if (!message.trim() || !this.stompClient?.connected) return false;
 
@@ -102,7 +96,6 @@ export class ChatService {
     return true;
   }
 
-  // 이미지 메시지 전송
   async sendImageMessage(file: File): Promise<boolean> {
     if (!file || !this.stompClient?.connected) return false;
 
@@ -111,7 +104,6 @@ export class ChatService {
       const response = await getChatPresignedUrl(contentType);
       const { url, fields } = response;
 
-      // 파일 업로드
       const formData = new FormData();
       for (const key in fields) {
         formData.append(key, fields[key]);
@@ -123,7 +115,6 @@ export class ChatService {
         body: formData,
       });
 
-      // 이미지 메시지 전송
       this.stompClient.publish({
         destination: '/pub/chat/send',
         body: JSON.stringify({
@@ -142,9 +133,11 @@ export class ChatService {
     }
   }
 
-  // 읽음 확인 전송
   sendReadAck(sentAt: string): void {
-    if (!this.stompClient?.active) return;
+    if (!this.stompClient?.connected) {
+      console.warn('STOMP 연결이 없어서 읽음 확인을 보낼 수 없습니다.');
+      return;
+    }
 
     this.stompClient.publish({
       destination: '/pub/chat/read',
@@ -162,12 +155,10 @@ export class ChatService {
     );
   }
 
-  // 연결 상태 확인
   isConnected(): boolean {
     return this.stompClient?.connected ?? false;
   }
 
-  // 설정 업데이트
   updateConfig(config: ChatServiceConfig): void {
     this.config = config;
   }

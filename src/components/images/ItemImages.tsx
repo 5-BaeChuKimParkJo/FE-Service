@@ -7,7 +7,7 @@ import { ImageIndicators } from './ImageIndicators';
 import { ThumbnailCarousel } from './ThumbnailCarousel';
 
 type ItemImagesProps = {
-  images: { auctionImageId: number; url: string; order: number }[];
+  images: { imageId: number; url: string; order: number }[];
 };
 
 export function ItemImages({ images }: ItemImagesProps) {

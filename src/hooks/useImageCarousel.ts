@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
 type UseImageCarouselProps = {
-  images: { auctionImageId: number; url: string; order: number }[];
+  images: { imageId: number; url: string; order: number }[];
 };
 
 export function useImageCarousel({ images }: UseImageCarouselProps) {

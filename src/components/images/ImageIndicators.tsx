@@ -1,7 +1,7 @@
 import { cn } from '@/libs/cn';
 
 type ImageIndicatorsProps = {
-  images: { auctionImageId: number; url: string; order: number }[];
+  images: { imageId: number; url: string; order: number }[];
   selectedIndex: number;
   onIndicatorClick: (index: number) => void;
 };

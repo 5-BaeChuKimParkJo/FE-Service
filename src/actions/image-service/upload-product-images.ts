@@ -3,11 +3,14 @@
 import { getProductPresignedUrls } from './get-product-presigned-urls';
 import { uploadFileToS3 } from './upload-to-s3';
 import { getFileContentType } from '@/utils/image-upload';
+import { ProductImage } from '@/types/image';
 
 /**
  * 여러 이미지를 병렬로 업로드합니다
  */
-export async function uploadProductImages(files: File[]): Promise<string[]> {
+export async function uploadProductImages(
+  files: File[],
+): Promise<ProductImage[]> {
   if (files.length === 0) {
     throw new Error('업로드할 이미지가 없습니다.');
   }
@@ -26,7 +29,10 @@ export async function uploadProductImages(files: File[]): Promise<string[]> {
 
     try {
       await uploadFileToS3(file, presignedData.uploadUrl, presignedData.fields);
-      return presignedData.key; // S3 key 반환
+      return {
+        key: presignedData.key,
+        order: index + 1,
+      };
     } catch (error) {
       console.error(`파일 업로드 실패 (${file.name}):`, error);
       throw new Error(`이미지 업로드 실패: ${file.name}`);
@@ -34,6 +40,6 @@ export async function uploadProductImages(files: File[]): Promise<string[]> {
   });
 
   // 모든 업로드 완료 대기
-  const uploadedKeys = await Promise.all(uploadPromises);
-  return uploadedKeys;
+  const uploadedImages = await Promise.all(uploadPromises);
+  return uploadedImages;
 }

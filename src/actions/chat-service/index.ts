@@ -5,3 +5,4 @@ export * from './get-chat-history';
 export * from './get-chat-list';
 export * from './get-chatroom-info';
 export * from './get-chat-list-with-members';
+export * from './create-chat-room';

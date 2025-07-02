@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { cn } from '@/libs/cn';
 
 type ThumbnailCarouselProps = {
-  images: { auctionImageId: number; url: string; order: number }[];
+  images: { imageId: number; url: string; order: number }[];
   selectedIndex: number;
   emblaRef: (node: HTMLElement | null) => void;
   onThumbnailClick: (index: number) => void;
@@ -26,7 +26,7 @@ export function ThumbnailCarousel({
         <div className='flex gap-3'>
           {images.map((image, index) => (
             <button
-              key={image.auctionImageId}
+              key={image.imageId}
               onClick={() => onThumbnailClick(index)}
               className={cn(
                 'flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden transition-all duration-300 touch-manipulation',

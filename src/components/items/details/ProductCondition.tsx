@@ -1,4 +1,10 @@
-export type ProductConditionType = 'unopened' | 'new' | 'used';
+export type ProductConditionType =
+  | 'unopened'
+  | 'new'
+  | 'used'
+  | 'UNOPENED'
+  | 'NEW'
+  | 'USED';
 
 export const ProductCondition = ({
   condition,
@@ -9,6 +15,9 @@ export const ProductCondition = ({
     unopened: '미개봉 새상품',
     new: '새상품',
     used: '중고상품',
+    UNOPENED: '미개봉 새상품',
+    NEW: '새상품',
+    USED: '중고상품',
   };
 
   return (

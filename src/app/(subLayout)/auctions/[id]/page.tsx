@@ -33,15 +33,23 @@ export default async function AuctionPage({
     return <div>Member not found</div>;
   }
 
+  const images = auction.images.map((image) => ({
+    imageId: image.auctionImageId,
+    url: image.url,
+    order: image.order,
+  }));
+
   return (
-    <main className='min-h-screen flex flex-col'>
-      <ItemImages images={auction.images} />
-      <ItemInfoSection auction={auction} />
-      <div className=' px-4'>
-        <AuctionTimer startAt={auction.startAt} endAt={auction.endAt} />
-      </div>
-      <ItemDescriptionSection description={auction.description} />
-      <BiddersSection bidders={bidders.items} />
+    <>
+      <main className='min-h-screen flex flex-col'>
+        <ItemImages images={images} />
+        <ItemInfoSection auction={auction} />
+        <div className=' px-4'>
+          <AuctionTimer startAt={auction.startAt} endAt={auction.endAt} />
+        </div>
+        <ItemDescriptionSection description={auction.description} />
+        <BiddersSection bidders={bidders.items} />
+      </main>
       <BidderForm
         auctionUuid={id}
         bidAmount={
@@ -51,6 +59,6 @@ export default async function AuctionPage({
         }
         status={auction.status}
       />
-    </main>
+    </>
   );
 }

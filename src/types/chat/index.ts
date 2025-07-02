@@ -52,7 +52,7 @@ export interface ChatRoomMember {
 export interface ChatroomInfoResponse {
   chatRoomUuid: string;
   postUuid: string;
-  chatRoomType: string;
+  chatRoomType: 'NORMAL_PRIVATE' | 'AUCTION_PRIVATE';
   members: ChatRoomMember[];
 }
 

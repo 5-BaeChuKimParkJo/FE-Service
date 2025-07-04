@@ -21,7 +21,6 @@ export function ProductCategorySelector({
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  // 카테고리 데이터 가져오기
   const { data: categories = [], isLoading: isLoadingCategories } =
     useCategories();
   const selectedCategory = findCategoryById(categories, categoryId);
@@ -60,17 +59,13 @@ export function ProductCategorySelector({
             {selectedCategory ? (
               <>
                 <div className='w-5 h-5 rounded overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0'>
-                  {selectedCategory.imageUrl ? (
-                    <Image
-                      src={selectedCategory.imageUrl || '/placeholder.svg'}
-                      alt={selectedCategory.name}
-                      width={20}
-                      height={20}
-                      className='object-cover'
-                    />
-                  ) : (
-                    <span className='text-sm'>📦</span>
-                  )}
+                  <Image
+                    src={selectedCategory.imageUrl?.trimEnd()}
+                    alt={selectedCategory.name}
+                    width={20}
+                    height={20}
+                    className='object-cover'
+                  />
                 </div>
                 <span className='text-gray-900'>{selectedCategory.name}</span>
               </>

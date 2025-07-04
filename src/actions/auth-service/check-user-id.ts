@@ -5,10 +5,10 @@ export async function checkUserIdAvailability(
 ): Promise<boolean> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/check-id?userId=${userId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/exists/member-id?memberId=${userId}`,
     );
     const data = await response.json();
-    return data.available;
+    return data;
   } catch (error) {
     console.error('Check user ID availability error:', error);
     throw error;

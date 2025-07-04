@@ -55,7 +55,7 @@ export function ProductInfoPreview({
                 <div className='w-8 h-8 rounded-lg bg-primary-100/10 flex items-center justify-center'>
                   {selectedCategory.imageUrl ? (
                     <Image
-                      src={selectedCategory.imageUrl}
+                      src={selectedCategory.imageUrl?.trimEnd() || ''}
                       alt={selectedCategory.name}
                       width={24}
                       height={24}

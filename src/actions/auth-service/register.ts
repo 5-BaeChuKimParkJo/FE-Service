@@ -8,31 +8,37 @@ export interface RegisterUserData {
   interests?: string[];
 }
 
-// export interface RegisterResponse {
-//   success: boolean;
-//   userId?: string;
-//   message?: string;
-// }
-
 export async function registerUser(userData: RegisterUserData) {
-  // 실제 API 호출 구현
-  // await instance.post('/auth-service/api/v1/auth/sign-up', {
-  //   memberId: userData.userId,
-  //   password: userData.password,
-  //   nickname: userData.nickname,
-  //   phoneNumber: userData.phoneNumber,
-  // });
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/sign-up`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          memberId: userData.userId,
+          password: userData.password,
+          nickname: userData.nickname,
+          phoneNumber: userData.phoneNumber,
+        }),
+      },
+    );
 
-  await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/sign-up`,
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        memberId: userData.userId,
-        password: userData.password,
-        nickname: userData.nickname,
-        phoneNumber: userData.phoneNumber,
-      }),
-    },
-  );
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `회원가입 실패: ${response.status}`);
+    }
+
+    try {
+      const responseText = await response.text();
+      return responseText ? JSON.parse(responseText) : {};
+    } catch {
+      return {};
+    }
+  } catch (error) {
+    console.error('Register user error:', error);
+    throw error;
+  }
 }

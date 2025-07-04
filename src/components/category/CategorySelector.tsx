@@ -56,7 +56,6 @@ export function CategorySelector({
     <AnimatePresence>
       {isVisible && (
         <div className='fixed inset-0 z-50 flex items-end justify-center'>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -105,18 +104,14 @@ export function CategorySelector({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <div className='w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0'>
-                      {category.imageUrl ? (
-                        <Image
-                          src={category.imageUrl}
-                          alt={category.name}
-                          width={48}
-                          height={48}
-                          className='object-cover'
-                        />
-                      ) : (
-                        <span className='text-2xl'>📦</span>
-                      )}
+                    <div className='w-12 h-12 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0'>
+                      <Image
+                        src={category.imageUrl?.trimEnd() || ''}
+                        alt={category.name}
+                        width={48}
+                        height={48}
+                        className='object-cover'
+                      />
                     </div>
 
                     <span className='text-xs font-medium text-center leading-tight'>

@@ -37,7 +37,8 @@ export class UserInfoService {
     // 중복 체크
     try {
       this.deps.setIsCheckingUserId(true);
-      const isAvailable = await checkUserIdAvailability(userId);
+      const exists = await checkUserIdAvailability(userId);
+      const isAvailable = !exists; // API는 존재하면 true, 사용 가능하려면 !exists
 
       this.deps.setIsUserIdVerified(isAvailable);
       const error = isAvailable ? '' : '이미 사용 중인 아이디입니다.';
@@ -73,7 +74,8 @@ export class UserInfoService {
     // 중복 체크
     try {
       this.deps.setIsCheckingNickname(true);
-      const isAvailable = await checkNicknameAvailability(nickname);
+      const exists = await checkNicknameAvailability(nickname);
+      const isAvailable = !exists; // API는 존재하면 true, 사용 가능하려면 !exists
 
       this.deps.setIsNicknameVerified(isAvailable);
       const error = isAvailable ? '' : '이미 사용 중인 닉네임입니다.';

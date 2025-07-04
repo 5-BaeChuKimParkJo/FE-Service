@@ -34,6 +34,15 @@ export interface ChatMessageType {
   messageType: 'TEXT' | 'IMAGE' | 'SYSTEM';
   sentAt: string;
   replyToMessageUuid?: string;
+
+  isOptimistic?: boolean;
+  sendingStatus?: 'sending' | 'sent' | 'failed';
+  serverErrorType?:
+    | 'server_overload'
+    | 'network_issue'
+    | 'database_error'
+    | 'message_format_error'
+    | 'unknown_error';
 }
 
 export interface ChatMessageResponseType {

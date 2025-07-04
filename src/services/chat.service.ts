@@ -1,6 +1,7 @@
 import { Client } from '@stomp/stompjs';
 import { getChatPresignedUrl } from '@/actions/chat-service';
-import { ChatMessageType, ReadAckData } from '@/types/chat';
+import type { ChatMessageType, ReadAckData } from '@/types/chat';
+import { ErrorResponse } from '@/types/api';
 
 export interface ChatServiceConfig {
   memberUuid: string;
@@ -8,6 +9,7 @@ export interface ChatServiceConfig {
   onMessageReceived: (message: ChatMessageType) => void;
   onReadAckReceived: (data: ReadAckData) => void;
   onError: (error: string) => void;
+  onMessageError?: (errorData: ErrorResponse) => void;
   onConnectionStatusChange: (connected: boolean) => void;
 }
 
@@ -51,6 +53,14 @@ export class ChatService {
 
       this.stompClient.subscribe('/user/queue/errors', (message) => {
         const errorData = JSON.parse(message.body);
+        console.log('📡 STOMP 에러 수신:', errorData);
+
+        // 개별 메시지 에러 콜백이 있으면 우선 호출
+        if (this.config.onMessageError) {
+          this.config.onMessageError(errorData);
+        }
+
+        // 전역 에러도 계속 호출 (기존 호환성 유지)
         this.config.onError(`에러 (${errorData.code}): ${errorData.message}`);
       });
     };
@@ -80,24 +90,49 @@ export class ChatService {
     this.config.onConnectionStatusChange(false);
   }
 
-  sendTextMessage(message: string): boolean {
-    if (!message.trim() || !this.stompClient?.connected) return false;
+  async sendTextMessage(
+    message: string,
+  ): Promise<{ success: boolean; error?: string }> {
+    if (!message.trim()) {
+      return { success: false, error: '메시지가 비어있습니다' };
+    }
 
-    this.stompClient.publish({
-      destination: '/pub/chat/send',
-      body: JSON.stringify({
-        chatRoomUuid: this.config.chatRoomUuid,
-        senderUuid: this.config.memberUuid,
-        message,
-        messageType: 'TEXT',
-      }),
-    });
+    if (!this.stompClient?.connected) {
+      return { success: false, error: '채팅 연결이 끊어졌습니다' };
+    }
 
-    return true;
+    try {
+      this.stompClient.publish({
+        destination: '/pub/chat/send',
+        body: JSON.stringify({
+          chatRoomUuid: this.config.chatRoomUuid,
+          senderUuid: this.config.memberUuid,
+          message,
+          messageType: 'TEXT',
+        }),
+      });
+
+      console.log('📤 메시지 전송 시도:', message);
+      return { success: true };
+    } catch (error) {
+      console.error('메시지 전송 중 오류:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '메시지 전송 실패',
+      };
+    }
   }
 
-  async sendImageMessage(file: File): Promise<boolean> {
-    if (!file || !this.stompClient?.connected) return false;
+  async sendImageMessage(
+    file: File,
+  ): Promise<{ success: boolean; error?: string }> {
+    if (!file) {
+      return { success: false, error: '이미지 파일이 없습니다' };
+    }
+
+    if (!this.stompClient?.connected) {
+      return { success: false, error: '채팅 연결이 끊어졌습니다' };
+    }
 
     try {
       const contentType = file.type;
@@ -110,11 +145,13 @@ export class ChatService {
       }
       formData.append('file', file);
 
+      // S3 업로드
       await fetch(url, {
         method: 'POST',
         body: formData,
       });
 
+      // 메시지 전송
       this.stompClient.publish({
         destination: '/pub/chat/send',
         body: JSON.stringify({
@@ -125,11 +162,14 @@ export class ChatService {
         }),
       });
 
-      return true;
+      console.log('📤 이미지 메시지 전송 시도');
+      return { success: true };
     } catch (error) {
       console.error('이미지 업로드 실패', error);
-      this.config.onError('이미지 업로드에 실패했습니다.');
-      return false;
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '이미지 업로드 실패',
+      };
     }
   }
 

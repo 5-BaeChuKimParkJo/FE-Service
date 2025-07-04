@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { ChatMessage } from '@/components/chat/ChatMessage';
+import { ChatMessageEnhanced } from '@/components/chat/ChatMessageEnhanced';
 import { ChatDateDivider } from '@/components/chat/ChatDateDivider';
 import { ChatLoadingSpinner } from '@/components/chat/ChatLoadingSpinner';
-import { SystemMessage } from './SystemMessage';
+import { SystemMessage } from '@/components/chat/SystemMessage';
 import type { OptimizedMessage } from '@/hooks/chat/use-optimized-messages';
 
 interface MessageListProps {
@@ -13,10 +14,20 @@ interface MessageListProps {
   error: string | null;
   loadTriggerRef: React.RefObject<HTMLDivElement | null>;
   onRetryFetchMessages: () => void;
+  onRetryMessage?: (messageUuid: string) => void;
+  onDeleteMessage?: (messageUuid: string) => void;
 }
 
 export const MessageList = React.memo<MessageListProps>(
-  ({ messages, loading, error, loadTriggerRef, onRetryFetchMessages }) => {
+  ({
+    messages,
+    loading,
+    error,
+    loadTriggerRef,
+    onRetryFetchMessages,
+    onRetryMessage,
+    onDeleteMessage,
+  }) => {
     return (
       <>
         <div ref={loadTriggerRef} className='h-1' />
@@ -39,6 +50,18 @@ export const MessageList = React.memo<MessageListProps>(
             {item.showDateDivider && <ChatDateDivider date={item.curDate} />}
             {item.msg.messageType === 'SYSTEM' ? (
               <SystemMessage message={item.msg.message} />
+            ) : item.msg.isOptimistic ? (
+              <ChatMessageEnhanced
+                message={item.msg}
+                isFromMe={item.isFromMe}
+                isUnread={item.isUnread}
+                profileVisible={item.profileVisible}
+                profileUrl={item.profileUrl}
+                senderName={item.senderName}
+                showTime={item.showTime}
+                onRetry={onRetryMessage}
+                onDelete={onDeleteMessage}
+              />
             ) : (
               <ChatMessage
                 message={item.msg}

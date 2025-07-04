@@ -19,7 +19,13 @@ type MessageAction =
       lastMessageId: string | null;
       lastMessageSentAt: string | null;
     }
-  | { type: 'SET_HAS_MORE'; hasMore: boolean };
+  | { type: 'SET_HAS_MORE'; hasMore: boolean }
+  | {
+      type: 'UPDATE_MESSAGE';
+      messageUuid: string;
+      updates: Partial<ChatMessageType>;
+    }
+  | { type: 'REMOVE_MESSAGE'; messageUuid: string };
 
 const messageReducer = (
   state: MessageState,
@@ -55,6 +61,24 @@ const messageReducer = (
     case 'SET_HAS_MORE':
       return { ...state, hasMoreMessages: action.hasMore };
 
+    case 'UPDATE_MESSAGE':
+      return {
+        ...state,
+        messages: state.messages.map((msg) =>
+          msg.messageUuid === action.messageUuid
+            ? { ...msg, ...action.updates }
+            : msg,
+        ),
+      };
+
+    case 'REMOVE_MESSAGE':
+      return {
+        ...state,
+        messages: state.messages.filter(
+          (msg) => msg.messageUuid !== action.messageUuid,
+        ),
+      };
+
     default:
       return state;
   }
@@ -74,6 +98,17 @@ export const useChatMessages = (_maxMessages = 500) => {
     },
     [],
   );
+
+  const updateMessage = useCallback(
+    (messageUuid: string, updates: Partial<ChatMessageType>) => {
+      dispatch({ type: 'UPDATE_MESSAGE', messageUuid, updates });
+    },
+    [],
+  );
+
+  const removeMessage = useCallback((messageUuid: string) => {
+    dispatch({ type: 'REMOVE_MESSAGE', messageUuid });
+  }, []);
 
   const clearMessages = useCallback(() => {
     dispatch({ type: 'CLEAR_MESSAGES' });
@@ -96,6 +131,8 @@ export const useChatMessages = (_maxMessages = 500) => {
     lastMessageId: state.lastMessageId,
     lastMessageSentAt: state.lastMessageSentAt,
     addMessage,
+    updateMessage,
+    removeMessage,
     clearMessages,
     setCursor,
     setHasMoreMessages,

@@ -8,14 +8,8 @@ import { convertStoreDataToApiRequest } from '@/utils/auction';
 import { createAuction } from '@/actions/auction-service/create-auction';
 
 export function useAuctionSubmit() {
-  const {
-    getCreateAuctionCommand,
-    setIsSubmitting,
-    images,
-    tags,
-    setTagIds,
-    tagIds,
-  } = useCreateAuctionStore();
+  const { getCreateAuctionCommand, setIsSubmitting, images, tagIds } =
+    useCreateAuctionStore();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -88,21 +82,7 @@ export function useAuctionSubmit() {
       setIsLoading(false);
       setIsSubmitting(false);
     }
-  }, [
-    getCreateAuctionCommand,
-    setIsSubmitting,
-    images,
-    tags,
-    setTagIds,
-    tagIds,
-  ]);
-
-  const goToAuctionDetail = useCallback(() => {
-    if (createdAuctionUuid) {
-      router.replace(`/auctions/${createdAuctionUuid}`);
-      resetSubmitState();
-    }
-  }, [createdAuctionUuid, router]);
+  }, [getCreateAuctionCommand, setIsSubmitting, images, tagIds]);
 
   const resetSubmitState = useCallback(() => {
     setIsSuccess(false);
@@ -110,6 +90,13 @@ export function useAuctionSubmit() {
     setAuctionTitle(null);
     setThumbnailUrl(null);
   }, []);
+
+  const goToAuctionDetail = useCallback(() => {
+    if (createdAuctionUuid) {
+      router.replace(`/auctions/${createdAuctionUuid}`);
+      resetSubmitState();
+    }
+  }, [createdAuctionUuid, router, resetSubmitState]);
 
   return {
     handleSubmit,

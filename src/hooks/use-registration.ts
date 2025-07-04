@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useRegisterStore } from '@/stores/use-register-store';
@@ -7,14 +7,16 @@ import { createRegistrationService } from '@/services/registration.service';
 
 export function useRegistration() {
   const router = useRouter();
-  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
-  const [showWhaleTransition, setShowWhaleTransition] = useState(false);
   const {
     currentStep,
     setCurrentStep,
     stepOneValid,
     stepTwoValid,
     setIsSubmitting,
+    showWelcomeDialog,
+    showWhaleTransition,
+    setShowWelcomeDialog,
+    setShowWhaleTransition,
   } = useRegisterStore();
 
   const registrationService = useMemo(
@@ -25,7 +27,7 @@ export function useRegistration() {
         setShowWhaleTransition,
         setIsSubmitting,
       }),
-    [router, setIsSubmitting],
+    [router, setIsSubmitting, setShowWelcomeDialog, setShowWhaleTransition],
   );
 
   const handleNext = () => {

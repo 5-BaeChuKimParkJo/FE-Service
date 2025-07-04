@@ -5,14 +5,14 @@ import { useRegisterStore } from '@/stores/use-register-store';
 import { Checkbox } from '../ui/checkbox';
 
 const CATEGORIES = [
-  { id: 'tech', label: '기술' },
-  { id: 'fashion', label: '패션' },
-  { id: 'food', label: '음식' },
-  { id: 'travel', label: '여행' },
-  { id: 'sports', label: '스포츠' },
-  { id: 'music', label: '음악' },
-  { id: 'movies', label: '영화' },
-  { id: 'books', label: '도서' },
+  { id: 'tech', label: '경매' },
+  { id: 'fashion', label: '중고거래' },
+  { id: 'food', label: '일반거래' },
+  { id: 'travel', label: '전자기기' },
+  { id: 'sports', label: '의류' },
+  { id: 'music', label: '가구/인테리어' },
+  { id: 'movies', label: '가전/문구/취미' },
+  { id: 'books', label: '반려동물' },
 ];
 
 export function StepThree() {
@@ -32,10 +32,10 @@ export function StepThree() {
         <div className='space-y-6'>
           <div className='text-center mb-4'>
             <h2 id='interests-title' className='text-xl font-semibold'>
-              관심 카테고리
+              관심도 설정
             </h2>
             <p className='text-sm text-muted-foreground'>
-              맞춤 콘텐츠를 위해 관심 있는 카테고리를 선택해주세요.
+              맞춤 콘텐츠를 위해 관심 있는 항목을 선택해주세요.
             </p>
           </div>
 

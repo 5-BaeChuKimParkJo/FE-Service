@@ -18,7 +18,7 @@ export function RegisterStepper() {
 
   return (
     <nav aria-label='회원가입 단계' className='w-full'>
-      <div className='flex items-center justify-between relative'>
+      <div className='flex items-center justify-between relative mx-5'>
         <div className='absolute top-1/2 left-0 right-0 h-[2px] bg-muted ' />
 
         <div className='absolute top-1/2 left-0 right-0'>

@@ -30,6 +30,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.bunjang.co.kr',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 

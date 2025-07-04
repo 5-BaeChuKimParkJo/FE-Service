@@ -30,7 +30,8 @@ export class RegistrationService {
       this.deps.setShowWelcomeDialog(true);
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
-      throw error;
+      // 사용자에게 에러 알림
+      alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
     } finally {
       this.deps.setIsSubmitting(false);
     }
@@ -52,7 +53,8 @@ export class RegistrationService {
       this.deps.setShowWelcomeDialog(true);
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
-      throw error;
+      // 사용자에게 에러 알림
+      alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
     } finally {
       this.deps.setIsSubmitting(false);
     }
@@ -73,6 +75,7 @@ export class RegistrationService {
   }
 }
 
+// 팩토리 함수
 export function createRegistrationService(
   deps: RegistrationServiceDependencies,
 ) {

@@ -22,6 +22,10 @@ type RegisterState = {
   // 로딩 상태
   isSubmitting: boolean;
 
+  // 다이얼로그 상태
+  showWelcomeDialog: boolean;
+  showWhaleTransition: boolean;
+
   // Actions
   setCurrentStep: (step: number) => void;
   setUserId: (id: string) => void;
@@ -36,6 +40,8 @@ type RegisterState = {
   setIsSubmitting: (isSubmitting: boolean) => void;
   setIsUserIdVerified: (isVerified: boolean) => void;
   setIsNicknameVerified: (isVerified: boolean) => void;
+  setShowWelcomeDialog: (show: boolean) => void;
+  setShowWhaleTransition: (show: boolean) => void;
 };
 
 export const useRegisterStore = create<RegisterState>((set) => ({
@@ -58,6 +64,10 @@ export const useRegisterStore = create<RegisterState>((set) => ({
   // 로딩 상태
   isSubmitting: false,
 
+  // 다이얼로그 상태
+  showWelcomeDialog: false,
+  showWhaleTransition: false,
+
   // Actions
   setCurrentStep: (step) =>
     set((state) => ({ prevStep: state.currentStep, currentStep: step })),
@@ -74,4 +84,6 @@ export const useRegisterStore = create<RegisterState>((set) => ({
   setIsUserIdVerified: (isVerified) => set({ isUserIdVerified: isVerified }),
   setIsNicknameVerified: (isVerified) =>
     set({ isNicknameVerified: isVerified }),
+  setShowWelcomeDialog: (show) => set({ showWelcomeDialog: show }),
+  setShowWhaleTransition: (show) => set({ showWhaleTransition: show }),
 }));

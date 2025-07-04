@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { ChatInput } from '@/components/chat/ChatInput';
-import { MessageList } from '@/components/chat/MessageList';
-import { useChat } from '@/hooks/chat/use-chat';
-import { useOptimizedMessages } from '@/hooks/chat/use-optimized-messages';
+import { ChatInput, MessageList } from '@/components/chat';
+import { useChat, useOptimizedMessages } from '@/hooks/chat';
 import type {
   ChatMessageResponseType,
   ChatroomInfoResponse,
@@ -42,6 +40,9 @@ export const ChatRoom = ({
     sendReadAck,
     isMessageUnread,
     retryFetchMessages,
+    handleRetryMessage,
+    handleDeleteMessage,
+    isSending,
   } = useChat({
     memberUuid,
     chatRoomUuid: chatroomInfo.chatRoomUuid,
@@ -73,7 +74,7 @@ export const ChatRoom = ({
     <div className='flex flex-col h-full'>
       <div
         ref={chatWindowRef}
-        className='flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col space-y-2 min-h-0'
+        className='flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col space-y-4'
       >
         <MessageList
           messages={optimizedMessages}
@@ -81,6 +82,8 @@ export const ChatRoom = ({
           error={error}
           loadTriggerRef={loadTriggerRef}
           onRetryFetchMessages={retryFetchMessages}
+          onRetryMessage={handleRetryMessage}
+          onDeleteMessage={handleDeleteMessage}
         />
       </div>
 
@@ -89,7 +92,7 @@ export const ChatRoom = ({
         onMessageChange={setMessageInput}
         onSendMessage={sendMessage}
         onSendImage={sendImage}
-        disabled={!isConnected}
+        disabled={!isConnected || isSending}
       />
     </div>
   );

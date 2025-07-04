@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback, useEffect, type RefObject } from 'react';
-
 import { getChatHistory, exitChatRoom } from '@/actions/chat-service';
 import type { ChatMessageType, ReadAckData } from '@/types/chat';
 import {
@@ -10,6 +9,9 @@ import {
   useChatConnection,
   useChatInfiniteScroll,
 } from '@/hooks/chat';
+import { useOptimisticMessaging } from '@/hooks/chat/use-optimistic-messaging';
+import { useChatActions } from '@/hooks/chat/use-chat-actions';
+import { useChatScroll } from '@/hooks/chat/use-chat-scroll';
 
 export interface UseChatParams {
   memberUuid: string;
@@ -37,10 +39,8 @@ export const useChat = ({
   initialNextCursor = null,
   autoConnect = false,
 }: UseChatParams) => {
-  const [messageInput, setMessageInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isInitialScrollDone, setIsInitialScrollDone] = useState(false);
 
   const {
     messages,
@@ -48,6 +48,8 @@ export const useChat = ({
     lastMessageId,
     lastMessageSentAt,
     addMessage: addMessageToState,
+    updateMessage: updateMessageInState,
+    removeMessage: removeMessageFromState,
     clearMessages,
     setCursor,
     setHasMoreMessages,
@@ -60,27 +62,39 @@ export const useChat = ({
     isMessageUnread,
   } = useReadStatus(chatRoomUuid, opponentUuid, memberUuid);
 
-  // 스크롤을 맨 아래로
-  const scrollToBottom = useCallback(() => {
-    if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-    }
-  }, [chatWindowRef]);
+  const {
+    createOptimisticMessage,
+    startTimeout,
+    clearTimeout: _clearTimeout,
+    handleSendSuccess: _handleSendSuccess,
+    handleSendFailure,
+    handleStompError,
+    retryMessage,
+    deleteMessage,
+    handleRealMessageReceived,
+    cleanup: cleanupOptimistic,
+  } = useOptimisticMessaging({
+    memberUuid,
+    onMessageUpdate: updateMessageInState,
+    onMessageAdd: addMessageToState,
+    onMessageRemove: removeMessageFromState,
+  });
 
-  // 메시지 추가 (스크롤 포함)
+  // 스크롤 관련 로직
+  const { isInitialScrollDone, addMessage: addMessageWithScroll } =
+    useChatScroll({
+      chatWindowRef,
+      messages,
+    });
+
   const addMessage = useCallback(
     (message: ChatMessageType, prepend = false) => {
       addMessageToState(message, prepend);
-
-      if (!prepend) {
-        // 새로운 메시지가 추가될 때 스크롤을 아래로
-        setTimeout(scrollToBottom, 100);
-      }
+      addMessageWithScroll(message, prepend);
     },
-    [addMessageToState, scrollToBottom],
+    [addMessageToState, addMessageWithScroll],
   );
 
-  // 메시지 불러오기
   const fetchMessages = useCallback(
     async (initial = false) => {
       if (loading || !hasMoreMessages) return;
@@ -112,7 +126,6 @@ export const useChat = ({
           return;
         }
 
-        // 스크롤 위치 저장 (새 메시지 로드 시)
         const scrollElement = chatWindowRef.current;
         const prevScrollHeight = scrollElement?.scrollHeight || 0;
 
@@ -120,22 +133,18 @@ export const useChat = ({
           addMessage(msg, true),
         );
 
-        // 스크롤 위치 복원 (개선된 버전)
         if (initial && scrollElement) {
-          // 초기 로드 시 맨 아래로
           setTimeout(() => {
             scrollElement.scrollTop = scrollElement.scrollHeight;
           }, 50);
         } else if (scrollElement && !initial) {
-          // 이전 메시지 로드 시 위치 유지
           setTimeout(() => {
             const newScrollHeight = scrollElement.scrollHeight;
             const heightDiff = newScrollHeight - prevScrollHeight;
             scrollElement.scrollTop = heightDiff;
           }, 50);
         }
-      } catch (error) {
-        console.error('Failed to fetch messages:', error);
+      } catch {
         setError('메시지를 불러오는데 실패했습니다.');
       } finally {
         setLoading(false);
@@ -159,7 +168,7 @@ export const useChat = ({
     hasMore: hasMoreMessages,
     onLoadMore: () => fetchMessages(false),
     containerRef: chatWindowRef,
-    enabled: enableInfinityScroll,
+    enabled: enableInfinityScroll && isInitialScrollDone,
   });
 
   const {
@@ -167,13 +176,18 @@ export const useChat = ({
     connect: connectSocket,
     disconnect: disconnectSocket,
     sendMessage: sendSocketMessage,
-    sendImage,
+    sendImage: sendSocketImage,
     sendReadAck,
   } = useChatConnection({
     memberUuid,
     chatRoomUuid,
     onMessageReceived: (msg: ChatMessageType) => {
-      addMessage(msg);
+      const wasMatched = handleRealMessageReceived(msg);
+
+      if (!wasMatched) {
+        addMessage(msg);
+      }
+
       if (msg.senderUuid !== memberUuid || msg.messageType === 'SYSTEM') {
         sendReadAck(msg.sentAt);
       }
@@ -182,6 +196,28 @@ export const useChat = ({
       updateLastReadTime(new Date(data.lastReadMessageSentAt));
     },
     onError: setError,
+    onMessageError: handleStompError,
+  });
+
+  // 액션 관련 로직
+  const {
+    messageInput,
+    setMessageInput,
+    isSending,
+    sendMessage,
+    sendImage,
+    handleRetryMessage,
+    handleDeleteMessage,
+  } = useChatActions({
+    isConnected,
+    createOptimisticMessage,
+    addMessage,
+    startTimeout,
+    handleSendFailure,
+    sendSocketMessage,
+    sendSocketImage,
+    retryMessage,
+    deleteMessage,
   });
 
   const connect = useCallback(() => {
@@ -213,26 +249,20 @@ export const useChat = ({
 
     try {
       await exitChatRoom(chatRoomUuid);
-      console.log('퇴장 처리 완료');
-
       disconnectSocket();
       clearMessages();
+      cleanupOptimistic();
       setError(null);
-    } catch (error) {
-      console.error('Failed to exit chat room:', error);
+    } catch {
       setError('채팅방 퇴장 중 오류가 발생했습니다.');
     }
-  }, [chatRoomUuid, memberUuid, disconnectSocket, clearMessages]);
-
-  const sendMessage = useCallback(() => {
-    const message = messageInput.trim();
-    if (!message) return;
-
-    const success = sendSocketMessage(message);
-    if (success) {
-      setMessageInput('');
-    }
-  }, [messageInput, sendSocketMessage]);
+  }, [
+    chatRoomUuid,
+    memberUuid,
+    disconnectSocket,
+    clearMessages,
+    cleanupOptimistic,
+  ]);
 
   const retryFetchMessages = useCallback(() => {
     setError(null);
@@ -242,7 +272,6 @@ export const useChat = ({
   useEffect(() => {
     let mounted = true;
 
-    // 초기 메시지 및 커서 설정
     if (initialMessages.length > 0 && mounted) {
       clearMessages();
       initialMessages.forEach((msg) => addMessage(msg, true));
@@ -253,16 +282,13 @@ export const useChat = ({
           initialNextCursor.lastMessageSentAt,
         );
       } else {
-        // initialMessages는 있는데 nextCursor가 없다면, 더 이상 메시지가 없는 것
         setHasMoreMessages(false);
       }
     }
 
-    // 소켓 연결 및 상대방 읽음 시간 확인
     if (autoConnect && memberUuid && chatRoomUuid && opponentUuid && mounted) {
       connectSocket();
       fetchOpponentCheckPoint();
-      // initialMessages가 없을 때만 fetchMessages 호출
       if (initialMessages.length === 0) {
         fetchMessages(true);
       }
@@ -275,11 +301,10 @@ export const useChat = ({
   }, []);
 
   useEffect(() => {
-    if (messages.length > 0 && !isInitialScrollDone && chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-      setIsInitialScrollDone(true);
-    }
-  }, [messages, isInitialScrollDone, chatWindowRef]);
+    return () => {
+      cleanupOptimistic();
+    };
+  }, [cleanupOptimistic]);
 
   return {
     messageInput,
@@ -290,6 +315,7 @@ export const useChat = ({
     error,
     hasMoreMessages,
     lastReadTimeByOpponent,
+    isSending,
 
     connect,
     disconnect,
@@ -298,6 +324,8 @@ export const useChat = ({
     sendReadAck,
     isMessageUnread,
     retryFetchMessages,
+    handleRetryMessage,
+    handleDeleteMessage,
 
     // Refs
     loadTriggerRef,

@@ -1,8 +1,10 @@
+'use client';
+
 import React, { memo, useState } from 'react';
 import type { ChatMessageType } from '@/types/chat';
 import Image from 'next/image';
-import ProfileImage from '../../app/test/chatting/ProfileImage';
-import ImageModal from '../../app/test/chatting/ImageModal';
+import ProfileImage from './ProfileImage';
+import ImageModal from './ImageModal';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -83,8 +85,6 @@ export const ChatMessage = memo<ChatMessageProps>((props) => {
       />
     </>
   );
-  // 삭제 예정
-  console.log(profileUrl);
 
   const MessageContent = () =>
     message.messageType === 'TEXT' ? <TextMessage /> : <ImageMessage />;
@@ -104,12 +104,7 @@ export const ChatMessage = memo<ChatMessageProps>((props) => {
     <div className='flex flex-row items-start gap-2'>
       <div className='w-10 h-10 flex-shrink-0'>
         {profileVisible && (
-          <ProfileImage
-            // src={profileUrl || '/images/dummy/dummy1.png'}
-            src={'/images/dummy/dummy1.png'}
-            alt={senderName}
-            size={40}
-          />
+          <ProfileImage src={profileUrl} alt={senderName} size={40} />
         )}
       </div>
       <div className='flex flex-col items-start'>

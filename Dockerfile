@@ -8,13 +8,22 @@ ARG NEXT_PUBLIC_S3_HOSTNAME
 ENV NEXT_PUBLIC_S3_HOSTNAME=$NEXT_PUBLIC_S3_HOSTNAME
 ARG NEXT_S3_HOSTNAME
 ENV NEXT_S3_HOSTNAME=$NEXT_S3_HOSTNAME
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # 패키지 설치
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
-# 전체 소스 복사 후 빌드
+# 전체 소스 복사
 COPY . .
+
+# .env 파일 생성
+RUN echo "NEXT_PUBLIC_S3_HOSTNAME=$NEXT_PUBLIC_S3_HOSTNAME" > .env && \
+    echo "NEXT_S3_HOSTNAME=$NEXT_S3_HOSTNAME" >> .env && \
+    echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
+
+# 빌드 실행
 RUN pnpm build
 
 # ---------- Production Stage ----------
@@ -28,12 +37,19 @@ ARG NEXT_PUBLIC_S3_HOSTNAME
 ENV NEXT_PUBLIC_S3_HOSTNAME=$NEXT_PUBLIC_S3_HOSTNAME
 ARG NEXT_S3_HOSTNAME
 ENV NEXT_S3_HOSTNAME=$NEXT_S3_HOSTNAME
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 RUN npm install -g pnpm
 
 # 빌드 결과물만 복사 (경량화)
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
+
+# .env 파일 생성 (Production)
+RUN echo "NEXT_PUBLIC_S3_HOSTNAME=$NEXT_PUBLIC_S3_HOSTNAME" > .env && \
+    echo "NEXT_S3_HOSTNAME=$NEXT_S3_HOSTNAME" >> .env && \
+    echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public

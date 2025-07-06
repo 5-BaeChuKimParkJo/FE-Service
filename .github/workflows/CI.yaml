@@ -11,6 +11,7 @@ env:
   SERVICE_NAME: frontend-service
   NEXT_PUBLIC_S3_HOSTNAME: ${{ secrets.NEXT_PUBLIC_S3_HOSTNAME }}
   NEXT_S3_HOSTNAME: ${{ secrets.NEXT_S3_HOSTNAME }}
+  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
 jobs:
   build:
@@ -42,7 +43,8 @@ jobs:
         run: |
           docker build -t ${{ env.ECR_REPOSITORY }}:latest \
             --build-arg NEXT_PUBLIC_S3_HOSTNAME=${{ secrets.NEXT_PUBLIC_S3_HOSTNAME }} \
-            --build-arg NEXT_S3_HOSTNAME=${{ secrets.NEXT_S3_HOSTNAME }} .
+            --build-arg NEXT_S3_HOSTNAME=${{ secrets.NEXT_S3_HOSTNAME }} \
+            --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} .
 
       - name: Tag & Push to ECR
         run: |

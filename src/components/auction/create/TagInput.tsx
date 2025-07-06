@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { getTagId } from '@/actions/tag-service/get-tag-id';
 import { Input } from '@/components/ui';

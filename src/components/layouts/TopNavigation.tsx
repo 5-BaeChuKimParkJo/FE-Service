@@ -36,7 +36,9 @@ export function TopNavigation() {
             aria-label='검색하기'
             type='button'
           >
-            <Search className='w-6 h-6 text-white' aria-hidden='true' />
+            <Link href='/search'>
+              <Search className='w-6 h-6 text-white' aria-hidden='true' />
+            </Link>
           </button>
 
           <button

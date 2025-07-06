@@ -1,3 +1,4 @@
+import { auth } from '@/actions';
 import { getProductDetail } from '@/actions/product-service/get-product-detail';
 import { ItemImages } from '@/components/images';
 import { ItemDescriptionSection, ProductInfoSection } from '@/components/items';
@@ -12,7 +13,8 @@ export default async function ProductDetailPage({
 }) {
   const { id } = await params;
   const product = await getProductDetail(id);
-  console.log(product);
+  const user = await auth();
+  const userUuid = user?.user?.memberUuid;
   if (isErrorResponse(product)) {
     return <ErrorText>Product not found</ErrorText>;
   }
@@ -31,6 +33,7 @@ export default async function ProductDetailPage({
       <ChatButtonSection
         productUuid={product.productUuid}
         sellerUuid={product.seller.memberUuid}
+        userUuid={userUuid ?? ''}
       />
     </>
   );

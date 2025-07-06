@@ -8,14 +8,20 @@ import { useState } from 'react';
 interface ChatButtonSectionProps {
   productUuid: string;
   sellerUuid: string;
+  userUuid: string;
 }
 
 export function ChatButtonSection({
   productUuid,
   sellerUuid,
+  userUuid,
 }: ChatButtonSectionProps) {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
+
+  if (userUuid === sellerUuid) {
+    return null;
+  }
   const handleChatClick = async () => {
     try {
       setIsPending(true);

@@ -42,10 +42,8 @@ export function AuctionProductCard({
   onLike,
   className,
 }: AuctionProductCardProps) {
-  // 현재 가격 (입찰가가 있으면 입찰가, 없으면 시작가)
   const currentPrice = bidAmount || minimumBid;
 
-  // 경매 상태 확인 (서버에서 계산)
   const now = Date.now();
   const startTime = new Date(startAt).getTime();
   const endTime = new Date(endAt).getTime();
@@ -56,7 +54,7 @@ export function AuctionProductCard({
     <section
       className={cn('overflow-hidden transition-all duration-300', className)}
     >
-      <Link href={`/auction/${auctionUuid}`}>
+      <Link href={`/auctions/${auctionUuid}`}>
         <div className='relative aspect-square overflow-hidden rounded-lg'>
           <Image
             src={thumbnailUrl}
@@ -86,7 +84,7 @@ export function AuctionProductCard({
           )}
         </div>
 
-        <h1 className='mt-2 mb-1 ml-2 leading-tight line-clamp-2 min-h-[2.5rem] flex items-center'>
+        <h1 className='mt-2 mb-1 ml-2  leading-tight line-clamp-2 min-h-[2.5rem] overflow-hidden'>
           {title}
         </h1>
       </Link>

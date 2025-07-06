@@ -1,6 +1,6 @@
 import { getAuctionBidders, getAuctionDetail } from '@/actions/auction-service';
 import { getMemberInfo } from '@/actions/member-service';
-import { BiddersSection } from '@/components/auction/detail';
+import { BiddersSection, AuctionTags } from '@/components/auction/detail';
 import { BidderForm } from '@/components/auction/detail/BidderForm';
 import { ItemImages } from '@/components/images';
 import {
@@ -48,6 +48,7 @@ export default async function AuctionPage({
           <AuctionTimer startAt={auction.startAt} endAt={auction.endAt} />
         </div>
         <ItemDescriptionSection description={auction.description} />
+        <AuctionTags tags={auction.tags} />
         <BiddersSection bidders={bidders.items} />
       </main>
       <BidderForm

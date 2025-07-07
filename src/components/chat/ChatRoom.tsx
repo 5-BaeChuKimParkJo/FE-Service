@@ -58,7 +58,9 @@ export const ChatRoom = ({
       const latestMessage = initialChat[0];
       if (latestMessage && latestMessage.senderUuid !== memberUuid) {
         console.log('채팅방 접속 시 읽음 처리:', latestMessage.sentAt);
-        sendReadAck(latestMessage.sentAt);
+        setTimeout(() => {
+          sendReadAck(latestMessage.sentAt);
+        }, 100);
       }
     }
   }, [isConnected, initialChat, memberUuid, sendReadAck]);

@@ -17,6 +17,10 @@ export class ChatService {
   private stompClient: Client | null = null;
   private subscription: { unsubscribe: () => void } | null = null;
   private config: ChatServiceConfig;
+  private lastSentMessage: string = '';
+  private lastSentTime: number = 0;
+  private recentMessages: Set<string> = new Set();
+  private readonly MAX_RECENT_MESSAGES = 100;
 
   constructor(config: ChatServiceConfig) {
     this.config = config;
@@ -42,6 +46,22 @@ export class ChatService {
         `/topic/chatroom/${chatRoomUuid}`,
         (message) => {
           const msg = JSON.parse(message.body);
+
+          const messageKey =
+            msg.messageUuid || `${msg.senderUuid}-${msg.sentAt}`;
+          if (this.recentMessages.has(messageKey)) {
+            console.log('중복 메시지 감지:', messageKey);
+            return;
+          }
+
+          if (this.recentMessages.size >= this.MAX_RECENT_MESSAGES) {
+            const firstKey = this.recentMessages.values().next().value;
+            if (firstKey) {
+              this.recentMessages.delete(firstKey);
+            }
+          }
+
+          this.recentMessages.add(messageKey);
           this.config.onMessageReceived(msg);
         },
       );
@@ -87,6 +107,8 @@ export class ChatService {
     }
 
     this.stompClient = null;
+    // 메모리 정리
+    this.recentMessages.clear();
     this.config.onConnectionStatusChange(false);
   }
 
@@ -101,6 +123,16 @@ export class ChatService {
       return { success: false, error: '채팅 연결이 끊어졌습니다' };
     }
 
+    // 중복 전송 방지 (1초 내 동일한 메시지)
+    const now = Date.now();
+    if (
+      this.lastSentMessage === message.trim() &&
+      now - this.lastSentTime < 1000
+    ) {
+      console.log('중복 메시지 전송 방지:', message);
+      return { success: false, error: '중복 메시지입니다' };
+    }
+
     try {
       this.stompClient.publish({
         destination: '/pub/chat/send',
@@ -111,6 +143,10 @@ export class ChatService {
           messageType: 'TEXT',
         }),
       });
+
+      // 전송 기록 업데이트
+      this.lastSentMessage = message.trim();
+      this.lastSentTime = now;
 
       console.log('📤 메시지 전송 시도:', message);
       return { success: true };

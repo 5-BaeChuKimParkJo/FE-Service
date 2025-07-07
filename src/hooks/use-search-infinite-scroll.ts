@@ -14,6 +14,7 @@ interface UseSearchInfiniteScrollProps {
     productCondition?: string;
     tagNames?: string[];
     sortBy?: string;
+    categoryName?: string;
   };
   enabled?: boolean;
 }
@@ -24,7 +25,7 @@ export default function useSearchInfiniteScroll({
   enabled = true,
 }: UseSearchInfiniteScrollProps) {
   const [data, setData] = useState<SearchAuctionItem[]>([]);
-  const [isLoading, setIsLoading] = useState(enabled && !!searchQuery);
+  const [isLoading, setIsLoading] = useState(enabled);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,79 +46,9 @@ export default function useSearchInfiniteScroll({
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  // 첫 번째 페이지 API 요청 파라미터 생성
-  const createInitialSearchRequest = useCallback((): SearchAuctionRequest => {
-    const request: SearchAuctionRequest = {
-      auctionTitle: searchQuery,
-    };
-
-    // 필터 추가
-    if (filters?.productCondition) {
-      request.productCondition = filters.productCondition;
-    }
-    if (filters?.tagNames && filters.tagNames.length > 0) {
-      request.tagNames = filters.tagNames;
-    }
-    if (filters?.sortBy) {
-      request.sortBy = filters.sortBy;
-    }
-
-    return request;
-  }, [searchQuery, filters]);
-
-  // 다음 페이지 API 요청 파라미터 생성
-  const createNextPageSearchRequest = useCallback((): SearchAuctionRequest => {
-    const request: SearchAuctionRequest = {
-      auctionTitle: searchQuery,
-    };
-
-    // 필터 추가
-    if (filters?.productCondition) {
-      request.productCondition = filters.productCondition;
-    }
-    if (filters?.tagNames && filters.tagNames.length > 0) {
-      request.tagNames = filters.tagNames;
-    }
-    if (filters?.sortBy) {
-      request.sortBy = filters.sortBy;
-    }
-
-    // 페이지네이션 커서 추가
-    if (lastAuctionUuid && lastAuctionCreatedAt) {
-      const cursor: SearchAfterCursor = {
-        lastAuctionUuid, // UUID는 항상 포함
-      };
-
-      // 정렬 방식에 따라 첫번째 값 설정
-      if (filters?.sortBy === 'priceHigh' || filters?.sortBy === 'priceLow') {
-        if (lastAuctionCurrentBid !== null) {
-          cursor.lastAuctionCurrentBid = lastAuctionCurrentBid;
-        }
-      } else if (filters?.sortBy === 'recommended') {
-        if (lastAuctionViewCount !== null) {
-          cursor.lastAuctionViewCount = lastAuctionViewCount;
-        }
-      } else {
-        // latest의 경우 createdAt 사용
-        cursor.lastAuctionCreatedAt = lastAuctionCreatedAt;
-      }
-
-      request.searchAfter = [cursor];
-    }
-
-    return request;
-  }, [
-    searchQuery,
-    filters,
-    lastAuctionUuid,
-    lastAuctionCreatedAt,
-    lastAuctionCurrentBid,
-    lastAuctionViewCount,
-  ]);
-
   // 첫 번째 데이터 로딩
   const loadInitialData = useCallback(async () => {
-    if (!searchQuery || !enabled) {
+    if (!enabled) {
       setIsLoading(false);
       return;
     }
@@ -132,7 +63,25 @@ export default function useSearchInfiniteScroll({
     setHasNextPage(true);
 
     try {
-      const request = createInitialSearchRequest();
+      // 직접 요청 객체 생성 (의존성 줄이기)
+      const request: SearchAuctionRequest = {
+        auctionTitle: searchQuery,
+      };
+
+      // 필터 추가
+      if (filters?.productCondition) {
+        request.productCondition = filters.productCondition;
+      }
+      if (filters?.tagNames && filters.tagNames.length > 0) {
+        request.tagNames = filters.tagNames;
+      }
+      if (filters?.sortBy) {
+        request.sortBy = filters.sortBy;
+      }
+      if (filters?.categoryName) {
+        request.categoryName = filters.categoryName;
+      }
+
       const response = await searchAuctions(request);
       const newData = response.getAuctionSearchResponseVoList;
 
@@ -155,12 +104,18 @@ export default function useSearchInfiniteScroll({
     } finally {
       setIsLoading(false);
     }
-  }, [searchQuery, enabled, createInitialSearchRequest]);
+  }, [
+    searchQuery,
+    filters?.productCondition,
+    filters?.tagNames?.join(','),
+    filters?.sortBy,
+    filters?.categoryName,
+    enabled,
+  ]);
 
   // 더 많은 데이터 로딩
   const loadMoreData = useCallback(async () => {
     if (
-      !searchQuery ||
       !enabled ||
       isLoadingMore ||
       !hasNextPage ||
@@ -174,7 +129,46 @@ export default function useSearchInfiniteScroll({
     setError(null);
 
     try {
-      const request = createNextPageSearchRequest();
+      // 직접 요청 객체 생성 (의존성 줄이기)
+      const request: SearchAuctionRequest = {
+        auctionTitle: searchQuery,
+      };
+
+      // 필터 추가
+      if (filters?.productCondition) {
+        request.productCondition = filters.productCondition;
+      }
+      if (filters?.tagNames && filters.tagNames.length > 0) {
+        request.tagNames = filters.tagNames;
+      }
+      if (filters?.sortBy) {
+        request.sortBy = filters.sortBy;
+      }
+      if (filters?.categoryName) {
+        request.categoryName = filters.categoryName;
+      }
+
+      // 페이지네이션 커서 추가
+      const cursor: SearchAfterCursor = {
+        lastAuctionUuid, // UUID는 항상 포함
+      };
+
+      // 정렬 방식에 따라 첫번째 값 설정
+      if (filters?.sortBy === 'priceHigh' || filters?.sortBy === 'priceLow') {
+        if (lastAuctionCurrentBid !== null) {
+          cursor.lastAuctionCurrentBid = lastAuctionCurrentBid;
+        }
+      } else if (filters?.sortBy === 'recommended') {
+        if (lastAuctionViewCount !== null) {
+          cursor.lastAuctionViewCount = lastAuctionViewCount;
+        }
+      } else {
+        // latest의 경우 createdAt 사용
+        cursor.lastAuctionCreatedAt = lastAuctionCreatedAt;
+      }
+
+      request.searchAfter = [cursor];
+
       const response = await searchAuctions(request);
       const newData = response.getAuctionSearchResponseVoList;
 
@@ -201,12 +195,17 @@ export default function useSearchInfiniteScroll({
     }
   }, [
     searchQuery,
+    filters?.productCondition,
+    filters?.tagNames?.join(','),
+    filters?.sortBy,
+    filters?.categoryName,
     enabled,
     isLoadingMore,
     hasNextPage,
     lastAuctionUuid,
     lastAuctionCreatedAt,
-    createNextPageSearchRequest,
+    lastAuctionCurrentBid,
+    lastAuctionViewCount,
   ]);
 
   // 무한 스크롤 설정
@@ -237,7 +236,14 @@ export default function useSearchInfiniteScroll({
   // 검색어나 필터 변경 시 초기 데이터 로딩
   useEffect(() => {
     loadInitialData();
-  }, [loadInitialData]);
+  }, [
+    searchQuery,
+    filters?.productCondition,
+    filters?.tagNames?.join(','),
+    filters?.sortBy,
+    filters?.categoryName,
+    enabled,
+  ]);
 
   // cleanup
   useEffect(() => {

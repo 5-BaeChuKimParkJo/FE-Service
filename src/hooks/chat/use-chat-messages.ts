@@ -33,14 +33,28 @@ const messageReducer = (
 ): MessageState => {
   switch (action.type) {
     case 'ADD_MESSAGE': {
+      const isDuplicate = state.messages.some(
+        (existingMsg) => existingMsg.messageUuid === action.message.messageUuid,
+      );
+
+      if (isDuplicate) {
+        return state;
+      }
+
       const newMessages = action.prepend
         ? [action.message, ...state.messages]
         : [...state.messages, action.message];
       return { ...state, messages: newMessages };
     }
 
-    case 'SET_MESSAGES':
-      return { ...state, messages: action.messages };
+    case 'SET_MESSAGES': {
+      const uniqueMessages = action.messages.filter((message, index, self) => {
+        return (
+          self.findIndex((m) => m.messageUuid === message.messageUuid) === index
+        );
+      });
+      return { ...state, messages: uniqueMessages };
+    }
 
     case 'CLEAR_MESSAGES':
       return {

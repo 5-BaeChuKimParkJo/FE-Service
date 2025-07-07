@@ -303,8 +303,9 @@ export const useChat = ({
   useEffect(() => {
     return () => {
       cleanupOptimistic();
+      disconnectSocket();
     };
-  }, [cleanupOptimistic]);
+  }, [cleanupOptimistic, disconnectSocket]);
 
   return {
     messageInput,

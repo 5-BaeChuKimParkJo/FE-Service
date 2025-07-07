@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { CountUp } from '../ui';
 import { MinimalAuctionTimer } from '@/components/auction/MinimalAuctionTimer';
 import { formatNumber } from '@/utils/format';
+import { SearchAuctionItem } from '@/types/auction/search-products';
 
 // 경매 미리보기 타입 정의
 export interface AuctionPreview {
@@ -65,53 +66,113 @@ const dummyAuction4: AuctionPreview = {
 };
 
 export function AuctionPreviewCard({
+  auction,
   number,
 }: {
-  auction?: AuctionPreview;
-  number: number;
+  auction?: SearchAuctionItem;
+  number?: number;
 }) {
-  let auction = dummyAuction;
-  if (number === 1) {
-    auction = dummyAuction;
-  } else if (number === 2) {
-    auction = dummyAuction2;
-  } else if (number === 3) {
-    auction = dummyAuction3;
-  } else if (number === 4) {
-    auction = dummyAuction4;
+  // 실제 데이터가 있으면 사용, 없으면 더미 데이터 사용
+  if (auction) {
+    const auctionData = {
+      auctionUuid: auction.auctionUuid,
+      title: auction.auctionTitle,
+      imageUrl: auction.thumbnailUrl,
+      minimumBid: auction.minimumBid,
+      currentPrice: auction.currentBid,
+      startAt: auction.startAt,
+      endAt: auction.endAt,
+      status: auction.status || 'active',
+    };
+
+    return (
+      <Link
+        href={`/auctions/${auction.auctionUuid}`}
+        className='flex-shrink-0 rounded-2xl bg-white shadow-sm overflow-hidden transition hover:shadow-md w-full max-w-[250px]'
+      >
+        <div className='relative w-full h-[100px]'>
+          <Image
+            src={auctionData.imageUrl}
+            alt={auctionData.title}
+            fill
+            className='object-cover'
+          />
+        </div>
+        <div className='py-3 px-4 flex flex-col gap-2'>
+          <div className='text-base font-bold truncate'>
+            {auctionData.title}
+          </div>
+          <div className='flex justify-end items-end gap-2 pr-3'>
+            <span className='text-gray-400 line-through text-sm'>
+              {formatNumber(auctionData.minimumBid)}원
+            </span>
+            <span className='text-xl h-6 font-bold text-black'>
+              <CountUp
+                from={auctionData.minimumBid}
+                to={auctionData.currentPrice}
+                separator=','
+              />
+            </span>
+          </div>
+          <div className='mt-1'>
+            <MinimalAuctionTimer
+              startAt={auctionData.startAt}
+              endAt={auctionData.endAt}
+              status={auctionData.status}
+              className='w-full'
+            />
+          </div>
+        </div>
+      </Link>
+    );
   }
+
+  // 더미 데이터 사용 (기존 로직)
+  let selectedDummyAuction = dummyAuction;
+  if (number === 1) {
+    selectedDummyAuction = dummyAuction;
+  } else if (number === 2) {
+    selectedDummyAuction = dummyAuction2;
+  } else if (number === 3) {
+    selectedDummyAuction = dummyAuction3;
+  } else if (number === 4) {
+    selectedDummyAuction = dummyAuction4;
+  }
+
   return (
     <Link
-      href={`/auction/${auction.auctionUuid}`}
+      href={`/auction/${selectedDummyAuction.auctionUuid}`}
       className='flex-shrink-0 rounded-2xl bg-white shadow-sm overflow-hidden transition hover:shadow-md  w-full max-w-[250px] '
     >
       <div className='relative w-full h-[100px]'>
         <Image
-          src={auction.imageUrl}
-          alt={auction.title}
+          src={selectedDummyAuction.imageUrl}
+          alt={selectedDummyAuction.title}
           fill
           className='object-cover'
         />
       </div>
       <div className='py-3 px-4 flex flex-col gap-2'>
-        <div className='text-base font-bold truncate'>{auction.title}</div>
+        <div className='text-base font-bold truncate'>
+          {selectedDummyAuction.title}
+        </div>
         <div className='flex justify-end items-end gap-2 pr-3'>
           <span className='text-gray-400 line-through text-sm'>
-            {formatNumber(auction.minimumBid)}원
+            {formatNumber(selectedDummyAuction.minimumBid)}원
           </span>
           <span className='text-xl h-6 font-bold text-black'>
             <CountUp
-              from={auction.minimumBid}
-              to={auction.currentPrice}
+              from={selectedDummyAuction.minimumBid}
+              to={selectedDummyAuction.currentPrice}
               separator=','
             />
           </span>
         </div>
         <div className='mt-1'>
           <MinimalAuctionTimer
-            startAt={auction.startAt}
-            endAt={auction.endAt}
-            status={auction.status}
+            startAt={selectedDummyAuction.startAt}
+            endAt={selectedDummyAuction.endAt}
+            status={selectedDummyAuction.status}
             className='w-full'
           />
         </div>

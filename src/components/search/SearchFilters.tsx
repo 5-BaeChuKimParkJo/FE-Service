@@ -12,6 +12,7 @@ interface SearchFiltersProps {
     productCondition?: string;
     tagNames?: string[];
     sortBy?: string;
+    categoryName?: string;
   };
 }
 
@@ -50,7 +51,7 @@ export function SearchFilters({
   const handleConditionSelect = (value: string) => {
     setProductCondition(value);
     setShowConditionDropdown(false);
-    // 즉시 필터 적용
+    // 즉시 필터 적용 (categoryName 유지)
     onFiltersChange({
       productCondition: value || undefined,
       tagNames: selectedTags.length > 0 ? selectedTags : undefined,

@@ -17,6 +17,7 @@ export interface SearchAfterCursor {
 
 export interface SearchAuctionResponse {
   getAuctionSearchResponseVoList: SearchAuctionItem[];
+  nextCursorVo?: SearchAfterCursor;
 }
 
 export interface SearchAuctionItem {

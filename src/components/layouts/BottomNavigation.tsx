@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
     icon: MessageCircle,
   },
   {
-    href: '/profile',
+    href: '/mypage',
     label: '내정보',
     icon: User,
   },

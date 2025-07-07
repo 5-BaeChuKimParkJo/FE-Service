@@ -8,13 +8,16 @@ import {
 } from '@/components/auction';
 import { LikeButton } from '@/components/auction/LikeButton';
 import { SearchFilters } from '@/components/search';
+import { CategoryFilterSlider } from '@/components/category';
+import { SearchHeader } from '@/components/layouts';
 import useSearchInfiniteScroll from '@/hooks/use-search-infinite-scroll';
-import Arrow from '@/assets/icons/common/arrow.svg';
+import { useCategories } from '@/hooks/use-categories';
 
 export default function SearchResultPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get('q') || '';
+  const { data: categories = [] } = useCategories();
 
   const filters = useMemo(() => {
     const productCondition = searchParams.get('productCondition') || undefined;
@@ -22,11 +25,13 @@ export default function SearchResultPage() {
       ? searchParams.get('tags')!.split(',').filter(Boolean)
       : undefined;
     const sortBy = searchParams.get('sortBy') || 'latest';
+    const categoryName = searchParams.get('categoryName') || undefined;
 
     return {
       productCondition,
       tagNames,
       sortBy,
+      categoryName,
     };
   }, [searchParams]);
 
@@ -43,8 +48,16 @@ export default function SearchResultPage() {
     enabled: !!query,
   });
 
-  const handleBack = () => {
-    router.back();
+  const handleCategorySelect = (categoryName: string | null) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (categoryName) {
+      params.set('categoryName', categoryName);
+    } else {
+      params.delete('categoryName');
+    }
+
+    router.replace(`/search/${encodeURIComponent(query)}?${params.toString()}`);
   };
 
   const handleFiltersChange = (newFilters: {
@@ -57,6 +70,7 @@ export default function SearchResultPage() {
     params.delete('productCondition');
     params.delete('tags');
     params.delete('sortBy');
+    // categoryName은 유지 (CategoryFilterSlider에서 별도 관리)
 
     if (newFilters.productCondition) {
       params.set('productCondition', newFilters.productCondition);
@@ -73,23 +87,22 @@ export default function SearchResultPage() {
 
   return (
     <div className='min-h-screen bg-gray-50'>
-      <header className='w-full bg-white border-b border-gray-200 px-4 py-4'>
-        <div className='flex items-center gap-4'>
-          <button onClick={handleBack} aria-label='뒤로 가기'>
-            <Arrow className='w-6 h-6 text-primary-100' />
-          </button>
-          <div className='flex-1'>
-            <h1 className='text-lg font-semibold text-gray-800'>
-              &apos;{query}&apos; 검색 결과
-            </h1>
-          </div>
-        </div>
-      </header>
+      <SearchHeader title={`'${query}' 검색 결과`} />
 
-      <SearchFilters
-        onFiltersChange={handleFiltersChange}
-        initialFilters={filters}
-      />
+      <div className='pt-20'>
+        {/* 카테고리 필터 슬라이더 */}
+        <CategoryFilterSlider
+          categories={categories}
+          onCategorySelect={handleCategorySelect}
+        />
+
+        <div className='mb-4'>
+          <SearchFilters
+            onFiltersChange={handleFiltersChange}
+            initialFilters={filters}
+          />
+        </div>
+      </div>
 
       <div className='px-4 py-6'>
         {error && (

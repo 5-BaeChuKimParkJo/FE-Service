@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import useSearchSuggestions from '@/hooks/use-search-suggestions';
+import { SearchHeader } from '@/components/layouts';
 import Search from '@/assets/icons/common/search.svg';
-import Arrow from '@/assets/icons/common/arrow.svg';
 
 export default function SearchPage() {
   const router = useRouter();
@@ -25,10 +25,6 @@ export default function SearchPage() {
     }
   }, []);
 
-  const handleBack = () => {
-    router.back();
-  };
-
   const handleSearch = () => {
     if (query.trim()) {
       hideDropdown();
@@ -45,16 +41,9 @@ export default function SearchPage() {
 
   return (
     <div className='min-h-screen bg-gray-50'>
-      <header className='w-full bg-white border-b border-gray-200 px-4 py-4'>
-        <div className='flex items-center gap-4'>
-          <button onClick={handleBack} aria-label='뒤로 가기'>
-            <Arrow className='w-6 h-6 text-primary-100' />
-          </button>
-          <h1 className='text-lg font-semibold text-gray-800'>상품 검색</h1>
-        </div>
-      </header>
+      <SearchHeader title='상품 검색' />
 
-      <div className='px-4 py-6'>
+      <div className='px-4 py-6 pt-20'>
         <div className='relative'>
           <form
             onSubmit={(e) => {

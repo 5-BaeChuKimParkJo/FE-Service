@@ -81,7 +81,7 @@ export function CategoryFilterSlider({
   const isAllSelected = !currentCategory;
 
   return (
-    <div className='overflow-x-auto scrollbar-hide  px-2 mb-4'>
+    <div className='overflow-x-auto scrollbar-hide -mx-4 px-4 mb-4'>
       <div className='flex gap-3 w-max'>
         <button
           ref={isAllSelected ? activeButtonRef : null}

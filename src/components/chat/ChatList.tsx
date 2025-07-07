@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { ChatSummary } from './ChatSummary';
+import { ChatEmpty } from './ChatEmpty';
 import type { ChatRoomWithMember } from '@/actions/chat-service/get-chat-list-with-members';
 
 interface ChatListProps {
@@ -9,7 +10,7 @@ interface ChatListProps {
 
 export function ChatList({ chatList }: ChatListProps) {
   if (chatList.length === 0) {
-    return <div>활성화 된 채팅이 없습니다.</div>;
+    return <ChatEmpty />;
   }
   return (
     <section>

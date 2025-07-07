@@ -8,6 +8,8 @@ import { QueryClient } from '@tanstack/react-query';
 import { getCategories } from '@/actions/category-service/get-categories';
 import { SseProvider } from '@/providers/SseProvider';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.cabbage-secondhand.shop'),
   title: '중고 경매 플랫폼 찰낙찰낙',

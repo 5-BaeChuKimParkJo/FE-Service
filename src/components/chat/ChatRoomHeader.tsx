@@ -5,13 +5,16 @@ import { formatNumber } from '@/utils/format';
 import { ChatroomInfoResponse } from '@/types/chat';
 import { MemberSummary } from '@/types/member';
 import { getChatRoomHeaderData } from '@/utils/chat-room-header';
+import { ReviewButton } from './ReviewButton';
 
 export async function ChatRoomHeader({
   chatroomInfo,
   opponentInfo,
+  currentUserUuid,
 }: {
   chatroomInfo: ChatroomInfoResponse;
   opponentInfo: MemberSummary;
+  currentUserUuid: string;
 }) {
   const { href, product, price, imageUrl, status, sellerInfo } =
     await getChatRoomHeaderData(chatroomInfo);
@@ -27,7 +30,23 @@ export async function ChatRoomHeader({
           </Link>
           <h2 className='text-lg font-bold'>{opponentInfo.nickname}</h2>
         </div>
-        <div className='flex items-center'>
+        <div className='flex items-center gap-1'>
+          <ReviewButton
+            currentUserUuid={currentUserUuid}
+            opponentInfo={opponentInfo}
+            productInfo={{
+              uuid: chatroomInfo.postUuid,
+              title: product.title,
+              sellerUuid: sellerInfo.memberUuid,
+              type:
+                chatroomInfo.chatRoomType === 'NORMAL_PRIVATE'
+                  ? 'PRODUCT'
+                  : 'AUCTION',
+              imageUrl,
+              price,
+              status,
+            }}
+          />
           <button aria-label='더보기' className='p-2'>
             <MoreVertical className='h-5 w-5' />
           </button>

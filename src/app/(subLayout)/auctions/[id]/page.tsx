@@ -40,8 +40,8 @@ export default async function AuctionPage({
   }));
 
   return (
-    <>
-      <main className='min-h-screen flex flex-col'>
+    <div className='relative'>
+      <main className='flex flex-col pb-20'>
         <ItemImages images={images} />
         <ItemInfoSection auction={auction} />
         <div className=' px-4'>
@@ -60,6 +60,6 @@ export default async function AuctionPage({
         }
         status={auction.status}
       />
-    </>
+    </div>
   );
 }

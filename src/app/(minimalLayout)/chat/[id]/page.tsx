@@ -25,7 +25,11 @@ export default async function ChatRoomPage({
 
   return (
     <div className='flex flex-col h-screen bg-white'>
-      <ChatRoomHeader chatroomInfo={chatroomInfo} opponentInfo={opponentInfo} />
+      <ChatRoomHeader
+        chatroomInfo={chatroomInfo}
+        opponentInfo={opponentInfo}
+        currentUserUuid={memberUuid as string}
+      />
       <div className='flex-1 min-h-0'>
         <ChatRoom
           initialChat={initialChat.items}

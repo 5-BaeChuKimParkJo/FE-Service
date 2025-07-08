@@ -48,7 +48,8 @@ export async function getChatRoomHeaderData(
   } else {
     href = `/auctions/${chatroomInfo.postUuid}`;
     product = await getAuctionDetail(chatroomInfo.postUuid);
-    price = product.currentBid;
+    // TODO: 현재는 최소 입찰가가 아닌 최초 입찰가를 보여주고 있음. 추후 수정 필요
+    price = product.minimumBid;
     imageUrl = product.images[0].url;
     status = '경매 종료';
   }

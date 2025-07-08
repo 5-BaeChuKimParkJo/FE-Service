@@ -5,6 +5,7 @@ import { cn } from '@/libs/cn';
 import Bell from '@/assets/icons/common/bell.svg';
 import Search from '@/assets/icons/common/search.svg';
 import Arrow from '@/assets/icons/common/arrow.svg';
+import Link from 'next/link';
 
 export function SubHeader() {
   const router = useRouter();
@@ -34,7 +35,8 @@ export function SubHeader() {
           role='toolbar'
           aria-label='사용자 액션'
         >
-          <button
+          <Link
+            href='/search'
             className={cn(
               'p-2 rounded-lg transition-all duration-200',
               'hover:bg-white/20 active:scale-95',
@@ -43,7 +45,7 @@ export function SubHeader() {
             type='button'
           >
             <Search className='w-6 h-6 text-white' aria-hidden='true' />
-          </button>
+          </Link>
 
           <button
             className={cn(

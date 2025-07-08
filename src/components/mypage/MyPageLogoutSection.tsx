@@ -1,5 +1,6 @@
 'use client';
 
+import { signOut } from '@/actions/auth-service/sign-out';
 import { useRouter } from 'next/navigation';
 
 export function MyPageLogoutSection() {
@@ -7,13 +8,7 @@ export function MyPageLogoutSection() {
 
   const handleLogout = async () => {
     try {
-      // 로그아웃 API 호출
-      // await signOut();
-
-      // 로컬 스토리지 및 쿠키 정리
-      localStorage.clear();
-
-      // 로그인 페이지로 리다이렉트
+      await signOut();
       router.push('/sign-in');
     } catch (error) {
       console.error('로그아웃 중 오류 발생:', error);

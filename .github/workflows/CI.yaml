@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - BVFH-93-develop
-      - BVFH-361-mypage
 
 env:
   AWS_REGION: ap-northeast-2

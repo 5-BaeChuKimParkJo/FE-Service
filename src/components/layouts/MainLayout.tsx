@@ -14,7 +14,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         <TopNavigation />
       </ScrollableHeader>
 
-      <main className='flex-1 pt-12 pb-20 bg-gray-100 overflow-y-scroll scrollbar-hidden'>
+      <main className='mobile-container flex-1 pt-12 pb-20 bg-gray-100 overflow-y-scroll scrollbar-hidden'>
         {children}
       </main>
 

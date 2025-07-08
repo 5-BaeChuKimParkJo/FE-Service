@@ -50,7 +50,12 @@ export function CreateProductFAB() {
           aria-hidden='true'
         />
       )}
-      <div className='fixed bottom-21 right-3 z-50'>
+      <div
+        className='fixed bottom-21 z-50'
+        style={{
+          right: 'max(12px, calc(50vw - 240px + 12px))',
+        }}
+      >
         <div className='relative flex flex-col items-center'>
           {menuItems.map((item, i) => (
             <Link

@@ -46,8 +46,8 @@ export function BottomNavigation() {
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-50',
-        'w-full h-16 border-t border-gray-200/20',
+        'mobile-fixed bottom-0 z-50',
+        'h-16 border-t border-gray-200/20',
       )}
     >
       <div className='bg-primary-100 h-full flex items-center justify-around px-2 sm:px-4 rounded-t-xl'>
@@ -71,8 +71,8 @@ export function BottomNavigation() {
                   isActive ? 'text-white' : 'text-white/50',
                 )}
               />
-              {item.href === '/chat' && unreadCount && unreadCount > 0 && (
-                <div className='absolute top-1 right-2 bg-white text-primary-200 text-[10px] font-bold rounded-full min-w-4 h-4 flex items-center justify-center px-1'>
+              {item.href === '/chat' && unreadCount > 0 && (
+                <div className='absolute top-1 right-2 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-4 h-4 flex items-center justify-center px-1'>
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </div>
               )}

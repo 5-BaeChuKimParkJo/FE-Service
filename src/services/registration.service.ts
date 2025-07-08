@@ -24,7 +24,6 @@ export class RegistrationService {
         phoneNumber: userData.phoneNumber,
         nickname: userData.nickname,
         password: userData.password,
-        interests: userData.interests,
       });
 
       this.deps.setShowWelcomeDialog(true);

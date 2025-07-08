@@ -101,4 +101,6 @@ export interface CreateAuctionResponse {
 }
 
 export * from './auction-read';
+export * from './auction-history';
+export * from './bid-history';
 export * from './search-products';

@@ -1,5 +1,6 @@
 export * from './ChatRoomHeader';
 export * from './ChatList';
+export * from './ChatEmpty';
 export * from './ChatRoom';
 export * from './ChatSummary';
 export * from './ChatDateDivider';

@@ -48,7 +48,7 @@ export async function getChatRoomHeaderData(
   } else {
     href = `/auctions/${chatroomInfo.postUuid}`;
     product = await getAuctionDetail(chatroomInfo.postUuid);
-    price = product.currentBid;
+    price = product.currentBid > 0 ? product.currentBid : product.minimumBid;
     imageUrl = product.images[0].url;
     status = '경매 종료';
   }

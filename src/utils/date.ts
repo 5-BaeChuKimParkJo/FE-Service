@@ -1,12 +1,40 @@
+import { formatInTimeZone } from 'date-fns-tz';
+import { ko } from 'date-fns/locale';
+
 export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
+  // 한국 시간으로 변환
+  return formatInTimeZone(
+    new Date(dateString),
+    'Asia/Seoul',
+    'yyyy년 M월 d일 a h:mm',
+    {
+      locale: ko,
+    },
+  );
+}
+
+// 한국 시간으로 변환이 필요한 경우
+export function formatDateKST(dateString: string): string {
+  return formatInTimeZone(
+    new Date(dateString),
+    'Asia/Seoul',
+    'yyyy년 M월 d일 a h:mm',
+    {
+      locale: ko,
+    },
+  );
+}
+
+// UTC 시간을 그대로 표시 (더 명확한 버전)
+export function formatDateUTC(dateString: string): string {
+  return formatInTimeZone(
+    new Date(dateString),
+    'UTC',
+    'yyyy년 M월 d일 a h:mm',
+    {
+      locale: ko,
+    },
+  );
 }
 
 export function formatChatDate(date: Date | null) {

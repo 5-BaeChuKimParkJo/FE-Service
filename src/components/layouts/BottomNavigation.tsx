@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Home, Gavel, ShoppingBag, MessageCircle, User } from 'lucide-react';
 
 import { cn } from '@/libs/cn';
+import { useChatUnreadStore } from '@/stores/use-chat-unread-store';
 
 interface NavItem {
   href: string;
@@ -41,7 +42,7 @@ const navItems: NavItem[] = [
 
 export function BottomNavigation() {
   const pathname = usePathname();
-
+  const { unreadCount } = useChatUnreadStore();
   return (
     <nav
       className={cn(
@@ -53,13 +54,12 @@ export function BottomNavigation() {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
-
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'flex flex-col items-center justify-center gap-0.5 px-2 sm:px-3 py-2 rounded-lg',
+                'relative flex flex-col items-center justify-center gap-0.5 px-2 sm:px-3 py-2 rounded-lg',
                 'transition-all duration-200 min-w-0 flex-1',
                 'hover:bg-white/20 active:scale-95',
               )}
@@ -71,6 +71,11 @@ export function BottomNavigation() {
                   isActive ? 'text-white' : 'text-white/50',
                 )}
               />
+              {item.href === '/chat' && unreadCount && unreadCount > 0 && (
+                <div className='absolute top-1 right-2 bg-white text-primary-200 text-[10px] font-bold rounded-full min-w-4 h-4 flex items-center justify-center px-1'>
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </div>
+              )}
               <span
                 className={cn(
                   'text-[10px] sm:text-xs font-medium transition-colors duration-200',

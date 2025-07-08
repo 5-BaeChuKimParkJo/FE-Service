@@ -29,21 +29,33 @@ export const useOptimizedMessages = (
       const isUnread = isMessageUnread(msg.sentAt, msg.senderUuid);
 
       let profileVisible = false;
-      if (!isFromMe) {
-        if (index === 0 || messages[index - 1].senderUuid !== msg.senderUuid) {
+      if (!isFromMe && msg.messageType !== 'SYSTEM') {
+        if (index === 0) {
           profileVisible = true;
+        } else {
+          let prevUserMessageIndex = index - 1;
+          while (
+            prevUserMessageIndex >= 0 &&
+            messages[prevUserMessageIndex].messageType === 'SYSTEM'
+          ) {
+            prevUserMessageIndex--;
+          }
+
+          if (
+            prevUserMessageIndex < 0 ||
+            messages[prevUserMessageIndex].senderUuid !== msg.senderUuid
+          ) {
+            profileVisible = true;
+          }
         }
       }
 
       const profileUrl = isFromMe
-        ? '/placeholder.svg?height=32&width=32' // 내 프로필은 기본 이미지
+        ? '/placeholder.svg?height=32&width=32'
         : opponentInfo?.profileImageUrl ||
           '/placeholder.svg?height=32&width=32';
-      const senderName = isFromMe
-        ? '나' // 내 메시지는 '나'로 표시
-        : opponentInfo?.nickname || '상대방';
+      const senderName = isFromMe ? '나' : opponentInfo?.nickname || '상대방';
 
-      // 시간 표시 여부
       const nextMsg = messages[index + 1];
       let showTime = false;
       if (!nextMsg) {
@@ -57,7 +69,6 @@ export const useOptimizedMessages = (
           curDate.getMinutes() !== nextDate.getMinutes();
       }
 
-      // 날짜 라벨 표시 여부
       let showDateDivider = false;
       const curDate = new Date(msg.sentAt);
       if (index === 0) {

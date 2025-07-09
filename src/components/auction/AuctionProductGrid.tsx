@@ -10,8 +10,7 @@ interface AuctionProduct {
   status: string;
   viewCount: number;
   thumbnailUrl: string;
-  likes: number;
-  bidderCount: number;
+
   bidAmount?: number; // 현재 입찰가 (없으면 minimumBid와 동일)
 }
 

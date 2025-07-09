@@ -1,4 +1,4 @@
-import { Eye, Heart, Users } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,8 +15,7 @@ interface AuctionProductCardProps {
   status: string;
   viewCount: number;
   thumbnailUrl: string;
-  likes: number;
-  bidderCount: number;
+
   bidAmount?: number;
   LikeButtonComponent: React.ComponentType<{
     auctionUuid: string;
@@ -35,8 +34,7 @@ export function AuctionProductCard({
   status,
   viewCount,
   thumbnailUrl,
-  likes,
-  bidderCount,
+
   bidAmount,
   LikeButtonComponent,
   onLike,
@@ -91,9 +89,15 @@ export function AuctionProductCard({
 
       <div className='ml-2 space-y-1'>
         <p className='text-xl font-bold'>{formatNumber(currentPrice)}원</p>
-        <p className='text-sm text-gray-500 line-through'>
-          {formatNumber(minimumBid)}원
-        </p>
+        <span className='flex items-center mr-3 justify-between text-xs text-gray-500 gap-1'>
+          <p className='text-sm text-gray-500 line-through'>
+            {formatNumber(minimumBid)}원
+          </p>
+          <div className='flex items-center gap-1'>
+            <Eye className='w-3 h-3' />
+            <span>{formatNumber(viewCount)}</span>
+          </div>
+        </span>
       </div>
 
       <MinimalAuctionTimer
@@ -102,15 +106,6 @@ export function AuctionProductCard({
         status={status}
         className='mx-2 my-1'
       />
-
-      <div className='flex items-center mr-3 justify-end text-xs text-gray-500 gap-1'>
-        <Users className='w-3 h-3' />
-        <span>{formatNumber(bidderCount)}</span>
-        <Heart className='w-3 h-3' />
-        <span>{formatNumber(likes)}</span>
-        <Eye className='w-3 h-3' />
-        <span>{formatNumber(viewCount)}</span>
-      </div>
     </section>
   );
 }

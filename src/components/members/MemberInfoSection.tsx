@@ -23,6 +23,7 @@ export async function MemberInfoSection({
             src={memberInfo.profileImageUrl || grade.imageUrl}
             alt='profile'
             fill
+            sizes='50px'
             style={{ objectFit: 'cover' }}
             className='rounded-full'
           />
@@ -40,6 +41,7 @@ export async function MemberInfoSection({
                 src={grade.imageUrl}
                 alt='grade'
                 fill
+                sizes='30px'
                 style={{ objectFit: 'cover' }}
                 className='rounded-full'
               />

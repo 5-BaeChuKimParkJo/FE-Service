@@ -19,6 +19,7 @@ export async function BidderCard({ bidder }: { bidder: AuctionBidders }) {
           src={memberInfo.profileImageUrl || '/images/default-profile.png'}
           alt={memberInfo.nickname}
           fill
+          sizes='48px'
           className='object-cover'
         />
       </div>

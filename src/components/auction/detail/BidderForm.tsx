@@ -45,7 +45,7 @@ export function BidderForm({
 
   const handleBid = async () => {
     const numAmount = parseInt(inputAmount, 10);
-    if (numAmount < bidAmount) {
+    if (numAmount <= bidAmount) {
       setError('입찰 금액은 현재 입찰가 이상이어야 합니다.');
       return;
     }
@@ -115,7 +115,7 @@ export function BidderForm({
   const isAmountInvalid =
     inputAmount === '' ||
     isNaN(numAmount) ||
-    numAmount < bidAmount ||
+    numAmount <= bidAmount ||
     numAmount > Math.floor(bidAmount * 1.3);
   const bidButtonDisabled = loading || isAmountInvalid;
 

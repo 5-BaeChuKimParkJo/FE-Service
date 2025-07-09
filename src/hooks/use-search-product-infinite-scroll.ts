@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { searchAuctions } from '@/actions/search-service';
+import { searchProducts } from '@/actions/search-service';
 import {
-  SearchAuctionItem,
-  SearchAuctionRequest,
-  SearchAfterCursor,
-} from '@/types/auction';
+  SearchProductItemType,
+  SearchProductRequest,
+  SearchAfterProductCursor,
+} from '@/types/product/search-product-type';
 
-interface UseSearchInfiniteScrollProps {
+interface UseSearchProductInfiniteScrollProps {
   searchQuery: string;
   filters?: {
     productCondition?: string;
@@ -19,25 +19,23 @@ interface UseSearchInfiniteScrollProps {
   enabled?: boolean;
 }
 
-export default function useSearchInfiniteScroll({
+export default function useSearchProductInfiniteScroll({
   searchQuery,
   filters,
   enabled = true,
-}: UseSearchInfiniteScrollProps) {
-  const [data, setData] = useState<SearchAuctionItem[]>([]);
+}: UseSearchProductInfiniteScrollProps) {
+  const [data, setData] = useState<SearchProductItemType[]>([]);
   const [isLoading, setIsLoading] = useState(enabled);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [lastAuctionUuid, setLastAuctionUuid] = useState<string | null>(null);
-  const [lastAuctionCreatedAt, setLastAuctionCreatedAt] = useState<
+  const [lastProductUuid, setLastProductUuid] = useState<string | null>(null);
+  const [lastProductCreatedAt, setLastProductCreatedAt] = useState<
     string | null
   >(null);
-  const [lastAuctionCurrentBid, setLastAuctionCurrentBid] = useState<
-    number | null
-  >(null);
-  const [lastAuctionViewCount, setLastAuctionViewCount] = useState<
+  const [lastProductPrice, setLastProductPrice] = useState<number | null>(null);
+  const [lastProductViewCount, setLastProductViewCount] = useState<
     number | null
   >(null);
 
@@ -52,6 +50,7 @@ export default function useSearchInfiniteScroll({
   const sortBy = filters?.sortBy;
   const categoryName = filters?.categoryName;
 
+  // 첫 번째 데이터 로딩
   const loadInitialData = useCallback(async () => {
     if (!enabled) {
       setIsLoading(false);
@@ -61,15 +60,15 @@ export default function useSearchInfiniteScroll({
     setIsLoading(true);
     setError(null);
     setData([]);
-    setLastAuctionUuid(null);
-    setLastAuctionCreatedAt(null);
-    setLastAuctionCurrentBid(null);
-    setLastAuctionViewCount(null);
+    setLastProductUuid(null);
+    setLastProductCreatedAt(null);
+    setLastProductPrice(null);
+    setLastProductViewCount(null);
     setHasNextPage(true);
 
     try {
-      const request: SearchAuctionRequest = {
-        auctionTitle: searchQuery,
+      const request: SearchProductRequest = {
+        productTitle: searchQuery,
       };
 
       if (productCondition) {
@@ -85,22 +84,22 @@ export default function useSearchInfiniteScroll({
         request.categoryName = categoryName;
       }
 
-      const response = await searchAuctions(request);
-      const newData = response.getAuctionSearchResponseVoList;
+      const response = await searchProducts(request);
+      const newData = response.getProductSearchResponseVoList;
 
       setData(newData);
 
       if (newData.length > 0) {
         const lastItem = newData[newData.length - 1];
-        setLastAuctionUuid(lastItem.auctionUuid);
-        setLastAuctionCreatedAt(lastItem.createdAt);
-        setLastAuctionCurrentBid(lastItem.currentBid);
-        setLastAuctionViewCount(lastItem.viewCount);
+        setLastProductUuid(lastItem.productUuid || null);
+        setLastProductCreatedAt(lastItem.createdAt || null);
+        setLastProductPrice(lastItem.price || null);
+        setLastProductViewCount(lastItem.viewCount || null);
       }
 
       setHasNextPage(newData.length >= 10);
     } catch (err) {
-      console.error('검색 데이터 로딩 실패:', err);
+      console.error('상품 검색 데이터 로딩 실패:', err);
       setError('검색 결과를 불러오는데 실패했습니다.');
     } finally {
       setIsLoading(false);
@@ -119,8 +118,8 @@ export default function useSearchInfiniteScroll({
       !enabled ||
       isLoadingMore ||
       !hasNextPage ||
-      !lastAuctionUuid ||
-      !lastAuctionCreatedAt
+      !lastProductUuid ||
+      !lastProductCreatedAt
     ) {
       return;
     }
@@ -129,8 +128,8 @@ export default function useSearchInfiniteScroll({
     setError(null);
 
     try {
-      const request: SearchAuctionRequest = {
-        auctionTitle: searchQuery,
+      const request: SearchProductRequest = {
+        productTitle: searchQuery,
       };
 
       if (productCondition) {
@@ -146,42 +145,47 @@ export default function useSearchInfiniteScroll({
         request.categoryName = categoryName;
       }
 
-      const cursor: SearchAfterCursor = {
-        lastAuctionUuid,
+      const cursor: SearchAfterProductCursor = {
+        lastProductUuid,
       };
 
       if (sortBy === 'priceHigh' || sortBy === 'priceLow') {
-        if (lastAuctionCurrentBid !== null) {
-          cursor.lastAuctionCurrentBid = lastAuctionCurrentBid;
+        if (lastProductPrice !== null) {
+          cursor.lastProductPrice = lastProductPrice;
         }
       } else if (sortBy === 'recommended') {
-        if (lastAuctionViewCount !== null) {
-          cursor.lastAuctionViewCount = lastAuctionViewCount;
+        if (lastProductViewCount !== null) {
+          cursor.lastProductViewCount = lastProductViewCount;
         }
       } else {
-        cursor.lastAuctionCreatedAt = lastAuctionCreatedAt;
+        cursor.lastProductCreatedAt = lastProductCreatedAt;
       }
 
-      request.searchAfter = [cursor];
+      if (cursor.lastProductCreatedAt) {
+        request.searchAfter1 = cursor.lastProductCreatedAt;
+      }
+      if (cursor.lastProductUuid) {
+        request.searchAfter2 = cursor.lastProductUuid;
+      }
 
-      const response = await searchAuctions(request);
-      const newData = response.getAuctionSearchResponseVoList;
+      const response = await searchProducts(request);
+      const newData = response.getProductSearchResponseVoList;
 
       if (newData.length > 0) {
         setData((prev) => [...prev, ...newData]);
 
         const lastItem = newData[newData.length - 1];
-        setLastAuctionUuid(lastItem.auctionUuid);
-        setLastAuctionCreatedAt(lastItem.createdAt);
-        setLastAuctionCurrentBid(lastItem.currentBid);
-        setLastAuctionViewCount(lastItem.viewCount);
+        setLastProductUuid(lastItem.productUuid || null);
+        setLastProductCreatedAt(lastItem.createdAt || null);
+        setLastProductPrice(lastItem.price || null);
+        setLastProductViewCount(lastItem.viewCount || null);
 
         setHasNextPage(newData.length >= 10);
       } else {
         setHasNextPage(false);
       }
     } catch (err) {
-      console.error('추가 데이터 로딩 실패:', err);
+      console.error('추가 상품 데이터 로딩 실패:', err);
       setError('추가 데이터를 불러오는데 실패했습니다.');
     } finally {
       setIsLoadingMore(false);
@@ -195,10 +199,10 @@ export default function useSearchInfiniteScroll({
     enabled,
     isLoadingMore,
     hasNextPage,
-    lastAuctionUuid,
-    lastAuctionCreatedAt,
-    lastAuctionCurrentBid,
-    lastAuctionViewCount,
+    lastProductUuid,
+    lastProductCreatedAt,
+    lastProductPrice,
+    lastProductViewCount,
   ]);
 
   useEffect(() => {

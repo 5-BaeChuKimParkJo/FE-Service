@@ -26,6 +26,7 @@ export function ItemInfoSection({
                 }
                 alt={`${auction.seller.nickname} 프로필`}
                 fill
+                sizes='48px'
                 className='object-cover'
               />
             </div>

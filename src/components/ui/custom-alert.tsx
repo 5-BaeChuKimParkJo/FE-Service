@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertTriangle, XCircle, Info, X } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import { cn } from '@/libs/cn';
 
 export type AlertType = 'success' | 'error' | 'warning' | 'info';
@@ -92,7 +93,9 @@ export function CustomAlert({
   const config = alertConfig[type];
   const Icon = config.icon;
 
-  return (
+  if (typeof window === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {isVisible && (
         <>
@@ -101,12 +104,12 @@ export function CustomAlert({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='fixed inset-0 z-50 bg-black/20 backdrop-blur-sm'
+            className='fixed inset-0 z-[55] bg-black/20 backdrop-blur-sm'
             onClick={handleClose}
           />
 
           {/* Alert Container */}
-          <div className='fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none'>
+          <div className='fixed inset-0 z-[55] flex items-center justify-center p-4 pointer-events-none'>
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -203,6 +206,7 @@ export function CustomAlert({
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

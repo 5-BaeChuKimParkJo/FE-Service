@@ -6,6 +6,7 @@ import { createBid } from '@/actions/auction-service/create-bid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { isErrorResponse } from '@/utils/type-guards';
+import { useAlert } from '@/contexts/AlertContext';
 import {
   BidderDialogHeader,
   BidderAgreementStep,
@@ -25,6 +26,7 @@ export function BidderForm({
   status,
 }: BidderFormProps) {
   const router = useRouter();
+  const { showConfirm } = useAlert();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [inputAmount, setInputAmount] = useState(String(bidAmount));
@@ -51,7 +53,19 @@ export function BidderForm({
       setError('입찰 금액은 현재 입찰가의 30%를 초과할 수 없습니다.');
       return;
     }
-    if (!window.confirm('입찰하시겠습니까?')) return;
+
+    const confirmed = await showConfirm(
+      'info',
+      '입찰하기',
+      `입찰 후 취소가 불가능 합니다.`,
+      {
+        confirmText: '확인했습니다',
+        cancelText: '나중에 하기',
+      },
+    );
+
+    if (!confirmed) return;
+
     setLoading(true);
     setError('');
     try {
@@ -112,7 +126,12 @@ export function BidderForm({
   return (
     <footer className=' border-t border-gray-200'>
       <div className='flex justify-center mx-10 my-2'>
-        <Button width='full' size='xl' onClick={() => setOpen(true)}>
+        <Button
+          width='full'
+          aria-label='입찰하러가기'
+          size='xl'
+          onClick={() => setOpen(true)}
+        >
           입찰하기
         </Button>
       </div>

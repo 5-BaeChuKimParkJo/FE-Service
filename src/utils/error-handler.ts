@@ -9,12 +9,11 @@ export interface ErrorInfo {
 }
 
 export const handleApiError = (error: unknown): ErrorInfo => {
-  // instance.ts에서 오는 ErrorResponse 타입 체크
+  // .ts에서 오는 ErrorResponse 타입 체크
   if (isErrorResponse(error)) {
     const title = '알림';
     const message = error.message;
 
-    // instance.ts에서 오는 에러 코드별 처리
     switch (error.code) {
       case 'HTTP_ERROR_401':
         return {

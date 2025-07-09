@@ -110,7 +110,7 @@ export function BidderForm({
   }
 
   return (
-    <footer className='bidder-form-fixed bg-white border-t border-gray-200'>
+    <footer className=' border-t border-gray-200'>
       <div className='flex justify-center mx-10 my-2'>
         <Button width='full' size='xl' onClick={() => setOpen(true)}>
           입찰하기

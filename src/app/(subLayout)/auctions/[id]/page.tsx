@@ -41,7 +41,7 @@ export default async function AuctionPage({
 
   return (
     <div className='relative'>
-      <main className='flex flex-col pb-20'>
+      <main className='flex flex-col '>
         <ItemImages images={images} />
         <ItemInfoSection auction={auction} />
         <div className=' px-4'>

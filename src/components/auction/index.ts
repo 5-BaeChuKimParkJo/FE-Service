@@ -10,4 +10,4 @@ export { MinimalAuctionTimer } from './MinimalAuctionTimer';
 export * from './create';
 
 // 상세 페이지 관련 컴포넌트
-export * from './detail';
+export * from '../../app/(subLayout)/auctions/[id]/components/bidder-section';

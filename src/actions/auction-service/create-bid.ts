@@ -12,15 +12,16 @@ export async function createBid(auctionUuid: string, bidAmount: number) {
 
   // );
   // return response;
+  const requestId = crypto.randomUUID();
 
   try {
     const response = await instance.post<null | ErrorResponse>(
       `/auction-service/api/v2/auctions/${auctionUuid}/bidders`,
       {
         bidAmount,
+        requestId,
       },
     );
-    console.log(response, 'response');
     return response;
   } catch (error) {
     return error as ErrorResponse;

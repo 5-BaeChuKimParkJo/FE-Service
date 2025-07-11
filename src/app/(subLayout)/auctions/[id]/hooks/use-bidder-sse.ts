@@ -24,12 +24,9 @@ export function useBidderSSE({
     if (sseMessage.type === 'auction-bidder-awarded') {
       clearTimeoutAndReset();
       onSuccess();
-    } else if (sseMessage.type === 'auction-bidder-rejected') {
-      clearTimeoutAndReset();
-      onError('입찰이 거부되었습니다. 다시 시도해주세요.');
     } else {
       clearTimeoutAndReset();
-      onError('입찰 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+      onError(sseMessage.message);
     }
   }, [sseMessage, isWaiting, onSuccess, onError]);
 

@@ -4,6 +4,10 @@ import { ReviewDialog } from '@/components/common';
 import { MemberSummary } from '@/types/member';
 import { ReviewData, ReviewType } from '@/types/review';
 import { StatusBadge } from '../icons';
+import {
+  sendReviewBuyerToSeller,
+  sendReviewSellerToBuyer,
+} from '@/actions/review-service';
 
 interface ReviewButtonProps {
   currentUserUuid: string;
@@ -26,7 +30,6 @@ export function ReviewButton({
 }: ReviewButtonProps) {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
-  // 현재 사용자가 판매자인지 구매자인지 판단
   const isCurrentUserSeller = currentUserUuid === productInfo.sellerUuid;
   const reviewType: ReviewType = isCurrentUserSeller
     ? 'seller-to-buyer'
@@ -34,8 +37,11 @@ export function ReviewButton({
 
   const handleReviewSubmit = async (reviewData: ReviewData) => {
     try {
-      console.log('리뷰 데이터:', reviewData);
-      // TODO: 리뷰 API 호출
+      if (reviewType === 'buyer-to-seller') {
+        await sendReviewBuyerToSeller(reviewData);
+      } else {
+        await sendReviewSellerToBuyer(reviewData);
+      }
 
       setIsReviewDialogOpen(false);
     } catch (error) {

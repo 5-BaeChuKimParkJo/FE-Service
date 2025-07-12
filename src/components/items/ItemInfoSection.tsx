@@ -26,6 +26,7 @@ export function ItemInfoSection({
                 }
                 alt={`${auction.seller.nickname} 프로필`}
                 fill
+                sizes='48px'
                 className='object-cover'
               />
             </div>
@@ -43,8 +44,7 @@ export function ItemInfoSection({
             className=' items-center gap-1 text-red-500 touch-manipulation'
             aria-label='좋아요'
           >
-            <Heart size={24} fill='currentColor' />
-            <span className='text-lg font-medium'>{auction.likes}</span>
+            <Heart size={24} />
           </button>
         </header>
         <div className='flex items-center justify-end gap-4 pb-2 text-sm text-gray-600'>

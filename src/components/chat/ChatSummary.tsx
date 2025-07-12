@@ -26,6 +26,7 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
             alt={nickname}
             width={56}
             height={56}
+            priority
             className='object-cover w-full h-full'
           />
         </figure>
@@ -58,8 +59,8 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
           <Image
             src={productImage || '/placeholder.svg'}
             alt='상품 썸네일'
-            width={40}
-            height={40}
+            width={20}
+            height={20}
             className='object-cover w-full h-full'
           />
         </figure>

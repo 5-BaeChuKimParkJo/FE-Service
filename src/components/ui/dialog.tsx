@@ -57,7 +57,7 @@ export function Dialog({
     <AnimatePresence>
       {isOpen && (
         <div
-          className='fixed inset-0 z-50 flex items-center justify-center'
+          className='fixed inset-0 z-30 flex items-center justify-center'
           role='dialog'
           aria-modal='true'
           aria-labelledby='dialog-title'

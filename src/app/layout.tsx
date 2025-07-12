@@ -51,7 +51,7 @@ export default async function RootLayout({
 
   return (
     <html lang='ko'>
-      <body className='w-full min-w-[320px] max-w-[480px] mx-auto pb-safe pt-safe overflow-y-auto scrollbar-hidden'>
+      <body className='mobile-container pb-safe pt-safe overflow-y-auto scrollbar-hidden'>
         <QueryProvider>
           <AlertProvider>
             <ToastProvider>

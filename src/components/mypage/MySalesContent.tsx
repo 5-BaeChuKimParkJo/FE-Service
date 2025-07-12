@@ -53,8 +53,8 @@ export function MySalesContent({ auctions }: MySalesContentProps) {
 function SalesCard({ auction }: { auction: AuctionHistory }) {
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      waiting: { text: '대기중', className: 'bg-yellow-100 text-yellow-800' },
-      active: { text: '진행중', className: 'bg-green-100 text-green-800' },
+      waiting: { text: '대기', className: 'bg-yellow-100 text-yellow-800' },
+      active: { text: '진행', className: 'bg-green-100 text-green-800' },
       ended: { text: '종료', className: 'bg-gray-100 text-gray-800' },
       cancelled: { text: '취소', className: 'bg-red-100 text-red-800' },
     };

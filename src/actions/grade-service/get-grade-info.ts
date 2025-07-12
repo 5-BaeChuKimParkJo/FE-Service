@@ -10,6 +10,7 @@ export async function getGradeInfo(gradeUuid: string): Promise<Grade> {
       next: {
         revalidate: Infinity,
       },
+      cache: 'force-cache',
     },
   );
   return response;

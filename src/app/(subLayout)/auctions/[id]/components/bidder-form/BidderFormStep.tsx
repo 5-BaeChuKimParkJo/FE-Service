@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui';
 import { FilledInput } from '@/components/ui/filled-input';
+import { AuctionLoading } from '@/components/common/AuctionLoading';
 import { formatNumber } from '@/utils/format';
 
 type BidderFormStepProps = {
@@ -32,6 +33,14 @@ export function BidderFormStep({
   bidButtonText,
   bidButtonDisabled,
 }: BidderFormStepProps) {
+  if (loading) {
+    return (
+      <div className='flex flex-col items-center gap-6 px-4 pb-6 w-full'>
+        <AuctionLoading text='입찰 중입니다' showIcon={false} />
+      </div>
+    );
+  }
+
   return (
     <motion.form
       key='step2'

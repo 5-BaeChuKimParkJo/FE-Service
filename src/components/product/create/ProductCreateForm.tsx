@@ -69,7 +69,7 @@ export function ProductCreateForm() {
   };
 
   const handleGoToDetail = () => {
-    router.push(`/products/${createdProductUuid}`);
+    router.replace(`/products/${createdProductUuid}`);
   };
 
   const handleCloseSuccess = () => {

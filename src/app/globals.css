@@ -221,4 +221,13 @@ textarea:focus {
       filter: blur(0);
     }
   }
+
+  /* 모바일 중심 레이아웃 공통 클래스 */
+  .mobile-container {
+    @apply w-full min-w-[320px] max-w-[480px] mx-auto;
+  }
+
+  .mobile-fixed {
+    @apply fixed left-1/2 transform -translate-x-1/2 w-full min-w-[320px] max-w-[480px];
+  }
 }

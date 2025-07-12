@@ -1,7 +1,5 @@
 import { getAuctionBidders, getAuctionDetail } from '@/actions/auction-service';
 import { getMemberInfo } from '@/actions/member-service';
-import { BiddersSection, AuctionTags } from '@/components/auction/detail';
-import { BidderForm } from '@/components/auction/detail/BidderForm';
 import { ItemImages } from '@/components/images';
 import {
   AuctionTimer,
@@ -10,6 +8,7 @@ import {
 } from '@/components/items';
 import ErrorText from '@/components/ui/error-text';
 import { isErrorResponse } from '@/utils/type-guards';
+import { BiddersSection, AuctionTags, BidderForm } from './components';
 
 export default async function AuctionPage({
   params,
@@ -40,8 +39,8 @@ export default async function AuctionPage({
   }));
 
   return (
-    <>
-      <main className='min-h-screen flex flex-col'>
+    <div className='relative'>
+      <main className='flex flex-col '>
         <ItemImages images={images} />
         <ItemInfoSection auction={auction} />
         <div className=' px-4'>
@@ -60,6 +59,6 @@ export default async function AuctionPage({
         }
         status={auction.status}
       />
-    </>
+    </div>
   );
 }

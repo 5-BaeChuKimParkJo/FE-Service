@@ -1,12 +1,40 @@
+import { formatInTimeZone } from 'date-fns-tz';
+import { ko } from 'date-fns/locale';
+
 export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
+  // 한국 시간으로 변환
+  return formatInTimeZone(
+    new Date(dateString),
+    'Asia/Seoul',
+    'yyyy년 M월 d일 a h:mm',
+    {
+      locale: ko,
+    },
+  );
+}
+
+// 한국 시간으로 변환이 필요한 경우
+export function formatDateKST(dateString: string): string {
+  return formatInTimeZone(
+    new Date(dateString),
+    'Asia/Seoul',
+    'yyyy년 M월 d일 a h:mm',
+    {
+      locale: ko,
+    },
+  );
+}
+
+// UTC 시간을 그대로 표시 (더 명확한 버전)
+export function formatDateUTC(dateString: string): string {
+  return formatInTimeZone(
+    new Date(dateString),
+    'UTC',
+    'yyyy년 M월 d일 a h:mm',
+    {
+      locale: ko,
+    },
+  );
 }
 
 export function formatChatDate(date: Date | null) {
@@ -40,4 +68,28 @@ export function formatChatDate(date: Date | null) {
 export function formatChatDateDivider(date: Date) {
   const days = ['일', '월', '화', '수', '목', '금', '토'];
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
+}
+
+export function formatRelativeTime(dateString: string): string {
+  const now = new Date();
+  const targetDate = new Date(dateString);
+  const diffInMs = now.getTime() - targetDate.getTime();
+
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const diffInMonths = Math.floor(diffInDays / 30);
+  const diffInYears = Math.floor(diffInDays / 365);
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours}시간 전`;
+  } else if (diffInDays < 30) {
+    return `${diffInDays}일 전`;
+  } else if (diffInMonths < 12) {
+    return `${diffInMonths}달 전`;
+  } else {
+    return `${diffInYears}년 전`;
+  }
 }

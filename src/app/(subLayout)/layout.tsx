@@ -5,7 +5,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='min-h-screen flex flex-col'>
       <SubHeader />
-      <main className='flex-1 pt-14 bg-gray-100 overflow-y-scroll scrollbar-hidden'>
+      <main className='mobile-container flex-1 pt-14 bg-gray-100'>
         {children}
       </main>
     </div>

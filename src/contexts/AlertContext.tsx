@@ -8,6 +8,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { CustomAlert, AlertType } from '@/components/ui/custom-alert';
+import { ConfirmDialog, ConfirmType } from '@/components/ui/confirm-dialog';
 
 interface AlertState {
   isOpen: boolean;
@@ -16,6 +17,17 @@ interface AlertState {
   message?: string;
   autoClose?: boolean;
   duration?: number;
+}
+
+interface ConfirmState {
+  isOpen: boolean;
+  type: ConfirmType;
+  title: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 interface AlertContextValue {
@@ -49,6 +61,18 @@ interface AlertContextValue {
     options?: { autoClose?: boolean; duration?: number },
   ) => void;
   hideAlert: () => void;
+  showConfirm: (
+    type: ConfirmType,
+    title: string,
+    message?: string,
+    options?: {
+      confirmText?: string;
+      cancelText?: string;
+      onConfirm?: () => void;
+      onCancel?: () => void;
+    },
+  ) => Promise<boolean>;
+  hideConfirm: () => void;
 }
 
 const AlertContext = createContext<AlertContextValue | undefined>(undefined);
@@ -65,6 +89,15 @@ export function AlertProvider({ children }: AlertProviderProps) {
     message: '',
     autoClose: true,
     duration: 4000,
+  });
+
+  const [confirm, setConfirm] = useState<ConfirmState>({
+    isOpen: false,
+    type: 'info',
+    title: '',
+    message: '',
+    confirmText: '확인',
+    cancelText: '취소',
   });
 
   const showAlert = useCallback(
@@ -91,6 +124,46 @@ export function AlertProvider({ children }: AlertProviderProps) {
 
   const hideAlert = useCallback(() => {
     setAlert((prev) => ({ ...prev, isOpen: false }));
+  }, []);
+
+  const showConfirm = useCallback(
+    (
+      type: ConfirmType,
+      title: string,
+      message?: string,
+      options?: {
+        confirmText?: string;
+        cancelText?: string;
+        onConfirm?: () => void;
+        onCancel?: () => void;
+      },
+    ): Promise<boolean> => {
+      return new Promise((resolve) => {
+        setConfirm({
+          isOpen: true,
+          type,
+          title,
+          message,
+          confirmText: options?.confirmText ?? '확인',
+          cancelText: options?.cancelText ?? '취소',
+          onConfirm: () => {
+            options?.onConfirm?.();
+            resolve(true);
+            setConfirm((prev) => ({ ...prev, isOpen: false }));
+          },
+          onCancel: () => {
+            options?.onCancel?.();
+            resolve(false);
+            setConfirm((prev) => ({ ...prev, isOpen: false }));
+          },
+        });
+      });
+    },
+    [],
+  );
+
+  const hideConfirm = useCallback(() => {
+    setConfirm((prev) => ({ ...prev, isOpen: false }));
   }, []);
 
   // 편의 메서드들
@@ -145,6 +218,8 @@ export function AlertProvider({ children }: AlertProviderProps) {
     showWarning,
     showInfo,
     hideAlert,
+    showConfirm,
+    hideConfirm,
   };
 
   return (
@@ -160,6 +235,18 @@ export function AlertProvider({ children }: AlertProviderProps) {
         onClose={hideAlert}
         autoClose={alert.autoClose}
         duration={alert.duration}
+      />
+
+      {/* Confirm Dialog 컴포넌트 */}
+      <ConfirmDialog
+        isOpen={confirm.isOpen}
+        type={confirm.type}
+        title={confirm.title}
+        message={confirm.message}
+        confirmText={confirm.confirmText}
+        cancelText={confirm.cancelText}
+        onConfirm={confirm.onConfirm || (() => {})}
+        onCancel={confirm.onCancel || (() => {})}
       />
     </AlertContext.Provider>
   );

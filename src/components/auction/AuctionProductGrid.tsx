@@ -10,8 +10,7 @@ interface AuctionProduct {
   status: string;
   viewCount: number;
   thumbnailUrl: string;
-  likes: number;
-  bidderCount: number;
+
   bidAmount?: number; // 현재 입찰가 (없으면 minimumBid와 동일)
 }
 
@@ -45,13 +44,7 @@ export function AuctionProductGrid({
   }
 
   return (
-    <div
-      className={cn(
-        'grid grid-cols-2 gap-3',
-        'sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-        className,
-      )}
-    >
+    <div className={cn('grid grid-cols-2 gap-3', className)}>
       {products.map((product) => (
         <AuctionProductCard
           key={product.auctionUuid}

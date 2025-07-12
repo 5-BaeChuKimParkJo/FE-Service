@@ -3,7 +3,7 @@ import type React from 'react';
 
 interface StatusBadgeProps {
   children: React.ReactNode;
-  variant?: 'red' | 'orange' | 'default';
+  variant?: 'red' | 'orange' | 'default' | 'primary';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
@@ -11,6 +11,7 @@ interface StatusBadgeProps {
 const variantStyles = {
   red: 'text-red-100 border-red-100 ',
   orange: 'text-yellow-300 border-yellow-300 ',
+  primary: 'text-primary-200 border-primary-200 bg-primary-200/10',
   default: 'text-gray-600 border-gray-600 bg-gray-50',
 };
 

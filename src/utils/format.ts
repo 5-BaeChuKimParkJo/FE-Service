@@ -3,6 +3,11 @@ export function formatCurrency(value: string | number): string {
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+export function formatPrice(value: string | number): string {
+  const num = Number(value);
+  return new Intl.NumberFormat('ko-KR').format(num) + '원';
+}
+
 export function numberToKorean(number: string | number): string {
   const inputNumber = Number(number);
 

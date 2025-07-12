@@ -12,7 +12,7 @@ export function ScrollableHeader({ children }: ScrollableHeaderProps) {
 
   return (
     <motion.div
-      className='fixed top-0 left-0 right-0 z-50'
+      className='mobile-fixed top-0 z-50'
       initial={{ y: 0, opacity: 1 }}
       animate={{
         y: isVisible ? 0 : '-100%',

@@ -145,8 +145,6 @@ export default function SearchResultPage() {
                   status={auction.status || 'active'}
                   viewCount={auction.viewCount}
                   thumbnailUrl={auction.thumbnailUrl}
-                  likes={0}
-                  bidderCount={0}
                   bidAmount={auction.currentBid}
                   LikeButtonComponent={LikeButton}
                 />

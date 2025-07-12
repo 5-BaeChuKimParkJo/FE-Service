@@ -7,12 +7,19 @@ import { CategoryType } from '@/actions/category-service/get-categories';
 interface CategoryFilterSliderProps {
   categories: CategoryType[];
   onCategorySelect?: (categoryName: string | null) => void;
+  isProduct?: boolean;
 }
 
 export function CategoryFilterSlider({
   categories,
   onCategorySelect,
+  isProduct = false,
 }: CategoryFilterSliderProps) {
+  let url = '/auctions';
+  if (isProduct) {
+    url = '/products';
+  }
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get('categoryName');
@@ -29,7 +36,7 @@ export function CategoryFilterSlider({
       // 기본 동작: auctions 페이지로 이동
       const params = new URLSearchParams(searchParams);
       params.set('categoryName', trimmedName);
-      router.replace(`/auctions?${params.toString()}`);
+      router.replace(`${url}?${params.toString()}`);
     }
   };
 
@@ -42,7 +49,7 @@ export function CategoryFilterSlider({
       // 기본 동작: auctions 페이지로 이동
       const params = new URLSearchParams(searchParams);
       params.delete('categoryName');
-      router.replace(`/auctions?${params.toString()}`);
+      router.replace(`${url}?${params.toString()}`);
     }
   };
 

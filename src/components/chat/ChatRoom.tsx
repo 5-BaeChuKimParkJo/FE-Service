@@ -3,6 +3,8 @@
 import React, { useRef, useEffect } from 'react';
 import { ChatInput, MessageList } from '@/components/chat';
 import { useChat, useOptimizedMessages } from '@/hooks/chat';
+import { useChatUnreadStore } from '@/stores/use-chat-unread-store';
+import { getUnreadChatCount } from '@/actions/chat-service/get-unread-chat-count';
 import type {
   ChatMessageResponseType,
   ChatroomInfoResponse,
@@ -26,6 +28,7 @@ export const ChatRoom = ({
   memberUuid,
 }: ChatRoomProps) => {
   const chatWindowRef = useRef<HTMLDivElement>(null);
+  const { setUnreadCount } = useChatUnreadStore();
 
   const {
     messageInput,
@@ -52,6 +55,25 @@ export const ChatRoom = ({
     initialNextCursor,
     autoConnect: true,
   });
+
+  // 채팅방 입장/퇴장 시 안읽은 메시지 수 동기화
+  useEffect(() => {
+    // 채팅방 입장 시 안읽은 메시지 수 동기화
+    getUnreadChatCount().then((count) => {
+      if (typeof count === 'number') {
+        setUnreadCount(count);
+      }
+    });
+
+    return () => {
+      // 채팅방 퇴장 시 안읽은 메시지 수 동기화
+      getUnreadChatCount().then((count) => {
+        if (typeof count === 'number') {
+          setUnreadCount(count);
+        }
+      });
+    };
+  }, [setUnreadCount]);
 
   useEffect(() => {
     if (isConnected && initialChat.length > 0) {

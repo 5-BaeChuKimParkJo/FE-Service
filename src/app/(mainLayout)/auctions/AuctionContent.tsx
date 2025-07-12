@@ -27,7 +27,7 @@ export default function AuctionContent({ categories }: AuctionContentProps) {
     error,
     loadMoreRef,
   } = useSearchInfiniteScroll({
-    searchQuery: '', // 빈 문자열로 모든 경매 조회
+    searchQuery: '',
     filters: {
       sortBy: sortBy ? sortBy : 'latest',
       categoryName: categoryName ? decodeURIComponent(categoryName) : undefined,
@@ -46,7 +46,6 @@ export default function AuctionContent({ categories }: AuctionContentProps) {
 
   return (
     <>
-      {/* 카테고리 필터 슬라이더 */}
       <CategoryFilterSlider categories={categories} />
 
       {categoryName && (
@@ -87,8 +86,7 @@ export default function AuctionContent({ categories }: AuctionContentProps) {
                 status: auction.status || 'active',
                 viewCount: auction.viewCount,
                 thumbnailUrl: auction.thumbnailUrl,
-                likes: 0, // API에서 제공하지 않으므로 기본값
-                bidderCount: 0, // API에서 제공하지 않으므로 기본값
+
                 bidAmount: auction.currentBid,
               }))}
               LikeButtonComponent={LikeButton}

@@ -8,7 +8,7 @@ import { convertStoreDataToApiRequest } from '@/utils/auction';
 import { createAuction } from '@/actions/auction-service/create-auction';
 
 export function useAuctionSubmit() {
-  const { getCreateAuctionCommand, setIsSubmitting, images, tagIds } =
+  const { getCreateAuctionCommand, setIsSubmitting, images, tagIds, reset } =
     useCreateAuctionStore();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -43,10 +43,8 @@ export function useAuctionSubmit() {
         throw new Error('업로드할 이미지가 없습니다.');
       }
 
-      // 1. 이미지 업로드
       const uploadedKeys = await uploadImages(files);
 
-      // 3. 경매 등록
       const apiRequest = convertStoreDataToApiRequest(
         {
           ...storeData,
@@ -60,14 +58,13 @@ export function useAuctionSubmit() {
       );
 
       const result = await createAuction(apiRequest);
-      // result: { auctionUuid, ... }
       if (result && result.auctionUuid) {
         setIsSuccess(true);
         setCreatedAuctionUuid(result.auctionUuid);
         setAuctionTitle(storeData.title);
-        // 썸네일 url 추출 (images 배열에서 첫 번째 url)
         const thumb = images[0]?.url || null;
         setThumbnailUrl(thumb);
+        reset();
       } else {
         throw new Error('경매 등록 결과가 올바르지 않습니다.');
       }

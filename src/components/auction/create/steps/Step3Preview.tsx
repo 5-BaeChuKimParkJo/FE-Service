@@ -11,6 +11,7 @@ import {
 import { useAuctionSubmit } from '@/hooks/use-auction-submit';
 import { AuctionLoading } from '@/components/common/AuctionLoading';
 import { AuctionSuccessDialog } from '@/components/common/AuctionSuccessDialog';
+import { Dialog } from '@/components/ui/dialog';
 
 export function Step3Preview() {
   const {
@@ -37,8 +38,15 @@ export function Step3Preview() {
         </div>
       </main>
 
-      {/* 로딩 중 */}
-      {isLoading && <AuctionLoading />}
+      {/* 로딩 중 모달 */}
+      <Dialog
+        isOpen={isLoading}
+        onClose={() => {}}
+        closeOnBackdropClick={false}
+        size='sm'
+      >
+        <AuctionLoading />
+      </Dialog>
 
       {/* 등록 완료 다이얼로그 */}
       <AuctionSuccessDialog

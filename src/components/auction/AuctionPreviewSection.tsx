@@ -18,14 +18,12 @@ export function AuctionPreviewSection() {
       try {
         setLoading(true);
 
-        // 최신 경매 가져오기
         const liveResponse = await searchAuctions({
           auctionTitle: '',
           sortBy: 'latest',
           searchAfter: [],
         });
 
-        // 인기 경매 가져오기
         const hotResponse = await searchAuctions({
           auctionTitle: '',
           sortBy: 'recommended',

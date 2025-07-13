@@ -64,7 +64,6 @@ export function useAuctionSubmit() {
         setAuctionTitle(storeData.title);
         const thumb = images[0]?.url || null;
         setThumbnailUrl(thumb);
-        reset();
       } else {
         throw new Error('경매 등록 결과가 올바르지 않습니다.');
       }
@@ -92,8 +91,9 @@ export function useAuctionSubmit() {
     if (createdAuctionUuid) {
       router.replace(`/auctions/${createdAuctionUuid}`);
       resetSubmitState();
+      reset(); // 경매 상세 페이지로 이동 후 스토어 초기화
     }
-  }, [createdAuctionUuid, router, resetSubmitState]);
+  }, [createdAuctionUuid, router, resetSubmitState, reset]);
 
   return {
     handleSubmit,

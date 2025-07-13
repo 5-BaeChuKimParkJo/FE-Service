@@ -32,21 +32,13 @@ export async function signIn(memberId: string, password: string) {
 
     const cookieStore = cookies();
 
-    // 쿠키 설정 수정 개발용
+    const isProduction = process.env.NODE_ENV === 'production';
     const cookieOptions = {
       httpOnly: true,
-      secure: false, // 개발환경에서는 false로 설정
-      sameSite: 'lax' as const, // strict에서 lax로 변경
+      secure: isProduction,
+      sameSite: 'lax' as const,
       path: '/',
     };
-
-    // 쿠키 설정 수정 운영용
-    // const cookieOptions = {
-    //   httpOnly: true,
-    //   secure: true, // 개발환경에서는 false로 설정
-    //   sameSite: 'strict' as const, // strict에서 lax로 변경
-    //   path: '/',
-    // };
 
     (await cookieStore).set('accessToken', data.accessToken, {
       ...cookieOptions,

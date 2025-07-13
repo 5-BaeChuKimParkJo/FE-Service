@@ -11,7 +11,7 @@ interface RequestOptions extends RequestInit {
   };
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = process.env.API_URL; // NEXT_PUBLIC_ 제거
 const DEFAULT_TIMEOUT = 10000; // 10초
 
 // 타임아웃 기능을 위한 헬퍼 함수

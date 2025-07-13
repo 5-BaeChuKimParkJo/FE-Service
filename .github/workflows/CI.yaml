@@ -5,6 +5,7 @@ on:
     branches:
       - BVFH-93-develop
       - BVFH-361-mypage
+      - BVFH-379-fix-detail
 
 env:
   AWS_REGION: ap-northeast-2

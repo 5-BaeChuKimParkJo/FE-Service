@@ -11,12 +11,6 @@ export function LoginForm() {
   return (
     <>
       <form onSubmit={handleSubmit} className='flex flex-col space-y-6'>
-        {/* <PhoneInput
-          phoneNumber={formData.phoneNumber}
-          phoneError={errors.phoneNumber}
-          openKeyboard={openKeyboard}
-        /> */}
-
         <FilledInput
           label='your id'
           name='id'
@@ -52,7 +46,13 @@ export function LoginForm() {
           </Link>
         </div>
 
-        <Button type='submit' className='w-full' disabled={isLoading}>
+        <Button
+          type='submit'
+          width='full'
+          className='w-full'
+          size='xl'
+          disabled={isLoading}
+        >
           {isLoading ? 'Loading' : 'SIGN IN'}
         </Button>
       </form>

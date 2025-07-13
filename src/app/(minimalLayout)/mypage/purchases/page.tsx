@@ -1,10 +1,12 @@
 import { Suspense } from 'react';
-import {
-  MyPurchasesContent,
-  MyPurchasesContentSkeleton,
-} from '@/components/mypage';
+
+import { getMyBidHistory } from '@/actions/auction-service';
+import { MyPurchasesContent } from './components/MyPurchasesContent';
+import { MyPurchasesContentSkeleton } from './components/MyPurchasesContentSkeleton';
 
 export default async function MyPurchasesPage() {
+  const bidHistory = await getMyBidHistory();
+
   return (
     <div className='p-4'>
       <div className='mb-6'>
@@ -12,7 +14,7 @@ export default async function MyPurchasesPage() {
       </div>
 
       <Suspense fallback={<MyPurchasesContentSkeleton />}>
-        <MyPurchasesContent />
+        <MyPurchasesContent bidHistory={bidHistory} />
       </Suspense>
     </div>
   );

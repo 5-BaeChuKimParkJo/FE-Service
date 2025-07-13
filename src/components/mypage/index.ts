@@ -4,10 +4,7 @@ export * from './MyPageLogoutSection';
 export * from './MyPageRecentSection';
 export * from './MyPageTransactionSection';
 export * from './MyPageUserInfo';
-export * from './MySalesContent';
-export * from './MySalesContentSkeleton';
-export * from './MyPurchasesContent';
-export * from './MyPurchasesContentSkeleton';
+
 export * from './MyRecentProductsContent';
 export * from './MyRecentProductsContentSkeleton';
 export * from './MyLikedProductsContent';

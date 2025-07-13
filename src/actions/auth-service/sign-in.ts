@@ -32,10 +32,9 @@ export async function signIn(memberId: string, password: string) {
 
     const cookieStore = cookies();
 
-    const isProduction = process.env.NODE_ENV === 'production';
     const cookieOptions = {
       httpOnly: true,
-      secure: isProduction,
+      secure: false,
       sameSite: 'lax' as const,
       path: '/',
     };

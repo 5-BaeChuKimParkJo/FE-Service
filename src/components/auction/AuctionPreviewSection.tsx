@@ -88,9 +88,12 @@ export function AuctionPreviewSection() {
           LIVE
         </StatusBadge>
         <P size='base' weight='bold' color='secondary'>
-          현재 입찰 진행 중인 상품
+          전체 경매 상품
         </P>
-        <Link href='/auctions' className='flex justify-end items-end flex-1'>
+        <Link
+          href='/auctions?auctionTitle=&sortBy=latest&status=active'
+          className='flex justify-end items-end flex-1'
+        >
           <P size='xs' weight='bold' color='secondary'>
             모두 보기
           </P>

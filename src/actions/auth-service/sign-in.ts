@@ -11,7 +11,7 @@ interface SignInResponse {
 export async function signIn(memberId: string, password: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/sign-in`,
+      `${process.env.API_URL}/auth-service/api/v1/auth/sign-in`,
       {
         method: 'POST',
         headers: {
@@ -34,7 +34,7 @@ export async function signIn(memberId: string, password: string) {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: 'lax' as const,
       path: '/',
     };

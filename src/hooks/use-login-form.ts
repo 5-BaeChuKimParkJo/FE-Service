@@ -15,6 +15,7 @@ export function useLoginForm() {
     general: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showWhaleTransition, setShowWhaleTransition] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,8 +54,8 @@ export function useLoginForm() {
     try {
       await signIn(formData.id, formData.password);
 
-      // 서버 사이드에서 쿠키 설정이 완료되므로 클라이언트에서 추가 설정 불필요
-      router.push('/');
+      // 로그인 성공 시 고래 애니메이션 표시
+      setShowWhaleTransition(true);
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
@@ -66,11 +67,18 @@ export function useLoginForm() {
     }
   };
 
+  const handleWhaleTransitionComplete = () => {
+    setShowWhaleTransition(false);
+    router.push('/');
+  };
+
   return {
     formData,
     errors,
     isLoading,
+    showWhaleTransition,
     handleChange,
     handleSubmit,
+    handleWhaleTransitionComplete,
   };
 }

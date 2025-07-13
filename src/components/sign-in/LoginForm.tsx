@@ -3,10 +3,18 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useLoginForm } from '@/hooks/use-login-form';
 import { FilledInput } from '../ui/filled-input';
+import { WhaleTransition } from '@/components/animations/WhaleTransition';
 
 export function LoginForm() {
-  const { formData, errors, isLoading, handleChange, handleSubmit } =
-    useLoginForm();
+  const {
+    formData,
+    errors,
+    isLoading,
+    showWhaleTransition,
+    handleChange,
+    handleSubmit,
+    handleWhaleTransitionComplete,
+  } = useLoginForm();
 
   return (
     <>
@@ -56,6 +64,18 @@ export function LoginForm() {
           {isLoading ? 'Loading' : 'SIGN IN'}
         </Button>
       </form>
+
+      <WhaleTransition
+        isActive={showWhaleTransition}
+        onComplete={handleWhaleTransitionComplete}
+        title='찰낙찰낙 쏟아지는 경매!'
+        subtitle='환영합니다 🐋'
+        colorTheme='blue'
+        showBackground={true}
+        showWaves={true}
+        showBubbles={true}
+        showText={true}
+      />
     </>
   );
 }

@@ -21,12 +21,10 @@ export function MinimalAuctionTimer({
   const now = useGlobalTimer();
   const [mounted, setMounted] = useState(false);
 
-  // 클라이언트에서만 실행되도록 설정
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // 서버 사이드에서는 로딩 상태 표시
   if (!mounted) {
     return (
       <span
@@ -38,10 +36,8 @@ export function MinimalAuctionTimer({
     );
   }
 
-  // 클라이언트에서만 실시간 시간 계산
   const timeData = calculateAuctionTime(startAt, endAt, now);
 
-  // 경매 상태에 따른 스타일
   const getStatusStyle = () => {
     if (status === 'ended' || timeData.isExpired) {
       return 'bg-gray-500/15 text-gray-500';
@@ -55,7 +51,6 @@ export function MinimalAuctionTimer({
     return 'bg-primary-100/15 text-primary-200';
   };
 
-  // 경매 종료 시 고정 텍스트
   const getDisplayText = () => {
     if (status === 'ended' || timeData.isExpired) {
       return '00h 00m 00s';

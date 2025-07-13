@@ -1,8 +1,9 @@
 'use client';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
-import { getMinDateTime } from '../utils/auction-utils';
+import { getMinDateTime, getDefaultStartTime } from '../utils/auction-utils';
 import { DateTimePicker } from '@/components/ui/date-time-picker/index';
 
 interface AuctionStartTimeSelectorProps {
@@ -15,6 +16,13 @@ export function AuctionStartTimeSelector({
   const { startAt, errors, setStartAt } = useCreateAuctionStore();
 
   const minDateTime = getMinDateTime();
+  const defaultStartTime = getDefaultStartTime();
+
+  useEffect(() => {
+    if (!startAt) {
+      setStartAt(defaultStartTime);
+    }
+  }, [startAt, setStartAt, defaultStartTime]);
 
   return (
     <motion.section

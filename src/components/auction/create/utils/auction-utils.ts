@@ -5,6 +5,13 @@ export const getMinDateTime = (): Date => {
   return nextHour;
 };
 
+export const getDefaultStartTime = (): Date => {
+  const now = new Date();
+  const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
+  nextHour.setMinutes(0, 0, 0);
+  return nextHour;
+};
+
 export const durationOptions = [
   { hours: 1, label: '1시간' },
   { hours: 3, label: '3시간' },

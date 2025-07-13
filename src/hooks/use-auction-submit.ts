@@ -89,9 +89,12 @@ export function useAuctionSubmit() {
 
   const goToAuctionDetail = useCallback(() => {
     if (createdAuctionUuid) {
-      router.replace(`/auctions/${createdAuctionUuid}`);
       resetSubmitState();
-      reset(); // 경매 상세 페이지로 이동 후 스토어 초기화
+      router.replace(`/auctions/${createdAuctionUuid}`); // replace 사용하여 히스토리 교체
+      // 페이지 이동 후 스토어 초기화
+      setTimeout(() => {
+        reset();
+      }, 0);
     }
   }, [createdAuctionUuid, router, resetSubmitState, reset]);
 

@@ -15,18 +15,14 @@ type RegisterState = {
   isUserIdVerified: boolean;
   isNicknameVerified: boolean;
 
-  // 각 스텝의 유효성 검사 상태
   stepOneValid: boolean;
   stepTwoValid: boolean;
 
-  // 로딩 상태
   isSubmitting: boolean;
 
-  // 다이얼로그 상태
   showWelcomeDialog: boolean;
   showWhaleTransition: boolean;
 
-  // Actions
   setCurrentStep: (step: number) => void;
   setUserId: (id: string) => void;
   setPhoneNumber: (phone: string) => void;
@@ -57,18 +53,14 @@ export const useRegisterStore = create<RegisterState>((set) => ({
   isUserIdVerified: false,
   isNicknameVerified: false,
 
-  // 유효성 검사 상태
   stepOneValid: false,
   stepTwoValid: false,
 
-  // 로딩 상태
   isSubmitting: false,
 
-  // 다이얼로그 상태
   showWelcomeDialog: false,
   showWhaleTransition: false,
 
-  // Actions
   setCurrentStep: (step) =>
     set((state) => ({ prevStep: state.currentStep, currentStep: step })),
   setUserId: (id) => set({ userId: id, isUserIdVerified: false }),

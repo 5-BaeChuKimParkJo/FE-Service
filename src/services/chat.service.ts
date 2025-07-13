@@ -181,13 +181,11 @@ export class ChatService {
       }
       formData.append('file', file);
 
-      // S3 업로드
       await fetch(url, {
         method: 'POST',
         body: formData,
       });
 
-      // 메시지 전송
       this.stompClient.publish({
         destination: '/pub/chat/send',
         body: JSON.stringify({

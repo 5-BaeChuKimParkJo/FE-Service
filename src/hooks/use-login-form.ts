@@ -51,12 +51,9 @@ export function useLoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await signIn(formData.id, formData.password);
+      await signIn(formData.id, formData.password);
 
-      // 쿠키에 토큰 저장
-      document.cookie = `accessToken=${response.accessToken}; path=/; max-age=3600; secure; samesite=strict`;
-      document.cookie = `refreshToken=${response.refreshToken}; path=/; max-age=1209600; secure; samesite=strict`;
-
+      // 서버 사이드에서 쿠키 설정이 완료되므로 클라이언트에서 추가 설정 불필요
       router.push('/');
     } catch (error) {
       setErrors((prev) => ({

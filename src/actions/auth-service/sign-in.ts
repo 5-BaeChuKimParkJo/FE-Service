@@ -11,7 +11,7 @@ interface SignInResponse {
 export async function signIn(memberId: string, password: string) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/auth-service/api/v1/auth/sign-in`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/sign-in`,
       {
         method: 'POST',
         headers: {

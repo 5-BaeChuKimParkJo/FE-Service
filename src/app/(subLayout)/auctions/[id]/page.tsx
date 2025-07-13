@@ -9,6 +9,7 @@ import {
 import ErrorText from '@/components/ui/error-text';
 import { isErrorResponse } from '@/utils/type-guards';
 import { BiddersSection, AuctionTags, BidderForm } from './components';
+import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
 
 export default async function AuctionPage({
   params,
@@ -58,6 +59,12 @@ export default async function AuctionPage({
             : auction.minimumBid
         }
         status={auction.status}
+      />
+      <RecentAuctionTracker
+        auctionUuid={auction.auctionUuid}
+        title={auction.title}
+        minimumBid={auction.minimumBid}
+        thumbnailUrl={auction.thumbnailUrl}
       />
     </div>
   );

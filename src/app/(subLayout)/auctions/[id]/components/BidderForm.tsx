@@ -46,7 +46,6 @@ export function BidderForm({
     bidAmount,
     onSuccess: () => {
       setSuccess(true);
-      router.refresh();
     },
   });
 
@@ -55,6 +54,7 @@ export function BidderForm({
     setOpen(false);
     setStep(1);
     setSuccess(false);
+    router.refresh();
   };
 
   const handleBid = async () => {

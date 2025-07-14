@@ -1,21 +1,24 @@
 import Image from 'next/image';
-import type { ChatRoomSummary } from '@/types/chat';
+import type { ChatRoomSummary, ChatRoomThumbnail } from '@/types/chat';
 import type { MemberSummary } from '@/types/member';
 import { formatChatDate } from '@/utils/date';
 
 interface ChatSummaryProps {
   chat: ChatRoomSummary;
   memberInfo: MemberSummary;
+  thumbnail?: ChatRoomThumbnail;
 }
 
-export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
+export function ChatSummary({ chat, memberInfo, thumbnail }: ChatSummaryProps) {
   const profileUrl = memberInfo.profileImageUrl || '/images/dummy/dummy2.png';
   const nickname = memberInfo.nickname;
   const preview = chat.lastMessage;
   const messageType = chat.messageType;
   const date = chat.lastMessageSentAt ? new Date(chat.lastMessageSentAt) : null;
   const unreadCount = chat.unreadCount;
-  const productImage = '/images/dummy/dummy1.png';
+
+  // 썸네일 URL 설정 (실제 썸네일이 있으면 사용, 없으면 기본 이미지)
+  const productImage = thumbnail?.thumbnailUrl || '/images/dummy/dummy1.png';
 
   return (
     <article className='flex items-center justify-between gap-4 py-3'>

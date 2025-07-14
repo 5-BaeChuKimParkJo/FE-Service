@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Heart, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
 import { formatNumber } from '@/utils/format';
 import {
@@ -40,12 +40,12 @@ export function ItemInfoSection({
             </div>
           </div>
 
-          <button
+          {/* <button
             className=' items-center gap-1 text-red-500 touch-manipulation'
             aria-label='좋아요'
           >
             <Heart size={24} />
-          </button>
+          </button> */}
         </header>
         <div className='flex items-center justify-end gap-4 pb-2 text-sm text-gray-600'>
           <div className='flex items-center gap-1'>

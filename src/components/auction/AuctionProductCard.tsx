@@ -36,8 +36,7 @@ export function AuctionProductCard({
   thumbnailUrl,
 
   bidAmount,
-  LikeButtonComponent,
-  onLike,
+
   className,
 }: AuctionProductCardProps) {
   const currentPrice = bidAmount || minimumBid;
@@ -62,8 +61,6 @@ export function AuctionProductCard({
             priority
             className='object-cover transition-transform duration-300 hover:scale-105 w-full h-full'
           />
-
-          <LikeButtonComponent auctionUuid={auctionUuid} onLike={onLike} />
 
           {(status === 'ended' || isExpired) && (
             <div className='absolute inset-0 bg-black/50 flex items-center justify-center'>

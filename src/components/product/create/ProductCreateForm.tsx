@@ -52,7 +52,6 @@ export function ProductCreateForm() {
       };
 
       const result = await createProduct(request);
-      console.log(result);
 
       if ('productUuid' in result) {
         setCreatedProductTitle(state.title);

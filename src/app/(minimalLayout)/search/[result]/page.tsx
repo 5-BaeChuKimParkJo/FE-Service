@@ -104,7 +104,7 @@ export default function SearchResultPage() {
         </div>
       </div>
 
-      <div className='px-4 py-6'>
+      <div className='px-4 py-6 overflow-x-hidden'>
         {error && (
           <div className='text-center py-12'>
             <div className='text-red-500 text-lg mb-2'>오류가 발생했습니다</div>
@@ -113,7 +113,7 @@ export default function SearchResultPage() {
         )}
 
         {isLoading && searchResults.length === 0 && (
-          <div className='grid grid-cols-2 gap-4'>
+          <div className='grid grid-cols-2 gap-4 w-full'>
             {Array.from({ length: 8 }).map((_, index) => (
               <AuctionProductCardSkeleton key={index} />
             ))}
@@ -133,7 +133,7 @@ export default function SearchResultPage() {
 
         {searchResults.length > 0 && (
           <>
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid grid-cols-2 gap-4 w-full'>
               {searchResults.map((auction) => (
                 <AuctionProductCard
                   key={`${auction.auctionUuid}-${auction.createdAt}`}

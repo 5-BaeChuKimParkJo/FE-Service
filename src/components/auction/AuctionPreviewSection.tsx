@@ -81,7 +81,7 @@ export function AuctionPreviewSection() {
   }
 
   return (
-    <>
+    <div className='overflow-x-hidden'>
       {/* 현재 입찰중인 상품 섹션 */}
       <div className='flex gap-x-2'>
         <StatusBadge variant='red' size='sm'>
@@ -126,6 +126,6 @@ export function AuctionPreviewSection() {
           <AuctionPreviewCard key={auction.auctionUuid} auction={auction} />
         ))}
       </section>
-    </>
+    </div>
   );
 }

@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import {
   MyRecentAuctionsContent,
   MyRecentAuctionsContentSkeleton,
-} from './components';
+} from './_components';
 
 export default async function MyRecentAuctionsPage() {
   return (

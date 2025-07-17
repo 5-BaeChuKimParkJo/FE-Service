@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 
 import { getMyBidHistory } from '@/actions/auction-service';
-import { MyPurchasesContent } from './components/MyPurchasesContent';
-import { MyPurchasesContentSkeleton } from './components/MyPurchasesContentSkeleton';
+import { MyPurchasesContent } from './_components/MyPurchasesContent';
+import { MyPurchasesContentSkeleton } from './_components/MyPurchasesContentSkeleton';
 
 export default async function MyPurchasesPage() {
   const bidHistory = await getMyBidHistory();

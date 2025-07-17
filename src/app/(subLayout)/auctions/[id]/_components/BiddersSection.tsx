@@ -1,5 +1,5 @@
 import { AuctionBidders } from '@/types/auction';
-import { BidderList } from './bidder-section/BidderList';
+import { BidderList } from './_bidder-section/BidderList';
 
 export function BiddersSection({ bidders }: { bidders: AuctionBidders[] }) {
   return (

@@ -8,7 +8,7 @@ import {
 } from '@/components/items';
 import ErrorText from '@/components/ui/error-text';
 import { isErrorResponse } from '@/utils/type-guards';
-import { BiddersSection, AuctionTags, BidderForm } from './components';
+import { BiddersSection, AuctionTags, BidderForm } from './_components';
 import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
 
 export default async function AuctionPage({

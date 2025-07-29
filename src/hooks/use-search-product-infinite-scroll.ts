@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { searchProducts } from '@/actions/search-service';
 import {
   SearchProductItemType,
@@ -42,10 +42,6 @@ export default function useSearchProductInfiniteScroll({
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const tagNamesString = useMemo(
-    () => filters?.tagNames?.join(','),
-    [filters?.tagNames],
-  );
   const productCondition = filters?.productCondition;
   const sortBy = filters?.sortBy;
   const categoryName = filters?.categoryName;
@@ -107,10 +103,10 @@ export default function useSearchProductInfiniteScroll({
   }, [
     searchQuery,
     productCondition,
-    tagNamesString,
     sortBy,
     categoryName,
     enabled,
+    filters?.tagNames,
   ]);
 
   const loadMoreData = useCallback(async () => {
@@ -193,7 +189,6 @@ export default function useSearchProductInfiniteScroll({
   }, [
     searchQuery,
     productCondition,
-    tagNamesString,
     sortBy,
     categoryName,
     enabled,
@@ -203,6 +198,7 @@ export default function useSearchProductInfiniteScroll({
     lastProductCreatedAt,
     lastProductPrice,
     lastProductViewCount,
+    filters?.tagNames,
   ]);
 
   useEffect(() => {

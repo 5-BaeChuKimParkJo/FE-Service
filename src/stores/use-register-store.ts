@@ -1,0 +1,81 @@
+'use client';
+
+import { create } from 'zustand';
+
+type RegisterState = {
+  currentStep: number;
+  prevStep: number | null;
+  userId: string;
+  phoneNumber: string;
+  verificationCode: string;
+  nickname: string;
+  password: string;
+  passwordConfirm: string;
+  interests: string[];
+  isUserIdVerified: boolean;
+  isNicknameVerified: boolean;
+
+  stepOneValid: boolean;
+  stepTwoValid: boolean;
+
+  isSubmitting: boolean;
+
+  showWelcomeDialog: boolean;
+  showWhaleTransition: boolean;
+
+  setCurrentStep: (step: number) => void;
+  setUserId: (id: string) => void;
+  setPhoneNumber: (phone: string) => void;
+  setVerificationCode: (code: string) => void;
+  setNickname: (nickname: string) => void;
+  setPassword: (password: string) => void;
+  setPasswordConfirm: (passwordConfirm: string) => void;
+  setInterests: (interests: string[]) => void;
+  setStepOneValid: (isValid: boolean) => void;
+  setStepTwoValid: (isValid: boolean) => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
+  setIsUserIdVerified: (isVerified: boolean) => void;
+  setIsNicknameVerified: (isVerified: boolean) => void;
+  setShowWelcomeDialog: (show: boolean) => void;
+  setShowWhaleTransition: (show: boolean) => void;
+};
+
+export const useRegisterStore = create<RegisterState>((set) => ({
+  currentStep: 0,
+  prevStep: null,
+  userId: '',
+  phoneNumber: '',
+  verificationCode: '',
+  nickname: '',
+  password: '',
+  passwordConfirm: '',
+  interests: [],
+  isUserIdVerified: false,
+  isNicknameVerified: false,
+
+  stepOneValid: false,
+  stepTwoValid: false,
+
+  isSubmitting: false,
+
+  showWelcomeDialog: false,
+  showWhaleTransition: false,
+
+  setCurrentStep: (step) =>
+    set((state) => ({ prevStep: state.currentStep, currentStep: step })),
+  setUserId: (id) => set({ userId: id, isUserIdVerified: false }),
+  setPhoneNumber: (phone) => set({ phoneNumber: phone }),
+  setVerificationCode: (code) => set({ verificationCode: code }),
+  setNickname: (nickname) => set({ nickname, isNicknameVerified: false }),
+  setPassword: (password) => set({ password }),
+  setPasswordConfirm: (passwordConfirm) => set({ passwordConfirm }),
+  setInterests: (interests) => set({ interests }),
+  setStepOneValid: (isValid) => set({ stepOneValid: isValid }),
+  setStepTwoValid: (isValid) => set({ stepTwoValid: isValid }),
+  setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
+  setIsUserIdVerified: (isVerified) => set({ isUserIdVerified: isVerified }),
+  setIsNicknameVerified: (isVerified) =>
+    set({ isNicknameVerified: isVerified }),
+  setShowWelcomeDialog: (show) => set({ showWelcomeDialog: show }),
+  setShowWhaleTransition: (show) => set({ showWhaleTransition: show }),
+}));

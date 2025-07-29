@@ -1,20 +1,82 @@
 @import 'tailwindcss';
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import 'tw-animate-css';
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-primary-100: #5d5fef;
+  --color-primary-200: #401bd3;
+  --color-primary-300: #000072;
+
+  --color-yellow-100: #ffd26f;
+  --color-yellow-200: #fca929;
+  --color-yellow-300: #ff8402;
+
+  --color-blue-100: #95b9dc;
+  --color-blue-200: #319afd;
+  --color-blue-300: #2b74b9;
+
+  --color-pink-100: #ffdadf;
+
+  --color-red-100: #ff2d46;
+
+  --color-gray-100: #f4f4f4;
+  --color-gray-200: #f7f7f7;
+  --color-gray-300: #efefef;
+
+  --color-disabled: #e0e0e0;
+
+  --color-text-100: #e2e2e2;
+  --color-text-200: #d9d9d9;
+  --color-text-300: #aeaeae;
+  --color-text-400: #999999;
+  --color-text-500: #8c8c8c;
+  --color-text-600: #808080;
+  --color-text-700: #727272;
+  --color-text-800: #6b6b6b;
+  --color-text-900: #676767;
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 @font-face {
-  font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.woff2')
+  font-family: 'Pretendard Variable';
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/variable/PretendardVariable.woff2')
     format('woff2-variations');
   font-weight: 45 920;
   font-style: normal;
@@ -24,32 +86,148 @@
 :root {
   font-family: 'Pretendard', sans-serif;
   font-weight: 400;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+html,
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
   font-family: 'Pretendard', sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
 }
 
-h1 {
-  font-weight: 700;
-}
-h2 {
-  font-weight: 600;
-}
+h1,
+h2,
 p,
 span,
-div {
-  font-weight: 400;
-}
-button {
-  font-weight: 500;
-}
+div,
+button,
 input,
 textarea,
 select,
 option {
   font-family: 'Pretendard', sans-serif;
-  font-weight: 400;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Embla Carousel 스타일 */
+.flex-0-0-100 {
+  flex: 0 0 100%;
+}
+
+input:focus {
+  outline: none;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-primary-100);
+}
+
+@layer utilities {
+  .fade-in {
+    @apply opacity-0 translate-y-2 blur-sm;
+    animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* 모바일 중심 레이아웃 공통 클래스 */
+  .mobile-container {
+    @apply w-full min-w-[320px] max-w-[480px] mx-auto;
+  }
+
+  .mobile-fixed {
+    @apply fixed left-1/2 transform -translate-x-1/2 w-full min-w-[320px] max-w-[480px];
+  }
 }

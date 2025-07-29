@@ -5,13 +5,13 @@ import { Dialog } from '@/components/ui/dialog';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '@/contexts/AlertContext';
-import { useBidderForm } from '../hooks';
+import { useBidderForm } from '../_hooks';
 import {
   BidderDialogHeader,
   BidderAgreementStep,
   BidderFormStep,
   BidderSuccessStep,
-} from './bidder-form';
+} from './_bidder-form';
 
 type BidderFormProps = {
   auctionUuid: string;
@@ -46,7 +46,6 @@ export function BidderForm({
     bidAmount,
     onSuccess: () => {
       setSuccess(true);
-      router.refresh();
     },
   });
 
@@ -55,6 +54,7 @@ export function BidderForm({
     setOpen(false);
     setStep(1);
     setSuccess(false);
+    router.refresh();
   };
 
   const handleBid = async () => {

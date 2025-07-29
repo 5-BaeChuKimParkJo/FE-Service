@@ -21,7 +21,7 @@ export function useBidderSSE({
   useEffect(() => {
     if (!isWaiting || !sseMessage) return;
 
-    if (sseMessage.type === 'auction-bidder-awarded') {
+    if (sseMessage.message === '입찰 성공') {
       clearTimeoutAndReset();
       onSuccess();
     } else {

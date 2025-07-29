@@ -3,20 +3,22 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useLoginForm } from '@/hooks/use-login-form';
 import { FilledInput } from '../ui/filled-input';
+import { WhaleTransition } from '@/components/animations/WhaleTransition';
 
 export function LoginForm() {
-  const { formData, errors, isLoading, handleChange, handleSubmit } =
-    useLoginForm();
+  const {
+    formData,
+    errors,
+    isLoading,
+    showWhaleTransition,
+    handleChange,
+    handleSubmit,
+    handleWhaleTransitionComplete,
+  } = useLoginForm();
 
   return (
     <>
       <form onSubmit={handleSubmit} className='flex flex-col space-y-6'>
-        {/* <PhoneInput
-          phoneNumber={formData.phoneNumber}
-          phoneError={errors.phoneNumber}
-          openKeyboard={openKeyboard}
-        /> */}
-
         <FilledInput
           label='your id'
           name='id'
@@ -52,10 +54,28 @@ export function LoginForm() {
           </Link>
         </div>
 
-        <Button type='submit' className='w-full' disabled={isLoading}>
+        <Button
+          type='submit'
+          width='full'
+          className='w-full'
+          size='xl'
+          disabled={isLoading}
+        >
           {isLoading ? 'Loading' : 'SIGN IN'}
         </Button>
       </form>
+
+      <WhaleTransition
+        isActive={showWhaleTransition}
+        onComplete={handleWhaleTransitionComplete}
+        title='찰낙찰낙 쏟아지는 경매!'
+        subtitle='환영합니다 🐋'
+        colorTheme='blue'
+        showBackground={true}
+        showWaves={true}
+        showBubbles={true}
+        showText={true}
+      />
     </>
   );
 }

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/libs/cn';
-import Bell from '@/assets/icons/common/bell.svg';
+// import Bell from '@/assets/icons/common/bell.svg';
 import Search from '@/assets/icons/common/search.svg';
 import Arrow from '@/assets/icons/common/arrow.svg';
 import Link from 'next/link';
@@ -47,7 +47,7 @@ export function SubHeader() {
             <Search className='w-6 h-6 text-white' aria-hidden='true' />
           </Link>
 
-          <button
+          {/* <button
             className={cn(
               'p-2 rounded-lg transition-all duration-200',
               'hover:bg-white/20 active:scale-95',
@@ -56,7 +56,7 @@ export function SubHeader() {
             type='button'
           >
             <Bell className='w-6 h-6 text-white' aria-hidden='true' />
-          </button>
+          </button> */}
         </div>
       </nav>
     </header>

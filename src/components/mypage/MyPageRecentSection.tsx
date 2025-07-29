@@ -5,8 +5,8 @@ export function MyPageRecentSection() {
   const recentSummary = [
     {
       id: 'recent-products',
-      title: '최근본 상품',
-      href: '/mypage/recent-products',
+      title: '최근본 경매',
+      href: '/mypage/recent-auctions',
       icon: <Eye className='w-6 h-6' />,
     },
     {

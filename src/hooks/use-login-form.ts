@@ -15,6 +15,7 @@ export function useLoginForm() {
     general: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showWhaleTransition, setShowWhaleTransition] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,13 +52,10 @@ export function useLoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await signIn(formData.id, formData.password);
+      await signIn(formData.id, formData.password);
 
-      // 쿠키에 토큰 저장
-      document.cookie = `accessToken=${response.accessToken}; path=/; max-age=3600; secure; samesite=strict`;
-      document.cookie = `refreshToken=${response.refreshToken}; path=/; max-age=1209600; secure; samesite=strict`;
-
-      router.push('/');
+      // 로그인 성공 시 고래 애니메이션 표시
+      setShowWhaleTransition(true);
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
@@ -69,11 +67,18 @@ export function useLoginForm() {
     }
   };
 
+  const handleWhaleTransitionComplete = () => {
+    setShowWhaleTransition(false);
+    router.push('/');
+  };
+
   return {
     formData,
     errors,
     isLoading,
+    showWhaleTransition,
     handleChange,
     handleSubmit,
+    handleWhaleTransitionComplete,
   };
 }

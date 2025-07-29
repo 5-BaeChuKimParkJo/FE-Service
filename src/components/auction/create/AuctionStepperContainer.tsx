@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
+import { useAuctionSubmit } from '@/hooks/use-auction-submit';
 import {
   Step1ProductDetails,
   Step2AuctionSettings,
@@ -31,6 +32,7 @@ const slideVariants = {
 
 export function AuctionStepperContainer() {
   const { currentStep, prevStep, nextStep } = useCreateAuctionStore();
+  const { isLoading } = useAuctionSubmit();
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
@@ -93,6 +95,7 @@ export function AuctionStepperContainer() {
       <AuctionNavigationFooter
         onPrevStep={handlePrev}
         onNextStep={handleNext}
+        isLoading={isLoading}
       />
     </>
   );

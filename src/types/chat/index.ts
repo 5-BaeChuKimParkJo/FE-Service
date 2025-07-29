@@ -24,6 +24,7 @@ export interface ChatRoomSummary {
   messageType: 'TEXT' | 'IMAGE' | 'SYSTEM';
   lastMessageSentAt: string;
   unreadCount: number;
+  postUuid?: string; // 상품 UUID 추가
 }
 
 export interface ChatMessageType {
@@ -78,4 +79,10 @@ export interface ChatConnectResponse {
   lastMessageSentAt: string;
   unreadCount: number;
   opponentMemberInfo: MemberSummary;
+}
+
+export interface ChatRoomThumbnail {
+  type: 'auction';
+  id: string;
+  thumbnailUrl: string;
 }

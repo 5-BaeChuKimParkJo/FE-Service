@@ -29,7 +29,6 @@ export const ChatMessage = memo<ChatMessageProps>((props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const imageUrl = process.env.NEXT_PUBLIC_S3_HOSTNAME + `/${message.message}`;
 
-  // 공통 시간 표시 컴포넌트
   const TimeStamp = () =>
     showTime ? (
       <div className='flex-shrink-0 text-xs text-gray-400 self-end'>
@@ -49,7 +48,6 @@ export const ChatMessage = memo<ChatMessageProps>((props) => {
       </div>
     );
 
-  // 텍스트 메시지 컴포넌트
   const TextMessage = () => (
     <div
       className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl break-words ${

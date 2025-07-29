@@ -27,13 +27,13 @@ export const useConnectSSE = () => {
         );
 
         sse.onopen = () => {
-          console.log('SSE connected');
+          // console.log('SSE connected');
           setIsConnected(true);
           setError(null);
         };
 
         sse.onmessage = (event) => {
-          console.log('SSE message received:', event.data);
+          // console.log('SSE message received:', event.data);
           const message = JSON.parse(event.data);
           setSSEMessage(message);
         };

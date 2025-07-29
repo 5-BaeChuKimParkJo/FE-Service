@@ -46,7 +46,7 @@ export function AuctionPreviewCard({
           </h3>
           <div className='flex justify-end items-end gap-2 pr-3'>
             <span className='text-gray-400 line-through text-sm'>
-              {formatNumber(auction.minimumBid)}원
+              {formatNumber(auction.minimumBid)}
             </span>
             <span className='text-xl h-6 font-bold text-black'>
               <CountUp from={countUpFrom} to={countUpTo} separator=',' />

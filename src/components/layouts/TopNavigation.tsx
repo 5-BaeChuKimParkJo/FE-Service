@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 import Logo from '@/assets/icons/common/logo.svg';
-import Bell from '@/assets/icons/common/bell.svg';
+// import Bell from '@/assets/icons/common/bell.svg';
 import Search from '@/assets/icons/common/search.svg';
 import { cn } from '@/libs/cn';
 
@@ -41,7 +41,7 @@ export function TopNavigation() {
             </Link>
           </button>
 
-          <button
+          {/* <button
             className={cn(
               'p-2 rounded-lg transition-all duration-200',
               'hover:bg-white/20 active:scale-95',
@@ -50,7 +50,7 @@ export function TopNavigation() {
             type='button'
           >
             <Bell className='w-6 h-6 text-white' aria-hidden='true' />
-          </button>
+          </button> */}
         </div>
       </nav>
     </header>

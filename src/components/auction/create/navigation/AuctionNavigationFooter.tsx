@@ -6,15 +6,16 @@ import { Button } from '@/components/ui/button';
 interface AuctionNavigationFooterProps {
   onPrevStep: () => void;
   onNextStep: () => void;
+  isLoading?: boolean;
 }
 
 export function AuctionNavigationFooter({
   onPrevStep,
   onNextStep,
+  isLoading = false,
 }: AuctionNavigationFooterProps) {
   const { currentStep, isStepValid } = useCreateAuctionStore();
 
-  // 현재 스텝이 유효한지 확인
   const canProceed = isStepValid(currentStep);
 
   const handleSubmit = () => {
@@ -57,6 +58,8 @@ export function AuctionNavigationFooter({
             width='half'
             size='lg'
             onClick={handleSubmit}
+            isPending={isLoading}
+            disabled={isLoading}
             aria-label='경매 등록 완료'
           >
             등록하기

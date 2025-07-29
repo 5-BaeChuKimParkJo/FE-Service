@@ -79,7 +79,7 @@ export const ChatRoom = ({
     if (isConnected && initialChat.length > 0) {
       const latestMessage = initialChat[0];
       if (latestMessage && latestMessage.senderUuid !== memberUuid) {
-        console.log('채팅방 접속 시 읽음 처리:', latestMessage.sentAt);
+        // console.log('채팅방 접속 시 읽음 처리:', latestMessage.sentAt);
         setTimeout(() => {
           sendReadAck(latestMessage.sentAt);
         }, 100);

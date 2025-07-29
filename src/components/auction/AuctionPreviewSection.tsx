@@ -18,14 +18,12 @@ export function AuctionPreviewSection() {
       try {
         setLoading(true);
 
-        // 최신 경매 가져오기
         const liveResponse = await searchAuctions({
           auctionTitle: '',
           sortBy: 'latest',
           searchAfter: [],
         });
 
-        // 인기 경매 가져오기
         const hotResponse = await searchAuctions({
           auctionTitle: '',
           sortBy: 'recommended',
@@ -83,16 +81,19 @@ export function AuctionPreviewSection() {
   }
 
   return (
-    <>
+    <div className='overflow-x-hidden'>
       {/* 현재 입찰중인 상품 섹션 */}
       <div className='flex gap-x-2'>
         <StatusBadge variant='red' size='sm'>
           LIVE
         </StatusBadge>
         <P size='base' weight='bold' color='secondary'>
-          현재 입찰 진행 중인 상품
+          전체 경매 상품
         </P>
-        <Link href='/auctions' className='flex justify-end items-end flex-1'>
+        <Link
+          href='/auctions?auctionTitle=&sortBy=latest&status=active'
+          className='flex justify-end items-end flex-1'
+        >
           <P size='xs' weight='bold' color='secondary'>
             모두 보기
           </P>
@@ -125,6 +126,6 @@ export function AuctionPreviewSection() {
           <AuctionPreviewCard key={auction.auctionUuid} auction={auction} />
         ))}
       </section>
-    </>
+    </div>
   );
 }

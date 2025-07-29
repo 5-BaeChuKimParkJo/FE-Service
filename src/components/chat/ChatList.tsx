@@ -15,13 +15,17 @@ export function ChatList({ chatList }: ChatListProps) {
   return (
     <section>
       <ul>
-        {chatList.map(({ chat, memberInfo }) => (
+        {chatList.map(({ chat, memberInfo, thumbnail }) => (
           <li key={chat.chatRoomUuid} className='py-1'>
             <Link
               href={`/chat/${chat.chatRoomUuid}?opponentUuid=${chat.opponentUuid}`}
               className='block rounded-xl transition'
             >
-              <ChatSummary chat={chat} memberInfo={memberInfo} />
+              <ChatSummary
+                chat={chat}
+                memberInfo={memberInfo}
+                thumbnail={thumbnail}
+              />
             </Link>
           </li>
         ))}

@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import type { ChatRoomSummary } from '@/types/chat';
+import type { ChatRoomSummary, ChatRoomThumbnail } from '@/types/chat';
 import type { MemberSummary } from '@/types/member';
 import { formatChatDate } from '@/utils/date';
 
 interface ChatSummaryProps {
   chat: ChatRoomSummary;
   memberInfo: MemberSummary;
+  thumbnail?: ChatRoomThumbnail;
 }
 
 export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
@@ -15,7 +16,9 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
   const messageType = chat.messageType;
   const date = chat.lastMessageSentAt ? new Date(chat.lastMessageSentAt) : null;
   const unreadCount = chat.unreadCount;
-  const productImage = '/images/dummy/dummy1.png';
+
+  // 썸네일 URL 설정 (실제 썸네일이 있으면 사용, 없으면 기본 이미지)
+  // const productImage = thumbnail?.thumbnailUrl || '/images/dummy/dummy1.png';
 
   return (
     <article className='flex items-center justify-between gap-4 py-3'>
@@ -55,7 +58,7 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
           )}
         </div>
 
-        <figure className='w-10 h-10 rounded-lg overflow-hidden bg-gray-100'>
+        {/* <figure className='w-10 h-10 rounded-lg overflow-hidden bg-gray-100'>
           <Image
             src={productImage || '/placeholder.svg'}
             alt='상품 썸네일'
@@ -63,7 +66,7 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
             height={20}
             className='object-cover w-full h-full'
           />
-        </figure>
+        </figure> */}
       </aside>
     </article>
   );

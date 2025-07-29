@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import { MySalesContent, MySalesContentSkeleton } from '@/components/mypage';
 import { getMyAuctions } from '@/actions/auction-service';
 import { AuctionHistory } from '@/types/auction';
+import { MySalesContent, MySalesContentSkeleton } from './_components';
 
 export default async function MySalesPage() {
   const auctions = await getMyAuctions();

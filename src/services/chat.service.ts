@@ -35,8 +35,6 @@ export class ChatService {
       heartbeatOutgoing: 10000,
     });
 
-    console.log('채팅방 입장 성공', memberUuid, chatRoomUuid);
-
     this.stompClient.onConnect = () => {
       this.config.onConnectionStatusChange(true);
 
@@ -50,7 +48,6 @@ export class ChatService {
           const messageKey =
             msg.messageUuid || `${msg.senderUuid}-${msg.sentAt}`;
           if (this.recentMessages.has(messageKey)) {
-            console.log('중복 메시지 감지:', messageKey);
             return;
           }
 
@@ -73,7 +70,6 @@ export class ChatService {
 
       this.stompClient.subscribe('/user/queue/errors', (message) => {
         const errorData = JSON.parse(message.body);
-        console.log('📡 STOMP 에러 수신:', errorData);
 
         // 개별 메시지 에러 콜백이 있으면 우선 호출
         if (this.config.onMessageError) {
@@ -129,7 +125,6 @@ export class ChatService {
       this.lastSentMessage === message.trim() &&
       now - this.lastSentTime < 1000
     ) {
-      console.log('중복 메시지 전송 방지:', message);
       return { success: false, error: '중복 메시지입니다' };
     }
 
@@ -148,7 +143,6 @@ export class ChatService {
       this.lastSentMessage = message.trim();
       this.lastSentTime = now;
 
-      console.log('📤 메시지 전송 시도:', message);
       return { success: true };
     } catch (error) {
       console.error('메시지 전송 중 오류:', error);
@@ -181,13 +175,11 @@ export class ChatService {
       }
       formData.append('file', file);
 
-      // S3 업로드
       await fetch(url, {
         method: 'POST',
         body: formData,
       });
 
-      // 메시지 전송
       this.stompClient.publish({
         destination: '/pub/chat/send',
         body: JSON.stringify({
@@ -198,7 +190,6 @@ export class ChatService {
         }),
       });
 
-      console.log('📤 이미지 메시지 전송 시도');
       return { success: true };
     } catch (error) {
       console.error('이미지 업로드 실패', error);

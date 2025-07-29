@@ -20,7 +20,7 @@ export function ChatPageClient({ initialChatList }: ChatPageClientProps) {
 
   useEffect(() => {
     if (sseMessage?.type === 'MESSAGE_UPDATE') {
-      console.log('채팅 업데이트 감지:', sseMessage.chatRoomUuid);
+      // console.log('채팅 업데이트 감지:', sseMessage.chatRoomUuid);
 
       // 즉시 업데이트
       const updateChatList = async () => {

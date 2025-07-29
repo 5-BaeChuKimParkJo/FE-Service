@@ -24,153 +24,6 @@
 | **기간**       | 2025.04.30 ~ 2025.07.15                         |
 | **목표**       | 중고 물품을 경매 방식으로 거래할 수 있는 플랫폼 |
 
-### 🎯 핵심 기능
-
-- **실시간 경매 시스템** - 실시간 입찰 및 낙찰
-- **WebSocket 채팅** - 구매자와 판매자 간 실시간 소통
-- **SSE 알림** - 실시간 이벤트 알림
-- **이미지 업로드** - S3 기반 이미지 관리
-- **검색 시스템** - Elasticsearch 기반 검색
-
-## 🛠️ 기술 스택
-
-### Frontend
-
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=react&logoColor=white)
-![React Hook Form](https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)
-
-### Backend
-
-![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-
-### Database & Cache
-
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![Elasticsearch](https://img.shields.io/badge/Elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white)
-
-### Infrastructure
-
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
-
-## 📁 프로젝트 구조
-
-```
-chalnack/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # 인증 관련 페이지
-│   │   ├── (mainLayout)/      # 메인 레이아웃
-│   │   ├── (minimalLayout)/   # 최소 레이아웃
-│   │   └── (subLayout)/       # 서브 레이아웃
-│   ├── components/             # UI 컴포넌트
-│   │   ├── ui/               # 기본 UI 컴포넌트
-│   │   ├── auction/          # 경매 관련 컴포넌트
-│   │   ├── product/          # 상품 관련 컴포넌트
-│   │   └── chat/             # 채팅 관련 컴포넌트
-│   ├── actions/               # Server Actions
-│   │   ├── auction-service/   # 경매 서비스
-│   │   ├── product-service/   # 상품 서비스
-│   │   └── chat-service/      # 채팅 서비스
-│   ├── stores/                # 상태 관리
-│   │   ├── auction/          # 경매 상태
-│   │   └── use-register-store.ts
-│   ├── hooks/                 # 커스텀 훅
-│   ├── types/                 # TypeScript 타입
-│   ├── utils/                 # 유틸리티 함수
-│   └── libs/                  # 라이브러리 설정
-├── public/                    # 정적 파일
-└── package.json
-```
-
-## 🚀 개발 가이드
-
-### 환경 설정
-
-```bash
-# 저장소 클론
-git clone https://github.com/your-username/chalnack.git
-cd chalnack
-
-# 의존성 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
-
-# 빌드
-npm run build
-
-# 린트 검사
-npm run lint
-```
-
-### 주요 스크립트
-
-```bash
-npm run dev          # 개발 서버 실행
-npm run build        # 프로덕션 빌드
-npm run start        # 프로덕션 서버 실행
-npm run lint         # ESLint 검사
-npm run format       # Prettier 포맷팅
-npm run commit       # 커밋 메시지 생성
-```
-
-### 개발 규칙
-
-#### 1. 파일 네이밍
-
-- **컴포넌트**: PascalCase (`AuctionCard.tsx`)
-- **훅**: kebab-case (`use-auction-submit.ts`)
-- **유틸리티**: kebab-case (`auction-utils.ts`)
-
-#### 2. 폴더 구조
-
-- **도메인별 분리**: `auction/`, `product/`, `chat/`
-- **Colocation 패턴**: 관련 파일들을 함께 배치
-- **공통 컴포넌트**: `components/ui/`에 배치
-
-#### 3. 상태 관리
-
-- **Zustand**: 전역 상태 관리
-- **React Query**: 서버 상태 관리
-- **도메인별 분리**: 각 도메인별로 스토어 분리
-
-## 🏗️ 아키텍처
-
-### 시스템 아키텍처
-
-<img alt="아키텍처 구조도" src="https://github.com/user-attachments/assets/099067f2-3c46-4be9-b814-d57091518c11">
-
-### CI/CD 파이프라인
-
-<img alt="CICD" src="https://github.com/user-attachments/assets/cca034b9-3596-4739-a9dc-57de3c8a0fc4">
-
-### 데이터 모델링
-
-| ![이벤트 스토밍](https://github.com/user-attachments/assets/8c57322d-e87d-4f80-b022-3634aeb4a53d) | ![ERD](https://github.com/user-attachments/assets/4bfeac59-cb79-4a63-94f5-b8df6c4d7033) |
-| :-----------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
-|                                           이벤트 스토밍                                           |                                           ERD                                           |
-
-## 👥 팀 멤버
-
-|   **Name**   |                 김호철                  |                   추지우                    |                배부승                 |                박자겸                 |               김민조                |
-| :----------: | :-------------------------------------: | :-----------------------------------------: | :-----------------------------------: | :-----------------------------------: | :---------------------------------: |
-| **Position** |           팀장<br/>프론트엔드           |              백엔드<br/>인프라              |                백엔드                 |                백엔드                 |               백엔드                |
-|   **Git**    | [HoChoRoo](https://github.com/HoChoRoo) | [chuman0216](https://github.com/chuman0216) | [bugling](https://github.com/bugling) | [pjg3335](https://github.com/pjg3335) | [Mongjo](https://github.com/Mongjo) |
-
 ## 🎯 주요 기능
 
 ### 1. 실시간 경매 시스템
@@ -202,13 +55,173 @@ npm run commit       # 커밋 메시지 생성
 - 필터링 및 정렬
 - 무한 스크롤
 
-## 📱 화면 구성
+## 🛠️ 기술 스택
 
-|   ![상품 등록](https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe)    |   ![경매 목록](https://github.com/user-attachments/assets/5a857724-ae41-440f-9169-5677c81bbd5c)   |  ![입찰하기](https://github.com/user-attachments/assets/04a1f1ba-7987-4518-87fa-82ee9472348f)   |
-| :------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |
-|                                             상품 등록                                              |                                             경매 목록                                             |                                            입찰하기                                             |
-| ![사용자 친화 UX](https://github.com/user-attachments/assets/29b3067c-471f-476d-991c-00735716689a) | ![채팅 읽음처리](https://github.com/user-attachments/assets/5324626c-9021-4d47-abac-973027f9f822) | ![채팅방 목록](https://github.com/user-attachments/assets/48b60072-4e24-479e-a0b0-31dceb7ad9dc) |
-|                                           사용자 친화 UX                                           |                                           채팅 읽음처리                                           |                                           채팅방 목록                                           |
+### Frontend
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=react&logoColor=white)
+![React Query](https://img.shields.io/badge/React%20Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)
+![DND Kit](https://img.shields.io/badge/DND%20Kit-000000?style=for-the-badge&logo=typescript&logoColor=white)
+![Swiper](https://img.shields.io/badge/Swiper-6332F6?style=for-the-badge&logo=swiper&logoColor=white)
+![Date-fns](https://img.shields.io/badge/Date--fns-6C7C7C?style=for-the-badge&logo=javascript&logoColor=white)
+
+### Backend
+
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Fastify](https://img.shields.io/badge/Fastify-000000?style=for-the-badge&logo=fastify&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![fp-ts](https://img.shields.io/badge/fp--ts-8C52FF?style=for-the-badge&logo=fp-ts&logoColor=white)
+![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/SpringSecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
+![Spring Batch](https://img.shields.io/badge/SpringBatch-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WebSocket-000000?style=for-the-badge&logo=websocket&logoColor=white)
+![Stomp](https://img.shields.io/badge/Stomp-000000?style=for-the-badge&logo=apache&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white)
+![QueryDSL](https://img.shields.io/badge/QueryDSL-0088CC?style=for-the-badge&logoColor=white)
+
+### Database & Cache
+
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Elasticsearch](https://img.shields.io/badge/Elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white)
+
+### Infrastructure
+
+![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
+![AWS EC2](https://img.shields.io/badge/AWS%20EC2-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
+![AWS EKS](https://img.shields.io/badge/AWS%20EKS-FF9900?style=for-the-badge&logo=amazoneks&logoColor=white)
+![AWS S3](https://img.shields.io/badge/AWS%20S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Helm](https://img.shields.io/badge/Helm-277A9F?style=for-the-badge&logo=helm&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![ArgoCD](https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Kibana](https://img.shields.io/badge/Kibana-005571?style=for-the-badge&logo=kibana&logoColor=white)
+![Kong](https://img.shields.io/badge/Kong-002659?style=for-the-badge&logo=kong&logoColor=white)
+![Debezium](https://img.shields.io/badge/Debezium-000000?style=for-the-badge&logo=apachekafka&logoColor=white)
+
+## 📁 FE 프로젝트 구조
+
+```
+chalnack/
+├── src/
+│   ├── actions/               # Server Actions
+│   ├── app/                   # Next.js App Router
+│   ├── components/            # UI 컴포넌트
+│   ├── hooks/                 # 커스텀 훅
+│   ├── stores/                # 상태 관리
+│   ├── types/                 # TypeScript 타입
+│   └── utils/                 # 유틸리티 함수
+├── public/                    # 정적 파일
+├── package.json
+├── next.config.js
+└── tsconfig.json
+```
+
+## 🚀 개발 가이드
+
+### 환경 설정
+
+```bash
+# 저장소 클론
+git clone https://github.com/your-username/chalnack.git
+cd chalnack
+
+# 의존성 설치
+pnpm install
+
+# 개발 서버 실행
+pnpm dev
+
+# 빌드
+pnpm build
+
+# 린트 검사
+pnpm lint
+
+# 코드 포맷팅
+pnpm format
+```
+
+### 주요 스크립트
+
+```bash
+pnpm dev          # 개발 서버 실행
+pnpm build        # 프로덕션 빌드
+pnpm start        # 프로덕션 서버 실행
+pnpm lint         # ESLint 검사
+pnpm format       # Prettier 포맷팅
+pnpm commit       # 커밋 메시지 작성
+```
+
+## 🏗️ 아키텍처
+
+### 시스템 아키텍처
+
+<img alt="아키텍처 구조도" src="https://github.com/user-attachments/assets/099067f2-3c46-4be9-b814-d57091518c11">
+
+### CI/CD 파이프라인
+
+<img alt="CICD" src="https://github.com/user-attachments/assets/cca034b9-3596-4739-a9dc-57de3c8a0fc4">
+
+### 데이터 모델링
+
+| ![이벤트 스토밍](https://github.com/user-attachments/assets/8c57322d-e87d-4f80-b022-3634aeb4a53d) | ![ERD](https://github.com/user-attachments/assets/4bfeac59-cb79-4a63-94f5-b8df6c4d7033) |
+| :-----------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
+|                                           이벤트 스토밍                                           |                                           ERD                                           |
+
+## 👥 팀 멤버
+
+|   **Name**   |                 김호철                  |                   추지우                    |                배부승                 |                박자겸                 |               김민조                |
+| :----------: | :-------------------------------------: | :-----------------------------------------: | :-----------------------------------: | :-----------------------------------: | :---------------------------------: |
+| **Position** |           팀장<br/>프론트엔드           |              백엔드<br/>인프라              |                백엔드                 |                백엔드                 |               백엔드                |
+|   **Git**    | [HoChoRoo](https://github.com/HoChoRoo) | [chuman0216](https://github.com/chuman0216) | [bugling](https://github.com/bugling) | [pjg3335](https://github.com/pjg3335) | [Mongjo](https://github.com/Mongjo) |
+
+## 4. 기능소개
+
+### 🦀 화면별 기능 소개
+
+#### 1. 회원가입 및 로그인
+
+| ![Image](https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe) | ![Image](https://github.com/user-attachments/assets/5a857724-ae41-440f-9169-5677c81bbd5c) |
+| :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
+|                                      회원가입 플로우                                      |                                        로그인 화면                                        |
+
+#### 2. 경매 시스템
+
+| ![Image](https://github.com/user-attachments/assets/04a1f1ba-7987-4518-87fa-82ee9472348f) | ![Image](https://github.com/user-attachments/assets/29d3067c-471f-476d-991c-00735716689a) |
+| :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
+|                                        실시간 입찰                                        |                                         경매 등록                                         |
+
+#### 3. 실시간 채팅
+
+| ![Image](https://github.com/user-attachments/assets/5324626c-9021-4d47-abac-9730279f9f822) | ![Image](https://github.com/user-attachments/assets/48b60072-4e24-479e-a0b0-31dceb7ad9dc) |
+| :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
+|                                       채팅 읽음처리                                        |                                        채팅방 목록                                        |
+
+### 4. 검색
+
+| ![Image](https://github.com/user-attachments/assets/5324626c-9021-4d47-abac-9730279f9f822) | ![Image](https://github.com/user-attachments/assets/48b60072-4e24-479e-a0b0-31dceb7ad9dc) | ![Image]()  |
+| :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------: |
+|                                        리스트 조회                                         |                                          필터링                                           | 키워드 검색 |
+
+#### 4. UI/UX 디테일
+
+| ![Image](https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe) | ![Image](https://github.com/user-attachments/assets/5a857724-ae41-440f-9169-5677c81bbd5c) |
+| :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
+|                                       반응형 디자인                                       |                                      애니메이션 효과                                      |
 
 ## 💡 개발 후기
 
@@ -231,12 +244,6 @@ npm run commit       # 커밋 메시지 생성
 ### 🦭 김민조 (백엔드)
 
 > 실시간 채팅 서비스 구현, WebSocket + Redis Pub/Sub 구조 설계를 맡으며 사용자의 실시간 경험을 어떻게 설계하고 구성할지 깊이 고민할 수 있었습니다. 메시지 유실, 중복 처리, 세션 관리 등 실제 서비스에서 발생할 수 있는 문제들을 직접 경험하고 해결해가며 많은 성장을 느꼈습니다.
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다.
-
----
 
 <p align="center">
   <strong>거래를 가치롭게! 찰낙찰낙 🐟</strong>

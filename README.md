@@ -228,23 +228,23 @@ pnpm commit       # 커밋 메시지 작성
 
 #### 1. 회원가입 및 로그인
 
-| <img src="https://github.com/user-attachments/assets/796508f4-cbfe-44c1-ac29-f6d1ec220da4" width="290"> | <img src="https://github.com/user-attachments/assets/a35be998-e50f-4af4-8f12-d1f0e8a58d16" width="290"> |
+| <img src="https://github.com/user-attachments/assets/796508f4-cbfe-44c1-ac29-f6d1ec220da4" width="250"> | <img src="https://github.com/user-attachments/assets/a35be998-e50f-4af4-8f12-d1f0e8a58d16" width="250"> |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 |                                      회원가입                                       |                                        로그인                                         |
 #### 2. 경매 시스템
-|   <img src="https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe" width="290"> |<img src="https://github.com/user-attachments/assets/04a1f1ba-7987-4518-87fa-82ee9472348f" width="290"> | <img src="https://github.com/user-attachments/assets/71965e34-e517-4d66-b6af-68ee4c42c113" width="290"> |
+|   <img src="https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe" width="250"> |<img src="https://github.com/user-attachments/assets/04a1f1ba-7987-4518-87fa-82ee9472348f" width="250"> | <img src="https://github.com/user-attachments/assets/71965e34-e517-4d66-b6af-68ee4c42c113" width="250"> |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------: |
 |                                        경매 등록                                        |                                         실시간 입찰                                         |  실시간 입찰 실패  |
 #### 3. 실시간 채팅
-| <img src="https://github.com/user-attachments/assets/17179e07-0da0-4820-9261-432374771051" width="290"> | <img src="https://github.com/user-attachments/assets/9cc18c43-3892-4970-8dc0-15d10166ca02" width="290"> | <img src="https://github.com/user-attachments/assets/eeeb048a-b635-409c-9e47-5ecda41fec82" width="290"> |
+| <img src="https://github.com/user-attachments/assets/17179e07-0da0-4820-9261-432374771051" width="250"> | <img src="https://github.com/user-attachments/assets/9cc18c43-3892-4970-8dc0-15d10166ca02" width="250"> | <img src="https://github.com/user-attachments/assets/eeeb048a-b635-409c-9e47-5ecda41fec82" width="250"> |
 | :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |:---------: |
 |                                       채팅 송수신                                        |                                   채팅 전송 실패                                            | 채팅 전송 실패 처리 전 |
 ### 4. 검색
-| <img src="https://github.com/user-attachments/assets/c0e3fb70-03bb-4683-9056-2bfd7a5efcbb" width="290"> | <img src="https://github.com/user-attachments/assets/375707e0-e7b0-4cf8-b023-fc3a2ab84ca0" width="290"> | <img src="https://github.com/user-attachments/assets/83d07063-8e6f-4975-905c-d90d32221051" width="290"> |
+| <img src="https://github.com/user-attachments/assets/c0e3fb70-03bb-4683-9056-2bfd7a5efcbb" width="250"> | <img src="https://github.com/user-attachments/assets/375707e0-e7b0-4cf8-b023-fc3a2ab84ca0" width="250"> | <img src="https://github.com/user-attachments/assets/83d07063-8e6f-4975-905c-d90d32221051" width="250"> |
 | :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------: |
 |                                        리스트 조회                                         |                                          필터링                                           | 키워드 검색 |
 #### 4. UI/UX 디테일
-| <img src="https://github.com/user-attachments/assets/edcbacdc-a96d-425a-a72a-bacb4cd3cfea" width="290"> | <img src="https://github.com/user-attachments/assets/0b3cc23e-7007-4cee-a6ad-c519d9ebc2db" width="290"> |
+| <img src="https://github.com/user-attachments/assets/edcbacdc-a96d-425a-a72a-bacb4cd3cfea" width="250"> | <img src="https://github.com/user-attachments/assets/0b3cc23e-7007-4cee-a6ad-c519d9ebc2db" width="250"> |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 |                                       채팅 알림 및 리스트 업데이트                              |                                 이미지 드래그 앤 드롭                                      |
 

@@ -99,7 +99,6 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=react&logoColor=white)
 ![React Query](https://img.shields.io/badge/React%20Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
-![React Hook Form](https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)
 ![DND Kit](https://img.shields.io/badge/DND%20Kit-000000?style=for-the-badge&logo=typescript&logoColor=white)
 ![Swiper](https://img.shields.io/badge/Swiper-6332F6?style=for-the-badge&logo=swiper&logoColor=white)
 ![Date-fns](https://img.shields.io/badge/Date--fns-6C7C7C?style=for-the-badge&logo=javascript&logoColor=white)
@@ -229,27 +228,106 @@ pnpm commit       # 커밋 메시지 작성
 
 #### 1. 회원가입 및 로그인
 
-| <img src="https://github.com/user-attachments/assets/796508f4-cbfe-44c1-ac29-f6d1ec220da4" width="300"> | <img src="https://github.com/user-attachments/assets/a35be998-e50f-4af4-8f12-d1f0e8a58d16" width="300"> |
+| <img src="https://github.com/user-attachments/assets/796508f4-cbfe-44c1-ac29-f6d1ec220da4" width="290"> | <img src="https://github.com/user-attachments/assets/a35be998-e50f-4af4-8f12-d1f0e8a58d16" width="290"> |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 |                                      회원가입                                       |                                        로그인                                         |
 #### 2. 경매 시스템
-|   <img src="https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe" width="300"> |<img src="https://github.com/user-attachments/assets/04a1f1ba-7987-4518-87fa-82ee9472348f" width="300"> | <img src="https://github.com/user-attachments/assets/71965e34-e517-4d66-b6af-68ee4c42c113" width="300"> |
+|   <img src="https://github.com/user-attachments/assets/a51a141c-e2e1-419c-9ed0-d1d67d9ef9fe" width="290"> |<img src="https://github.com/user-attachments/assets/04a1f1ba-7987-4518-87fa-82ee9472348f" width="290"> | <img src="https://github.com/user-attachments/assets/71965e34-e517-4d66-b6af-68ee4c42c113" width="290"> |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------: |
 |                                        경매 등록                                        |                                         실시간 입찰                                         |  실시간 입찰 실패  |
 #### 3. 실시간 채팅
-| <img src="https://github.com/user-attachments/assets/17179e07-0da0-4820-9261-432374771051" width="300"> | <img src="https://github.com/user-attachments/assets/9cc18c43-3892-4970-8dc0-15d10166ca02" width="300"> | <img src="https://github.com/user-attachments/assets/eeeb048a-b635-409c-9e47-5ecda41fec82" width="300"> |
+| <img src="https://github.com/user-attachments/assets/17179e07-0da0-4820-9261-432374771051" width="290"> | <img src="https://github.com/user-attachments/assets/9cc18c43-3892-4970-8dc0-15d10166ca02" width="290"> | <img src="https://github.com/user-attachments/assets/eeeb048a-b635-409c-9e47-5ecda41fec82" width="290"> |
 | :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |:---------: |
 |                                       채팅 송수신                                        |                                   채팅 전송 실패                                            | 채팅 전송 실패 처리 전 |
 ### 4. 검색
-| <img src="https://github.com/user-attachments/assets/c0e3fb70-03bb-4683-9056-2bfd7a5efcbb" width="300"> | <img src="https://github.com/user-attachments/assets/375707e0-e7b0-4cf8-b023-fc3a2ab84ca0" width="300"> | <img src="https://github.com/user-attachments/assets/83d07063-8e6f-4975-905c-d90d32221051" width="300"> |
+| <img src="https://github.com/user-attachments/assets/c0e3fb70-03bb-4683-9056-2bfd7a5efcbb" width="290"> | <img src="https://github.com/user-attachments/assets/375707e0-e7b0-4cf8-b023-fc3a2ab84ca0" width="290"> | <img src="https://github.com/user-attachments/assets/83d07063-8e6f-4975-905c-d90d32221051" width="290"> |
 | :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------: |
 |                                        리스트 조회                                         |                                          필터링                                           | 키워드 검색 |
 #### 4. UI/UX 디테일
-| <img src="https://github.com/user-attachments/assets/edcbacdc-a96d-425a-a72a-bacb4cd3cfea" width="300"> | <img src="https://github.com/user-attachments/assets/0b3cc23e-7007-4cee-a6ad-c519d9ebc2db" width="300"> |
+| <img src="https://github.com/user-attachments/assets/edcbacdc-a96d-425a-a72a-bacb4cd3cfea" width="290"> | <img src="https://github.com/user-attachments/assets/0b3cc23e-7007-4cee-a6ad-c519d9ebc2db" width="290"> |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 |                                       채팅 알림 및 리스트 업데이트                              |                                 이미지 드래그 앤 드롭                                      |
 
 
+
+
+## 👨‍💻 개발 회고
+<br/>
+
+###  📱 모바일 환경에서 이미지 순서 변경(드래그 앤 드롭)시 화면 끊김과 성능 저하
+
+   - **문제**
+       - 웹에서는 마우스로 원활하게 작동하던 이미지 순서 변경 기능이, 모바일 터치 환경에서는 스크롤 동작과 계속 충돌. 사용자가 목록을 넘기려고 스와이프할 때마다 드래그가 활성화되어 의도치 않은 순서 변경이 발생하고 스크롤을 방해하는 등 문제가 발생.
+
+   - **원인**
+       - 웹(마우스)의 '클릭 후 드래그'와 모바일(터치)의 '스와이프'는 근본적으로 다른 인터랙션. 단일 로직으로 이를 처리하려다 보니, 모바일 환경에서 사용자의 '스크롤' 의도와 '순서 변경' 의도를 구분하지 못하고 모든 터치 입력을 드래그 시도로 오인한 것이 원인.
+
+   - **해결**
+       - 드래그 동작이 시작되는 조건을 세밀하게 제어.
+       - 사용자가 300ms 이상 길게 누르고(delay), 15px 이상 손가락을 움직여야만(distance) 비로소 드래그 모드로 진입하도록 로직을 수정.
+       - 모바일 터치 기능을 더욱 세밀하게 관리함으로써, 짧은 터치나 스와이프는 스크롤로, 길고 명확한 끌기 동작은 순서 변경으로 명확히 구분하여 두 기능의 충돌을 해결.
+
+   - **결론**
+       - 단순히 기능이 작동한다고 끝나는 것이 아니라 다양한 환경에서 문제없이 작동되는지 확인하고 테스트하는 것이 중요.
+       - 마우스 ‘클릭, 드래그’와 모바일의 ‘터치, 스와이프’의 차이점을 몸으로 명확히 이해.
+       - delay와 distance를 적용함으로써 사용자의 암묵적인 의도를 인지하면서 UX 설계에 대한 고민을 하게 됨.
+  --- 
+
+
+###  ⏱️ 다수의 타이머로 인한 성능 저하, 글로벌 타이머 도입
+
+   - **문제**
+       - 경매 상품 목록 페이지에서 남은 경매 시간에 대해 각 상품이 개별적인 setInterval 타이머를 소유.
+       - 이로 인해 조회 상품 수만큼의 타이머가 동시 동작하며 성능 저하 유발.
+
+   - **원인**
+       - '현재 시간'이라는 공유 자원을 각 컴포넌트가 독립적인 로컬 상태로 관리하면서, 컴포넌트 수(N)만큼의 불필요한 타이머가 생성.
+
+   - **해결**
+       - 1차 해결 시도 및 한계:
+           - 중앙화된 상태 관리를 위해 Context API를 사용해 단일 글로벌 타이머를 구현 → 각각의 상태에서 1개의 중앙화된 상태로 변경 확인.
+           - React Developer Tools로 분석 시, React.memo로 자식 컴포넌트의 렌더링을 막아도 Context를 구독하는 부모 컴포넌트의 리렌더링은 막을 수 없음을 파악.
+       - 최종 해결:
+           - 컴포넌트가 스토어의 특정 상태만 선택적으로 구독하여 리렌더링을 최소화하기 위해 Zustand를 통해 글로벌 타이머 설정.
+           - useTimerStore(state => state.now)와 같은 Selector를 활용하여, 오직 `now` 값이 변경될 때만 해당 컴포넌트가 반응하도록 구현.
+---
+
+###  💬 안 읽은 메시지 수 관리 및 정합성
+
+   - **문제**
+       - 전역적으로 안 읽은 메시지 수를 나타내는데, 데이터의 신뢰성과 애플리케이션 성능에 대한 고민.
+       - SSE로 메시지 수신 시마다 API를 호출 → 신뢰성은 높지만 불필요한 API 호출로 성능 저하 가능성.
+       - 클라이언트 상태에서만 관리 → 성능 저하는 없지만 데이터 오염 가능성.
+
+   - **해결**
+       - 낙관적 업데이트: SSE로 메시지 수신을 감지하였을 때 Zustand 스토어의 상태만 업데이트.
+       - 전략적 동기화: 채팅방 퇴장 시, 새로고침 시 API 호출을 하며 API 호출 최소화.
+
+   - **결론**
+       - API 호출 횟수를 줄이는 것, 그리고 프론트엔드에서 효율적으로 데이터의 일관성을 맞춰야 하는지에 대한 고민을 하였음.
+       - 클라이언트 상태와 서버 상태를 분리하고, 최적의 동기화 시점을 설계하는 것이 성능과 안정성을 해결할 수 있음.
+---
+
+###  ⏰ 경매가 끝나도 알림이 오지 않는 이슈 (서비스별 Timezone 불일치)
+
+   - **문제**
+       - 경매가 정상적으로 종료되어도 사용자에게 경매 종료 알림이 발송되지 않음.
+       - 알림 수신에 문제가 생긴 줄 알고 직접 알림을 보내도 알림은 잘 옴 but 경매 종료 알림만 안 옴.
+       - 디버깅한 결과 알림 자체에는 문제가 없음을 알게 됨.
+
+   - **원인**
+       - MSA 환경에서 Timezone 설정 불일치:
+           - 경매 서비스와 알림 서비스가 서로 다른 시간대를 가짐.
+           - 경매 서비스는 KST(Asia/Seoul), 알림 서비스는 따로 설정이 되어있지 않아서 UTC로 기본 설정됨.
+           - 실제로는 9시간 차이로 알림을 받게 됨.
+
+   - **해결**
+       - 백엔드 Timezone을 UTC로 통일.
+       - 프론트에서는 UTC로 받은 시간을 date-fns를 통해 사용자에 맞춘 시간으로 변환하여 표시.
+
+   - **결론**
+       - MSA 환경에서 시스템 전반으로 공통 컨벤션 통일 필수라고 느낌.
+    
 
 ## 💡 개발 후기
 

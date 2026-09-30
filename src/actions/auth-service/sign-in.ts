@@ -35,7 +35,7 @@ export async function signIn(memberId: string, password: string) {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.COOKIE_SECURE !== 'false',
       sameSite: 'lax' as const,
       path: '/',
     };

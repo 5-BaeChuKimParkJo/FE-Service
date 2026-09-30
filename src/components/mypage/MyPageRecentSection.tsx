@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Eye, Heart, ChevronRight } from 'lucide-react';
+import { Eye, ChevronRight } from 'lucide-react';
 
 export function MyPageRecentSection() {
   const recentSummary = [
@@ -8,12 +8,6 @@ export function MyPageRecentSection() {
       title: '최근본 경매',
       href: '/mypage/recent-auctions',
       icon: <Eye className='w-6 h-6' />,
-    },
-    {
-      id: 'liked-products',
-      title: '찜한 상품',
-      href: '/mypage/liked-products',
-      icon: <Heart className='w-6 h-6' />,
     },
   ];
 

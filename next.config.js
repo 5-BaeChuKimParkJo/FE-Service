@@ -18,12 +18,16 @@ const nextConfig = {
 
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_S3_HOSTNAME,
-        port: '',
-        pathname: '/**',
-      },
+      ...(process.env.NEXT_S3_HOSTNAME
+        ? [
+            {
+              protocol: 'https',
+              hostname: process.env.NEXT_S3_HOSTNAME,
+              port: '',
+              pathname: '/**',
+            },
+          ]
+        : []),
       {
         protocol: 'https',
         hostname: 'media.bunjang.co.kr',

@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { useRegisterStore } from '@/stores/use-register-store';
 import { usePhoneVerification } from './use-phone-verification';
 import { PhoneVerificationForm } from './phone-verification/PhoneVerificationForm';
+import { getDemoVerificationCode } from '@/config/runtime';
 
 export function StepOne() {
+  const demoCode = getDemoVerificationCode(process.env.NEXT_PUBLIC_DEPLOYMENT_MODE);
   const {
     phoneNumber,
     verificationCode,
@@ -53,6 +55,7 @@ export function StepOne() {
         onVerificationCodeChange={setVerificationCode}
         onSendVerification={handleSendVerification}
         onVerify={handleVerify}
+        demoCode={demoCode}
       />
     </section>
   );

@@ -1,5 +1,4 @@
 import { getAuctionBidders, getAuctionDetail } from '@/actions/auction-service';
-import { getMemberInfo } from '@/actions/member-service';
 import { ItemImages } from '@/components/images';
 import {
   AuctionTimer,
@@ -26,11 +25,6 @@ export default async function AuctionPage({
   }
   if (isErrorResponse(bidders)) {
     return <div>Bidders not found</div>;
-  }
-
-  const memberInfo = await getMemberInfo(auction.seller.memberUuid);
-  if (isErrorResponse(memberInfo)) {
-    return <div>Member not found</div>;
   }
 
   const images = auction.images.map((image) => ({

@@ -18,6 +18,7 @@ interface PhoneVerificationFormProps {
   onVerificationCodeChange: (value: string) => void;
   onSendVerification: () => void;
   onVerify: () => void;
+  demoCode?: string | null;
 }
 
 /**
@@ -35,6 +36,7 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
   onVerificationCodeChange,
   onSendVerification,
   onVerify,
+  demoCode,
 }: PhoneVerificationFormProps) {
   return (
     <div className='flex-1'>
@@ -57,6 +59,9 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
+            {demoCode && (
+              <p className='mb-3 text-sm text-gray-600'>체험용 인증번호: <strong>{demoCode}</strong></p>
+            )}
             <FilledInput
               label='인증번호'
               value={verificationCode}

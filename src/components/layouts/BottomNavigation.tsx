@@ -1,10 +1,10 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home, Gavel, ShoppingBag, MessageCircle, User } from 'lucide-react';
+import { Home, Gavel, Search, User } from 'lucide-react';
 
 import { cn } from '@/libs/cn';
-import { useChatUnreadStore } from '@/stores/use-chat-unread-store';
+import { primaryNavigation } from '@/config/navigation';
 
 interface NavItem {
   href: string;
@@ -12,37 +12,11 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const navItems: NavItem[] = [
-  {
-    href: '/',
-    label: '홈',
-    icon: Home,
-  },
-  {
-    href: '/products',
-    label: '일반',
-    icon: ShoppingBag,
-  },
-  {
-    href: '/auctions',
-    label: '경매',
-    icon: Gavel,
-  },
-  {
-    href: '/chat',
-    label: '채팅',
-    icon: MessageCircle,
-  },
-  {
-    href: '/mypage',
-    label: '내정보',
-    icon: User,
-  },
-];
+const icons = { '/': Home, '/auctions': Gavel, '/search': Search, '/mypage': User } as const;
+const navItems: NavItem[] = primaryNavigation.map((item) => ({ ...item, icon: icons[item.href] }));
 
 export function BottomNavigation() {
   const pathname = usePathname();
-  const { unreadCount } = useChatUnreadStore();
   return (
     <nav
       className={cn(
@@ -71,11 +45,6 @@ export function BottomNavigation() {
                   isActive ? 'text-white' : 'text-white/50',
                 )}
               />
-              {item.href === '/chat' && unreadCount > 0 && (
-                <div className='absolute top-1 right-2 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-4 h-4 flex items-center justify-center px-1'>
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </div>
-              )}
               <span
                 className={cn(
                   'text-[10px] sm:text-xs font-medium transition-colors duration-200',

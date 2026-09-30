@@ -2,21 +2,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { MemberInfo } from '@/types/member';
-import { Grade } from '@/types/grade';
 
 export async function MyPageUserInfo({
   myInfo,
-  myGrade,
 }: {
   myInfo: MemberInfo;
-  myGrade: Grade;
 }) {
   return (
     <section className='flex items-center justify-between'>
       <div className='flex items-center gap-4'>
         <div className='relative w-16 h-16 rounded-full overflow-hidden'>
           <Image
-            src={myInfo.profileImageUrl || myGrade.imageUrl}
+            src={myInfo.profileImageUrl || '/images/dummy/profile.png'}
             alt='프로필'
             fill
             style={{ objectFit: 'cover' }}

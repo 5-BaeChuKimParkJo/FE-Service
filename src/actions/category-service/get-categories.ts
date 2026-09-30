@@ -1,6 +1,7 @@
 'use server';
 
 import { instance } from '@/actions/instance';
+import { API_PATHS } from '@/config/api';
 
 export type CategoryType = {
   categoryId: number;
@@ -11,7 +12,7 @@ export type CategoryType = {
 
 export async function getCategories(): Promise<CategoryType[]> {
   return instance.get<CategoryType[]>(
-    '/category-service/api/v1/category/list',
+    API_PATHS.categories,
     {
       cache: 'force-cache',
       next: {

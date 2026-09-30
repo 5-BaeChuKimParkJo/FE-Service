@@ -4,6 +4,7 @@ import { CountUp } from '../ui';
 import { MinimalAuctionTimer } from '@/components/auction/MinimalAuctionTimer';
 import { formatNumber } from '@/utils/format';
 import { SearchAuctionItem } from '@/types/auction/search-products';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 export interface AuctionPreview {
   auctionUuid: string;
@@ -38,6 +39,7 @@ export function AuctionPreviewCard({
             alt={auction.auctionTitle}
             fill
             className='object-cover'
+            unoptimized={isApplicationMediaUrl(auction.thumbnailUrl)}
           />
         </header>
         <section className='py-3 px-4 flex flex-col gap-2'>

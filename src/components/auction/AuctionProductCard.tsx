@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/libs/cn';
 import { MinimalAuctionTimer } from './MinimalAuctionTimer';
 import { formatNumber } from '@/utils/format';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 interface AuctionProductCardProps {
   auctionUuid: string;
@@ -60,6 +61,7 @@ export function AuctionProductCard({
             height={100}
             priority
             className='object-cover transition-transform duration-300 hover:scale-105 w-full h-full'
+            unoptimized={isApplicationMediaUrl(thumbnailUrl)}
           />
 
           {(status === 'ended' || isExpired) && (

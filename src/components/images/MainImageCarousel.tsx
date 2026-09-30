@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 type MainImageCarouselProps = {
   images: { imageId: number; url: string; order: number }[];
@@ -32,6 +33,7 @@ export function MainImageCarousel({
                 priority={index === 0}
                 sizes='(max-width: 640px) 100vw, 640px'
                 draggable={false}
+                unoptimized={isApplicationMediaUrl(image.url)}
               />
             </div>
           ))}

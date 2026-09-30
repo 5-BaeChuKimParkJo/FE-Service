@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { cn } from '@/libs/cn';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 type ThumbnailCarouselProps = {
   images: { imageId: number; url: string; order: number }[];
@@ -45,6 +46,7 @@ export function ThumbnailCarousel({
                 height={64}
                 className='w-full h-full object-cover'
                 loading='lazy'
+                unoptimized={isApplicationMediaUrl(image.url)}
               />
             </button>
           ))}

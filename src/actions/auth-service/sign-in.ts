@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { getApiBaseUrl } from '@/config/server';
 
 interface SignInResponse {
   accessToken: string;
@@ -11,7 +12,7 @@ interface SignInResponse {
 export async function signIn(memberId: string, password: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/sign-in`,
+      `${getApiBaseUrl()}/auth-service/api/v1/auth/sign-in`,
       {
         method: 'POST',
         headers: {

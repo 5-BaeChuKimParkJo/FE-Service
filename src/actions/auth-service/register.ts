@@ -1,5 +1,7 @@
 'use server';
 
+import { getApiBaseUrl } from '@/config/server';
+
 export interface RegisterUserData {
   phoneNumber: string;
   nickname: string;
@@ -11,7 +13,7 @@ export interface RegisterUserData {
 export async function registerUser(userData: RegisterUserData) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/sign-up`,
+      `${getApiBaseUrl()}/auth-service/api/v1/auth/sign-up`,
       {
         method: 'POST',
         headers: {

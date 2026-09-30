@@ -1,11 +1,13 @@
 'use server';
 
+import { getApiBaseUrl } from '@/config/server';
+
 export async function checkNicknameAvailability(
   nickname: string,
 ): Promise<boolean> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth-service/api/v1/auth/exists/nickname?nickname=${nickname}`,
+      `${getApiBaseUrl()}/auth-service/api/v1/auth/exists/nickname?nickname=${encodeURIComponent(nickname)}`,
     );
     const data = await response.json();
     return data;

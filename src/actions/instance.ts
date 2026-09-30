@@ -1,5 +1,6 @@
 import { ErrorResponse } from '@/types/api';
 import { cookies } from 'next/headers';
+import { getApiBaseUrl } from '@/config/server';
 
 interface RequestOptions extends RequestInit {
   timeout?: number;
@@ -11,7 +12,6 @@ interface RequestOptions extends RequestInit {
   };
 }
 
-const BASE_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 const DEFAULT_TIMEOUT = 10000; // 10초
 
 // 타임아웃 기능을 위한 헬퍼 함수
@@ -59,10 +59,7 @@ const fetchInstance = async <T = undefined>(
     }
 
     const timeout = options.timeout || DEFAULT_TIMEOUT;
-    if (!BASE_URL && !url.startsWith('http')) {
-      throw new Error('API_URL 환경변수가 설정되지 않았습니다.');
-    }
-    const fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
+    const fullUrl = url.startsWith('http') ? url : `${getApiBaseUrl()}${url}`;
 
     // Next.js 캐싱 옵션 설정
     const fetchOptions: RequestInit & {

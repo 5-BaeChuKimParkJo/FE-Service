@@ -1,6 +1,7 @@
 {
   "name": "chalnack",
   "version": "0.1.0",
+  "packageManager": "pnpm@10.34.6",
   "private": true,
   "scripts": {
     "dev": "next dev",

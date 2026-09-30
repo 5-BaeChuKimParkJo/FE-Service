@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.github
+coverage
+out
+build
+.env*
+*.log
+*.tsbuildinfo
+e2e
+docs

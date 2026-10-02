@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/utils/date';
 import { ShoppingBag } from 'lucide-react';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 interface MySalesContentProps {
   auctions: AuctionHistory[];
@@ -87,6 +88,7 @@ function SalesCard({ auction }: { auction: AuctionHistory }) {
               alt={`${auction.title} 상품 이미지`}
               fill
               style={{ objectFit: 'cover' }}
+              unoptimized={isApplicationMediaUrl(auction.thumbnailUrl)}
             />
           </figure>
 

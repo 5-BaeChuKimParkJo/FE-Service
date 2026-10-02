@@ -12,6 +12,7 @@ import { formatCurrency } from '@/utils/format';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 export function MyRecentAuctionsContent() {
   const [recentAuctions, setRecentAuctions] = useState<RecentlyViewedAuction[]>(
@@ -104,6 +105,7 @@ function RecentAuctionCard({ auction, onDelete }: RecentAuctionCardProps) {
               alt={`${auction.title} 경매 이미지`}
               fill
               style={{ objectFit: 'cover' }}
+              unoptimized={isApplicationMediaUrl(auction.thumbnailUrl || '')}
             />
           </figure>
 

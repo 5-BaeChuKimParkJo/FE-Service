@@ -6,6 +6,7 @@ import { formatCurrency } from '@/utils/format';
 import Image from 'next/image';
 import { getAuctionStatus } from '@/utils/auction-status';
 import { EmptyState } from '@/components/common/EmptyState';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 interface MyPurchasesContentProps {
   bidHistory: BidHistory[];
@@ -58,6 +59,7 @@ function BidHistoryCard({ item }: BidHistoryCardProps) {
               className='w-20 h-20 object-cover rounded-lg'
               width={80}
               height={80}
+              unoptimized={isApplicationMediaUrl(auction.thumbnailUrl || '')}
             />
           </div>
 

@@ -7,6 +7,7 @@ import { GlobalTimerProvider } from '@/contexts/GlobalTimerContext';
 import { QueryClient } from '@tanstack/react-query';
 import { getCategories } from '@/actions/category-service/get-categories';
 import { SseProvider } from '@/providers/SseProvider';
+import { auth } from '@/actions/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,15 +50,16 @@ export default async function RootLayout({
     queryFn: getCategories,
   });
 
+  const session = await auth();
+  const content = <GlobalTimerProvider>{children}</GlobalTimerProvider>;
+
   return (
     <html lang='ko'>
       <body className='mobile-container pb-safe pt-safe overflow-y-auto scrollbar-hidden'>
         <QueryProvider>
           <AlertProvider>
             <ToastProvider>
-              <SseProvider>
-                <GlobalTimerProvider>{children}</GlobalTimerProvider>
-              </SseProvider>
+              {session ? <SseProvider>{content}</SseProvider> : content}
             </ToastProvider>
           </AlertProvider>
         </QueryProvider>

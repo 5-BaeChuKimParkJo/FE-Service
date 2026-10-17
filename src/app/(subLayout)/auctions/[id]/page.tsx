@@ -10,6 +10,7 @@ import { isErrorResponse } from '@/utils/type-guards';
 import { BiddersSection, AuctionTags, BidderForm } from './_components';
 import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
 import { WinnerCheckoutEntry } from '@/components/auction/checkout/WinnerCheckoutEntry';
+import { auth } from '@/actions/auth';
 
 export default async function AuctionPage({
   params,
@@ -20,6 +21,7 @@ export default async function AuctionPage({
 
   const auction = await getAuctionDetail(id);
   const bidders = await getAuctionBidders(id);
+  const session = await auth();
 
   if (isErrorResponse(auction) || isErrorResponse(bidders)) {
     return <ErrorText>Auction not found</ErrorText>;
@@ -49,6 +51,8 @@ export default async function AuctionPage({
       </main>
       <BidderForm
         auctionUuid={id}
+        isAuthenticated={Boolean(session?.user?.accessToken)}
+        demoEnabled={Boolean(process.env.DEMO_MEMBER_ID && process.env.DEMO_MEMBER_PASSWORD)}
         bidAmount={
           bidders.items.length > 0
             ? bidders.items[0].bidAmount

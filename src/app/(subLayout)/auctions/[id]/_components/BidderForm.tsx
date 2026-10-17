@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '@/contexts/AlertContext';
 import { useBidderForm } from '../_hooks';
+import { DemoSignInButton } from '@/components/sign-in/DemoSignInButton';
+import Link from 'next/link';
 import {
   BidderDialogHeader,
   BidderAgreementStep,
@@ -15,12 +17,16 @@ import {
 
 type BidderFormProps = {
   auctionUuid: string;
+  isAuthenticated: boolean;
+  demoEnabled: boolean;
   bidAmount: number;
   status: 'waiting' | 'active' | 'ended' | 'hidden' | 'cancelled';
 };
 
 export function BidderForm({
   auctionUuid,
+  isAuthenticated,
+  demoEnabled,
   bidAmount,
   status,
 }: BidderFormProps) {
@@ -79,6 +85,20 @@ export function BidderForm({
 
   if (status !== 'active') {
     return null;
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <footer className='border-t border-gray-200 px-10 py-2'>
+        {demoEnabled ? (
+          <DemoSignInButton returnTo={`/auctions/${auctionUuid}`} />
+        ) : (
+          <Button asChild width='full' size='xl'>
+            <Link href='/sign-in'>로그인 후 입찰하기</Link>
+          </Button>
+        )}
+      </footer>
+    );
   }
 
   return (

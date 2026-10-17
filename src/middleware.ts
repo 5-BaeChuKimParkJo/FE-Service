@@ -3,6 +3,16 @@ import type { NextRequest } from 'next/server';
 
 const publicPaths = ['/sign-in', '/sign-up'] as const;
 
+function isBrowsePath(pathname: string) {
+  return pathname === '/' ||
+    pathname === '/auctions' ||
+    (pathname.startsWith('/auctions/') &&
+      pathname.split('/').length === 3 &&
+      pathname !== '/auctions/create') ||
+    pathname === '/search' ||
+    (pathname.startsWith('/search/') && pathname.split('/').length === 3);
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -25,6 +35,10 @@ export function middleware(request: NextRequest) {
     if (accessToken && ['/sign-in', '/sign-up'].includes(pathname)) {
       return NextResponse.redirect(new URL('/', request.url));
     }
+    return NextResponse.next();
+  }
+
+  if (!accessToken && isBrowsePath(pathname)) {
     return NextResponse.next();
   }
 

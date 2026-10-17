@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { createBid } from '@/actions/auction-service';
 import { isErrorResponse } from '@/utils/type-guards';
-import { useBidderSSE } from './use-bidder-sse';
 
 interface UseBidderFormProps {
   auctionUuid: string;
@@ -20,17 +19,14 @@ export function useBidderForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const { startWaiting, stopWaiting } = useBidderSSE({
-    onSuccess: () => {
-      setLoading(false);
-      onSuccess();
+  const requestVersion = useRef(0);
+  const submitting = useRef(false);
+  useEffect(
+    () => () => {
+      requestVersion.current += 1;
     },
-    onError: (message) => {
-      setLoading(false);
-      setError(message);
-    },
-  });
+    [],
+  );
 
   const validateBidAmount = (amount: number): string | null => {
     if (amount <= bidAmount) {
@@ -43,6 +39,7 @@ export function useBidderForm({
   };
 
   const submitBid = async (amount: number) => {
+    if (submitting.current) return;
     const validationError = validateBidAmount(amount);
     if (validationError) {
       setError(validationError);
@@ -51,25 +48,29 @@ export function useBidderForm({
 
     setLoading(true);
     setError('');
-    startWaiting();
+    submitting.current = true;
+    const version = ++requestVersion.current;
 
     try {
       const response = await createBid(auctionUuid, amount);
-      if (isErrorResponse(response)) {
-        stopWaiting();
-        setError(response.message);
-        setLoading(false);
+      if (version !== requestVersion.current) return;
+      if (!response.ok) {
+        setError(response.error.message);
         return;
       }
-      // API 호출 성공 시 SSE 메시지를 기다림
+      onSuccess();
     } catch (error) {
-      stopWaiting();
+      if (version !== requestVersion.current) return;
       setError(
         isErrorResponse(error)
           ? error.message
-          : '입찰에 실패했습니다. 다시 시도해주세요.',
+          : '입찰 결과를 확인하지 못했습니다. 입찰 내역을 먼저 확인해 주세요.',
       );
-      setLoading(false);
+    } finally {
+      if (version === requestVersion.current) {
+        submitting.current = false;
+        setLoading(false);
+      }
     }
   };
 
@@ -98,7 +99,8 @@ export function useBidderForm({
   };
 
   const reset = () => {
-    stopWaiting();
+    requestVersion.current += 1;
+    submitting.current = false;
     setInputAmount(String(bidAmount));
     setError('');
     setLoading(false);

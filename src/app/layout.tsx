@@ -51,6 +51,8 @@ export default async function RootLayout({
   });
 
   const session = await auth();
+  const notificationsEnabled =
+    process.env.NEXT_PUBLIC_DEPLOYMENT_MODE !== 'homelab';
   const content = <GlobalTimerProvider>{children}</GlobalTimerProvider>;
 
   return (
@@ -59,7 +61,11 @@ export default async function RootLayout({
         <QueryProvider>
           <AlertProvider>
             <ToastProvider>
-              {session ? <SseProvider>{content}</SseProvider> : content}
+              {session && notificationsEnabled ? (
+                <SseProvider>{content}</SseProvider>
+              ) : (
+                content
+              )}
             </ToastProvider>
           </AlertProvider>
         </QueryProvider>

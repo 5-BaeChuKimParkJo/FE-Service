@@ -9,6 +9,7 @@ import ErrorText from '@/components/ui/error-text';
 import { isErrorResponse } from '@/utils/type-guards';
 import { BiddersSection, AuctionTags, BidderForm } from './_components';
 import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
+import { WinnerCheckoutEntry } from '@/components/auction/checkout/WinnerCheckoutEntry';
 
 export default async function AuctionPage({
   params,
@@ -44,6 +45,7 @@ export default async function AuctionPage({
         <ItemDescriptionSection description={auction.description} />
         <AuctionTags tags={auction.tags} />
         <BiddersSection bidders={bidders.items} />
+        <WinnerCheckoutEntry auctionUuid={id} status={auction.status} />
       </main>
       <BidderForm
         auctionUuid={id}

@@ -113,8 +113,7 @@ function Button({
       style={style}
       {...props}
     >
-      {isPending && <LoadingSpinner />}
-      {label || children}
+      {asChild ? children : <>{isPending && <LoadingSpinner />}{label || children}</>}
     </Comp>
   );
 }

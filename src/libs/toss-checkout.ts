@@ -3,7 +3,6 @@ import type { CheckoutView } from '@/types/auction/checkout';
 
 type Widget = { destroy(): Promise<void> | void };
 type AgreementWidget = Widget & {
-  getAgreementStatus(): Promise<{ agreedRequiredTerms: boolean }>;
   on(
     event: 'agreementStatusChange',
     callback: (event: { agreedRequiredTerms: boolean }) => void,
@@ -165,22 +164,12 @@ export async function mountTossCheckout(
         variantKey: 'AGREEMENT',
       }),
     );
-    let agreementRevision = 0;
     agreement.on('agreementStatusChange', (event) => {
       if (!stopped) {
-        agreementRevision += 1;
         agreed = event.agreedRequiredTerms === true;
         onAgreement(agreed);
       }
     });
-    const initialAgreement = await bounded(
-      agreement.getAgreementStatus(),
-      signal,
-    );
-    if (!agreementRevision && !stopped) {
-      agreed = initialAgreement.agreedRequiredTerms === true;
-      onAgreement(agreed);
-    }
     return {
       destroy,
       async requestPayment(origin) {

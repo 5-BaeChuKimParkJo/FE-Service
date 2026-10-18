@@ -7,14 +7,12 @@ function fakeSdk() {
   let agreementChanged: (event: {
     agreedRequiredTerms: boolean;
   }) => void = () => {};
-  let agreed = false;
   const methods = {
     destroy: vi.fn(async () => {
       events.push('destroy methods');
     }),
   };
   const agreement = {
-    getAgreementStatus: vi.fn(async () => ({ agreedRequiredTerms: agreed })),
     destroy: vi.fn(async () => {
       events.push('destroy agreement');
     }),
@@ -48,7 +46,6 @@ function fakeSdk() {
     methods,
     agreement,
     agree: () => {
-      agreed = true;
       agreementChanged({ agreedRequiredTerms: true });
     },
   };
@@ -139,10 +136,10 @@ describe('Toss v2 order-page widgets', () => {
     expect(fake.sdk.requestPayment).not.toHaveBeenCalled();
   });
 
-  it('initializes prechecked required agreement before enabling payment', async () => {
+  it('uses the official agreement event for an initial required-terms status', async () => {
     const fake = fakeSdk();
-    fake.agreement.getAgreementStatus.mockResolvedValue({
-      agreedRequiredTerms: true,
+    fake.agreement.on.mockImplementation((_event, callback) => {
+      callback({ agreedRequiredTerms: true });
     });
     const changed = vi.fn();
     const checkout = await mountTossCheckout(

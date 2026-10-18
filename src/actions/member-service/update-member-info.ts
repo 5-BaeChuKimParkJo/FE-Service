@@ -1,6 +1,7 @@
 'use server';
 
 import { instance } from '@/actions/instance';
+import { revalidatePath } from 'next/cache';
 
 type MemberInfo = {
   nickname?: string;
@@ -16,5 +17,6 @@ export async function updateMemberInfo(memberInfo: MemberInfo) {
     `/member-service/api/v1/member/update`,
     memberInfo,
   );
+  revalidatePath('/', 'layout');
   return response;
 }

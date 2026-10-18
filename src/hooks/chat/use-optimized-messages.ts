@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { getProfileImageUrl } from '@/utils/profile-image';
 import type { ChatMessageType } from '@/types/chat';
 import type { MemberSummary } from '@/types/member';
 
@@ -50,10 +51,9 @@ export const useOptimizedMessages = (
         }
       }
 
-      const profileUrl = isFromMe
-        ? '/placeholder.svg?height=32&width=32'
-        : opponentInfo?.profileImageUrl ||
-          '/placeholder.svg?height=32&width=32';
+      const profileUrl = getProfileImageUrl(
+        isFromMe ? null : opponentInfo?.profileImageUrl,
+      );
       const senderName = isFromMe ? '나' : opponentInfo?.nickname || '상대방';
 
       const nextMsg = messages[index + 1];

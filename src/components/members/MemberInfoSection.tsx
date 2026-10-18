@@ -5,6 +5,7 @@ import { MemberInfoSectionSkeleton } from './MemberInfoSectionSkeleton';
 import Image from 'next/image';
 import { getGradeInfo } from '@/actions/grade-service';
 import { isApplicationMediaUrl } from '@/utils/media-url';
+import { getProfileImageUrl } from '@/utils/profile-image';
 
 export async function MemberInfoSection({
   memberInfo,
@@ -21,8 +22,10 @@ export async function MemberInfoSection({
       <div className='flex items-center gap-4'>
         <div className='relative w-[50px] h-[50px] rounded-full overflow-hidden'>
           <Image
-            src={memberInfo.profileImageUrl || grade.imageUrl}
-            unoptimized={isApplicationMediaUrl(memberInfo.profileImageUrl || '')}
+            src={getProfileImageUrl(memberInfo.profileImageUrl)}
+            unoptimized={isApplicationMediaUrl(
+              memberInfo.profileImageUrl || '',
+            )}
             alt='profile'
             fill
             sizes='50px'

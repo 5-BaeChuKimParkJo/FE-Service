@@ -7,6 +7,7 @@ import { getChatList } from './get-chat-list';
 import { getMemberSummary } from '@/actions/member-service';
 import { getChatroomThumnails } from './get-chatroom-thumnails';
 import { isErrorResponse } from '@/utils/type-guards';
+import { DEFAULT_PROFILE_IMAGE } from '@/utils/profile-image';
 
 export interface ChatRoomWithMember {
   chat: ChatRoomSummary;
@@ -49,7 +50,7 @@ export async function getChatListWithMembers(): Promise<ChatRoomWithMember[]> {
               memberInfo: {
                 memberUuid: chat.opponentUuid,
                 nickname: '알 수 없음',
-                profileImageUrl: '/images/dummy/dummy2.png',
+                profileImageUrl: DEFAULT_PROFILE_IMAGE,
               } as MemberSummary,
               thumbnail: chat.postUuid
                 ? thumbnailMap.get(chat.postUuid)
@@ -70,7 +71,7 @@ export async function getChatListWithMembers(): Promise<ChatRoomWithMember[]> {
             memberInfo: {
               memberUuid: chat.opponentUuid,
               nickname: '알 수 없음',
-              profileImageUrl: '/images/dummy/dummy2.png',
+              profileImageUrl: DEFAULT_PROFILE_IMAGE,
             } as MemberSummary,
             thumbnail: chat.postUuid
               ? thumbnailMap.get(chat.postUuid)

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Heart, Eye } from 'lucide-react';
 import { ProductDetailResponse } from '@/types/product';
 import { formatNumber } from '@/utils/format';
+import { getProfileImageUrl } from '@/utils/profile-image';
 import { DealInfo, ProductCategory, ProductCondition } from './details';
 
 export function ProductInfoSection({
@@ -16,9 +17,7 @@ export function ProductInfoSection({
           <div className='flex items-center gap-3 '>
             <div className='relative h-12 w-12 overflow-hidden rounded-full'>
               <Image
-                src={
-                  product.seller.profileImageUrl || '/images/dummy/profile.png'
-                }
+                src={getProfileImageUrl(product.seller.profileImageUrl)}
                 alt={`${product.seller.nickname} 프로필`}
                 fill
                 className='object-cover'

@@ -3,18 +3,15 @@ import Image from 'next/image';
 
 import { MemberInfo } from '@/types/member';
 import { isApplicationMediaUrl } from '@/utils/media-url';
+import { getProfileImageUrl } from '@/utils/profile-image';
 
-export async function MyPageUserInfo({
-  myInfo,
-}: {
-  myInfo: MemberInfo;
-}) {
+export async function MyPageUserInfo({ myInfo }: { myInfo: MemberInfo }) {
   return (
     <section className='flex items-center justify-between'>
       <div className='flex items-center gap-4'>
         <div className='relative w-16 h-16 rounded-full overflow-hidden'>
           <Image
-            src={myInfo.profileImageUrl || '/images/dummy/profile.png'}
+            src={getProfileImageUrl(myInfo.profileImageUrl)}
             unoptimized={isApplicationMediaUrl(myInfo.profileImageUrl || '')}
             alt='프로필'
             fill

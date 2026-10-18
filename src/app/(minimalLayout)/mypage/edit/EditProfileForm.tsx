@@ -12,6 +12,7 @@ import { ErrorResponse } from '@/types/api';
 import { Dialog } from '@/components/ui/dialog';
 import { validateNickname } from '@/libs/validation.utils';
 import { isApplicationMediaUrl } from '@/utils/media-url';
+import { getProfileImageUrl } from '@/utils/profile-image';
 
 interface EditProfileFormProps {
   myInfo: MemberInfo;
@@ -85,18 +86,14 @@ export default function EditProfileForm({ myInfo }: EditProfileFormProps) {
         <form onSubmit={handleSubmit} className='space-y-6'>
           <div className='flex flex-col items-center gap-4'>
             <div className='w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center'>
-              {profileImage ? (
-                <Image
-                  width={96}
-                  height={96}
-                  src={profileImage}
-                  unoptimized={isApplicationMediaUrl(profileImage)}
-                  alt='프로필 미리보기'
-                  className='object-cover w-full h-full'
-                />
-              ) : (
-                <span className='text-gray-400'>이미지 없음</span>
-              )}
+              <Image
+                width={96}
+                height={96}
+                src={getProfileImageUrl(profileImage)}
+                unoptimized={isApplicationMediaUrl(profileImage || '')}
+                alt='프로필 미리보기'
+                className='object-cover w-full h-full'
+              />
             </div>
             <Button
               type='button'

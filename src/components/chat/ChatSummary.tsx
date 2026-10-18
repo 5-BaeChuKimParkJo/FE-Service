@@ -2,6 +2,7 @@ import Image from 'next/image';
 import type { ChatRoomSummary, ChatRoomThumbnail } from '@/types/chat';
 import type { MemberSummary } from '@/types/member';
 import { formatChatDate } from '@/utils/date';
+import { getProfileImageUrl } from '@/utils/profile-image';
 
 interface ChatSummaryProps {
   chat: ChatRoomSummary;
@@ -10,7 +11,7 @@ interface ChatSummaryProps {
 }
 
 export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
-  const profileUrl = memberInfo.profileImageUrl || '/images/dummy/dummy2.png';
+  const profileUrl = getProfileImageUrl(memberInfo.profileImageUrl);
   const nickname = memberInfo.nickname;
   const preview = chat.lastMessage;
   const messageType = chat.messageType;
@@ -25,7 +26,7 @@ export function ChatSummary({ chat, memberInfo }: ChatSummaryProps) {
       <section className='flex items-center gap-4 flex-1 min-w-0'>
         <figure className='flex-shrink-0 w-14 h-14 rounded-full overflow-hidden bg-gray-200'>
           <Image
-            src={profileUrl || '/placeholder.svg'}
+            src={profileUrl}
             alt={nickname}
             width={56}
             height={56}

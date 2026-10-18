@@ -3,6 +3,7 @@ import { Eye } from 'lucide-react';
 import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
 import { formatNumber } from '@/utils/format';
 import { isApplicationMediaUrl } from '@/utils/media-url';
+import { getProfileImageUrl } from '@/utils/profile-image';
 import {
   DealInfo,
   ProductCategory,
@@ -22,11 +23,11 @@ export function ItemInfoSection({
           <div className='flex items-center gap-3 '>
             <div className='relative h-12 w-12 overflow-hidden rounded-full'>
               <Image
-                src={
-                  auction.seller.profileImageUrl || '/images/dummy/profile.png'
-                }
+                src={getProfileImageUrl(auction.seller.profileImageUrl)}
                 alt={`${auction.seller.nickname} 프로필`}
-                unoptimized={isApplicationMediaUrl(auction.seller.profileImageUrl || '')}
+                unoptimized={isApplicationMediaUrl(
+                  auction.seller.profileImageUrl || '',
+                )}
                 fill
                 sizes='48px'
                 className='object-cover'

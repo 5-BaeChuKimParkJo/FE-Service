@@ -1,5 +1,6 @@
 import { AuctionBidders } from '@/types/auction';
 import Image from 'next/image';
+import { getProfileImageUrl } from '@/utils/profile-image';
 import { formatNumber } from '@/utils/format';
 import { formatDate } from '@/utils/date';
 import { getMemberInfo } from '@/actions/member-service';
@@ -17,7 +18,7 @@ export async function BidderCard({ bidder }: { bidder: AuctionBidders }) {
     <div className='flex items-center gap-4 p-4 '>
       <div className='relative w-12 h-12 overflow-hidden rounded-full'>
         <Image
-          src={memberInfo.profileImageUrl || '/images/default-profile.png'}
+          src={getProfileImageUrl(memberInfo.profileImageUrl)}
           unoptimized={isApplicationMediaUrl(memberInfo.profileImageUrl || '')}
           alt={memberInfo.nickname}
           fill

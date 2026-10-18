@@ -35,12 +35,13 @@ export default async function AuctionPage({
     url: image.url,
     order: image.order,
   }));
+  const currentBid = bidders.items[0]?.bidAmount ?? auction.minimumBid;
 
   return (
     <div className='relative'>
       <main className='flex flex-col '>
         <ItemImages images={images} />
-        <ItemInfoSection auction={auction} />
+        <ItemInfoSection auction={{ ...auction, currentBid }} />
         <div className=' px-4'>
           <AuctionTimer startAt={auction.startAt} endAt={auction.endAt} />
         </div>
@@ -55,11 +56,7 @@ export default async function AuctionPage({
         demoEnabled={Boolean(
           process.env.DEMO_MEMBER_ID && process.env.DEMO_MEMBER_PASSWORD,
         )}
-        bidAmount={
-          bidders.items.length > 0
-            ? bidders.items[0].bidAmount
-            : auction.minimumBid
-        }
+        bidAmount={currentBid}
         status={auction.status}
       />
       <RecentAuctionTracker

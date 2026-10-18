@@ -4,6 +4,7 @@ import { isErrorResponse } from '@/utils/type-guards';
 import { MemberInfoSectionSkeleton } from './MemberInfoSectionSkeleton';
 import Image from 'next/image';
 import { getGradeInfo } from '@/actions/grade-service';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 export async function MemberInfoSection({
   memberInfo,
@@ -21,6 +22,7 @@ export async function MemberInfoSection({
         <div className='relative w-[50px] h-[50px] rounded-full overflow-hidden'>
           <Image
             src={memberInfo.profileImageUrl || grade.imageUrl}
+            unoptimized={isApplicationMediaUrl(memberInfo.profileImageUrl || '')}
             alt='profile'
             fill
             sizes='50px'

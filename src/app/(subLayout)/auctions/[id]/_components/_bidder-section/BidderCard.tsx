@@ -4,6 +4,7 @@ import { formatNumber } from '@/utils/format';
 import { formatDate } from '@/utils/date';
 import { getMemberInfo } from '@/actions/member-service';
 import { isErrorResponse } from '@/utils/type-guards';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 export async function BidderCard({ bidder }: { bidder: AuctionBidders }) {
   const memberInfo = await getMemberInfo(bidder.bidderUuid);
@@ -17,6 +18,7 @@ export async function BidderCard({ bidder }: { bidder: AuctionBidders }) {
       <div className='relative w-12 h-12 overflow-hidden rounded-full'>
         <Image
           src={memberInfo.profileImageUrl || '/images/default-profile.png'}
+          unoptimized={isApplicationMediaUrl(memberInfo.profileImageUrl || '')}
           alt={memberInfo.nickname}
           fill
           sizes='48px'

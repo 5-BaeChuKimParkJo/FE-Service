@@ -11,6 +11,7 @@ import type { MemberInfo } from '@/types/member';
 import { ErrorResponse } from '@/types/api';
 import { Dialog } from '@/components/ui/dialog';
 import { validateNickname } from '@/libs/validation.utils';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 interface EditProfileFormProps {
   myInfo: MemberInfo;
@@ -89,6 +90,7 @@ export default function EditProfileForm({ myInfo }: EditProfileFormProps) {
                   width={96}
                   height={96}
                   src={profileImage}
+                  unoptimized={isApplicationMediaUrl(profileImage)}
                   alt='프로필 미리보기'
                   className='object-cover w-full h-full'
                 />

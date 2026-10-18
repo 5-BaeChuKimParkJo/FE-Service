@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { MemberInfo } from '@/types/member';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 
 export async function MyPageUserInfo({
   myInfo,
@@ -14,6 +15,7 @@ export async function MyPageUserInfo({
         <div className='relative w-16 h-16 rounded-full overflow-hidden'>
           <Image
             src={myInfo.profileImageUrl || '/images/dummy/profile.png'}
+            unoptimized={isApplicationMediaUrl(myInfo.profileImageUrl || '')}
             alt='프로필'
             fill
             style={{ objectFit: 'cover' }}

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Eye } from 'lucide-react';
 import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
 import { formatNumber } from '@/utils/format';
+import { isApplicationMediaUrl } from '@/utils/media-url';
 import {
   DealInfo,
   ProductCategory,
@@ -25,6 +26,7 @@ export function ItemInfoSection({
                   auction.seller.profileImageUrl || '/images/dummy/profile.png'
                 }
                 alt={`${auction.seller.nickname} 프로필`}
+                unoptimized={isApplicationMediaUrl(auction.seller.profileImageUrl || '')}
                 fill
                 sizes='48px'
                 className='object-cover'

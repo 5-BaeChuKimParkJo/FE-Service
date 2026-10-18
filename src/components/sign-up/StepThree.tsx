@@ -1,8 +1,8 @@
 'use client';
 
-import { Label } from '@/components/ui/label';
+import { Label } from '@/components/ui/Label';
 import { useRegisterStore } from '@/stores/use-register-store';
-import { Checkbox } from '../ui/checkbox';
+import { Checkbox } from '../ui/Checkbox';
 
 const CATEGORIES = [
   { id: 'tech', label: '경매' },

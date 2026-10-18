@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Input } from '../ui/input';
+import { Input } from '../ui/Input';
 
 interface VerificationInputProps {
   verificationCode: string;

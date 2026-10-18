@@ -5,7 +5,7 @@ import { MemberSummary } from '@/types/member';
 import { ErrorResponse } from '@/types/api';
 import { getChatList } from './get-chat-list';
 import { getMemberSummary } from '@/actions/member-service';
-import { getChatroomThumnails } from './get-chatroom-thumnails';
+import { getChatroomThumbnails } from './get-chatroom-thumbnails';
 import { isErrorResponse } from '@/utils/type-guards';
 import { DEFAULT_PROFILE_IMAGE } from '@/utils/profile-image';
 
@@ -30,7 +30,7 @@ export async function getChatListWithMembers(): Promise<ChatRoomWithMember[]> {
     let thumbnails: ChatRoomThumbnail[] = [];
     if (productIds.length > 0) {
       try {
-        thumbnails = await getChatroomThumnails(productIds);
+        thumbnails = await getChatroomThumbnails(productIds);
       } catch (error) {
         console.error('썸네일 조회 실패:', error);
         thumbnails = [];

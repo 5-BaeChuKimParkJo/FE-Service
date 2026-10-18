@@ -7,8 +7,8 @@ import React, {
   useCallback,
   ReactNode,
 } from 'react';
-import { CustomAlert, AlertType } from '@/components/ui/custom-alert';
-import { ConfirmDialog, ConfirmType } from '@/components/ui/confirm-dialog';
+import { CustomAlert, AlertType } from '@/components/ui/CustomAlert';
+import { ConfirmDialog, ConfirmType } from '@/components/ui/ConfirmDialog';
 
 interface AlertState {
   isOpen: boolean;

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LogIn } from 'lucide-react';
 import { signInDemo } from '@/actions/auth-service/sign-in-demo';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export function DemoSignInButton({
   returnTo = '/',
@@ -42,7 +42,11 @@ export function DemoSignInButton({
         <LogIn className='mr-2 size-5' aria-hidden='true' />
         {loading ? '연결 중...' : label}
       </Button>
-      {error && <p role='alert' className='mt-2 text-sm text-red-700'>{error}</p>}
+      {error && (
+        <p role='alert' className='mt-2 text-sm text-red-700'>
+          {error}
+        </p>
+      )}
     </div>
   );
 }

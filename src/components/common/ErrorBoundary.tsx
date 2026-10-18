@@ -1,7 +1,7 @@
 'use client';
 
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { logError } from '@/utils/error-handler';
 

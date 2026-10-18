@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useLoginForm } from '@/hooks/use-login-form';
-import { FilledInput } from '../ui/filled-input';
+import { FilledInput } from '../ui/FilledInput';
 import { WhaleTransition } from '@/components/animations/WhaleTransition';
 
 export function LoginForm() {

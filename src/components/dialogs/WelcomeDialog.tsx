@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-import { Dialog } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/Dialog';
+import { Button } from '@/components/ui/Button';
 import Whale from '@/assets/icons/common/whale.svg';
 
 interface WelcomeDialogProps {

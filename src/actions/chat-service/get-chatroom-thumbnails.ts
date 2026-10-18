@@ -3,7 +3,7 @@
 import { instance } from '@/actions/instance';
 import { ChatRoomThumbnail } from '@/types/chat';
 
-export async function getChatroomThumnails(
+export async function getChatroomThumbnails(
   productIds: string[],
 ): Promise<ChatRoomThumbnail[]> {
   const response = await instance.post<ChatRoomThumbnail[]>(

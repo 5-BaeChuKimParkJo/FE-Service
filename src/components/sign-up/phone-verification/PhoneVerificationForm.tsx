@@ -2,9 +2,9 @@
 
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import { FilledInput } from '@/components/ui/filled-input';
+import { FilledInput } from '@/components/ui/FilledInput';
 import { CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 interface PhoneVerificationFormProps {
   phoneNumber: string;
@@ -60,7 +60,9 @@ export const PhoneVerificationForm = memo(function PhoneVerificationForm({
             transition={{ duration: 0.3 }}
           >
             {demoCode && (
-              <p className='mb-3 text-sm text-gray-600'>체험용 인증번호: <strong>{demoCode}</strong></p>
+              <p className='mb-3 text-sm text-gray-600'>
+                체험용 인증번호: <strong>{demoCode}</strong>
+              </p>
             )}
             <FilledInput
               label='인증번호'

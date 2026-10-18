@@ -2,14 +2,14 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { getMemberProfileUrl } from '@/actions/member-service/get-member-profile-url';
 import { uploadFileToS3 } from '@/actions/image-service/upload-to-s3';
 import { updateMemberInfo } from '@/actions/member-service/update-member-info';
 import type { MemberInfo } from '@/types/member';
 import { ErrorResponse } from '@/types/api';
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/Dialog';
 import { validateNickname } from '@/libs/validation.utils';
 import { isApplicationMediaUrl } from '@/utils/media-url';
 import { getProfileImageUrl } from '@/utils/profile-image';

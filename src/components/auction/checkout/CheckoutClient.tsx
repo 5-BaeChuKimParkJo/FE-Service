@@ -9,7 +9,7 @@ import {
   prepareCheckout,
   reconcileCheckout,
 } from '@/actions/auction-service/checkout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { checkoutPhase, formatCheckoutTime } from '@/libs/checkout';
 import type {
   CheckoutConfirmation,

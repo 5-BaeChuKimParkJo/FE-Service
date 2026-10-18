@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
 import { Input } from '@/components/ui';
-import { P } from '@/components/ui/p';
+import { P } from '@/components/ui/P';
 import {
   durationOptions,
   extractNumbers,

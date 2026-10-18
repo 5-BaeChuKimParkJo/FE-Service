@@ -9,7 +9,7 @@ import {
   validatePassword,
   validatePasswordMatch,
 } from '@/libs/validation.utils';
-import { FilledInput } from '../ui/filled-input';
+import { FilledInput } from '../ui/FilledInput';
 
 export function StepTwo() {
   const {

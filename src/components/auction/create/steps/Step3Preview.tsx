@@ -11,7 +11,7 @@ import {
 import { useAuctionSubmit } from '@/hooks/use-auction-submit';
 import { AuctionLoading } from '@/components/common/AuctionLoading';
 import { AuctionSuccessDialog } from '@/components/common/AuctionSuccessDialog';
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/Dialog';
 
 export function Step3Preview() {
   const {

@@ -1,7 +1,7 @@
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { FilledInput } from '@/components/ui/filled-input';
+import { FilledInput } from '@/components/ui/FilledInput';
 
 interface UserIdInputProps {
   userId: string;

@@ -7,7 +7,7 @@ import React, {
   useCallback,
   ReactNode,
 } from 'react';
-import { ToastAlert, ToastType } from '@/components/ui/toast-alert';
+import { ToastAlert, ToastType } from '@/components/ui/ToastAlert';
 
 interface ToastState {
   isOpen: boolean;

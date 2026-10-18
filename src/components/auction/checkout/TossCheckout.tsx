@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { CreditCard, RotateCw } from 'lucide-react';
 import { getCheckout } from '@/actions/auction-service/checkout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { checkoutPhase } from '@/libs/checkout';
 import {
   loadTossSdk,

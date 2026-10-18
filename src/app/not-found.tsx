@@ -1,5 +1,5 @@
 import { BottomNavigation, SubHeader } from '@/components/layouts';
-import ErrorText from '@/components/ui/error-text';
+import ErrorText from '@/components/ui/ErrorText';
 
 export default function NotFound() {
   return (

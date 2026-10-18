@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useRegisterStore } from '@/stores/use-register-store';
 import { useRegistration } from '@/hooks/use-registration';
 

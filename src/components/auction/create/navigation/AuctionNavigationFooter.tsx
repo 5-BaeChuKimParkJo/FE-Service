@@ -1,7 +1,7 @@
 'use client';
 
 import { useCreateAuctionStore } from '@/stores/use-create-auction-store';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 interface AuctionNavigationFooterProps {
   onPrevStep: () => void;

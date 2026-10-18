@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui';
-import { FilledInput } from '@/components/ui/filled-input';
+import { FilledInput } from '@/components/ui/FilledInput';
 import { AuctionLoading } from '@/components/common/AuctionLoading';
 import { formatNumber } from '@/utils/format';
 

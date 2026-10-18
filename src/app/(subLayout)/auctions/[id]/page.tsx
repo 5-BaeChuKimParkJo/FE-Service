@@ -5,7 +5,7 @@ import {
   ItemDescriptionSection,
   ItemInfoSection,
 } from '@/components/items';
-import ErrorText from '@/components/ui/error-text';
+import ErrorText from '@/components/ui/ErrorText';
 import { isErrorResponse } from '@/utils/type-guards';
 import { BiddersSection, AuctionTags, BidderForm } from './_components';
 import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
@@ -52,7 +52,9 @@ export default async function AuctionPage({
       <BidderForm
         auctionUuid={id}
         isAuthenticated={Boolean(session?.user?.accessToken)}
-        demoEnabled={Boolean(process.env.DEMO_MEMBER_ID && process.env.DEMO_MEMBER_PASSWORD)}
+        demoEnabled={Boolean(
+          process.env.DEMO_MEMBER_ID && process.env.DEMO_MEMBER_PASSWORD,
+        )}
         bidAmount={
           bidders.items.length > 0
             ? bidders.items[0].bidAmount

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Button } from '@/components/ui';
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/Dialog';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '@/contexts/AlertContext';

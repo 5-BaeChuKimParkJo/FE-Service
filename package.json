@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
+    "test:conventions": "node --test scripts/check-frontend.test.mjs",
+    "check:conventions": "node scripts/check-frontend.mjs",
     "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 
-import { FilledInput } from '@/components/ui/filled-input';
+import { FilledInput } from '@/components/ui/FilledInput';
 
 interface NicknameInputProps {
   nickname: string;

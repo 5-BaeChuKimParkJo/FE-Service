@@ -1,8 +1,8 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Dialog } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/Dialog';
+import { Button } from '@/components/ui/Button';
 import Penguin from '@/assets/icons/common/penguin.svg';
 
 export function AuctionSuccessDialog({

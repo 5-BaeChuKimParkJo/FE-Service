@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { CreditCard } from 'lucide-react';
 import { getCheckout } from '@/actions/auction-service/checkout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { checkoutPhase, showCheckoutEntry } from '@/libs/checkout';
 
 export async function WinnerCheckoutEntry({

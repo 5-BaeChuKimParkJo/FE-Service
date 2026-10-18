@@ -4,8 +4,8 @@ import { Calendar, Clock } from 'lucide-react';
 
 import { cn } from '@/libs/cn';
 import { formatDateTime, isValidDate } from '@/utils/date-time';
-import { BottomSheet } from '../bottom-sheet';
-import { Button } from '../button';
+import { BottomSheet } from '../BottomSheet';
+import { Button } from '../Button';
 import { DateSelector } from './DateSelector';
 import { TimeSelector } from './TimeSelector';
 import { DateTimePickerProps } from './types';

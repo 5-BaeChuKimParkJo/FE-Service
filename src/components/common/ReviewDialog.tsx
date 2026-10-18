@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
 
-import { Dialog } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/Dialog';
+import { Button } from '@/components/ui/Button';
 import Penguin from '@/assets/icons/common/penguin.svg';
 import {
   ReviewData,

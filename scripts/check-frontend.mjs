@@ -35,7 +35,9 @@ export function checkTrackedPaths(paths) {
   return errors;
 }
 
-export function checkFrontend(tsconfigPath) {
+export function checkFrontend(tsconfigPath, { framework = 'next' } = {}) {
+  const vite = framework === 'vite';
+  const viteFlags = new Set(['MODE', 'BASE_URL', 'DEV', 'PROD', 'SSR']);
   const configFile = normalize(tsconfigPath);
   const root = path.dirname(configFile);
   const config = ts.readConfigFile(configFile, ts.sys.readFile);
@@ -126,6 +128,11 @@ export function checkFrontend(tsconfigPath) {
       node.name.text === 'env' &&
       ts.isIdentifier(node.expression) &&
       node.expression.text === 'process';
+    const isViteEnv = (node) =>
+      ts.isPropertyAccessExpression(node) &&
+      node.name.text === 'env' &&
+      ts.isMetaProperty(node.expression) &&
+      node.expression.keywordToken === ts.SyntaxKind.ImportKeyword;
     function visit(node) {
       if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
         if (
@@ -141,7 +148,7 @@ export function checkFrontend(tsconfigPath) {
             node.expression.text === 'require'))
       )
         edge(node, node.arguments[0]);
-      if (isEnv(node)) {
+      if (isEnv(node) || isViteEnv(node)) {
         const parent = node.parent;
         const name = ts.isPropertyAccessExpression(parent)
           ? parent.name.text
@@ -149,10 +156,10 @@ export function checkFrontend(tsconfigPath) {
               ts.isStringLiteralLike(parent.argumentExpression)
             ? parent.argumentExpression.text
             : null;
-        if (
-          !name ||
-          (!name.startsWith('NEXT_PUBLIC_') && name !== 'NODE_ENV')
-        ) {
+        const allowed = isViteEnv(node)
+          ? vite && name && (name.startsWith('VITE_') || viteFlags.has(name))
+          : name === 'NODE_ENV' || (!vite && name?.startsWith('NEXT_PUBLIC_'));
+        if (!allowed) {
           result.env.push(
             source.getLineAndCharacterOfPosition(node.getStart(source)).line +
               1,
@@ -199,13 +206,13 @@ export function checkFrontend(tsconfigPath) {
     ) {
       add(file, 1, 'component-filename');
     }
-    if (!info.client) continue;
+    if (!vite && !info.client) continue;
     const visited = new Set();
     const walk = (current, originLine) => {
       if (visited.has(current)) return;
       visited.add(current);
       const item = module(current);
-      if (current !== file && item.action) return;
+      if (!vite && current !== file && item.action) return;
       for (const line of item.env)
         add(file, originLine || line, 'client-private-env');
       for (const dependency of item.imports) {
@@ -247,7 +254,9 @@ if (
     .split('\0')
     .filter(Boolean);
   const errors = [
-    ...checkFrontend(process.argv[2] || 'tsconfig.json'),
+    ...checkFrontend(process.argv[2] || 'tsconfig.json', {
+      framework: process.argv.includes('--vite') ? 'vite' : 'next',
+    }),
     ...checkTrackedPaths(tracked),
   ];
   for (const error of errors)

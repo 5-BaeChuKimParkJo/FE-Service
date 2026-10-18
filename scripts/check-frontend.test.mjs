@@ -5,7 +5,62 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { checkFrontend, checkTrackedPaths } from './check-frontend.mjs';
 
-function fixture(files) {
+test('Vite browser modules reject transitive server dependencies without client directives', () => {
+  const errors = fixture(
+    {
+      'src/main.tsx': "import { api } from '@/shared'; render(<App />);",
+      'src/shared/index.ts': "export { api } from '../server';",
+      'src/server.ts':
+        "import { readFile } from 'node:fs'; export const api = readFile;",
+    },
+    { framework: 'vite' },
+  );
+  assert.ok(errors.some((error) => error.rule === 'client-to-server'));
+});
+
+test('Vite does not treat use server as a framework RPC boundary', () => {
+  const errors = fixture(
+    {
+      'src/main.tsx': "import { api } from './server'; render(<App />);",
+      'src/server.ts':
+        "'use server'; import { cookies } from 'next/headers'; export async function api() { return cookies(); }",
+    },
+    { framework: 'vite' },
+  );
+  assert.ok(errors.some((error) => error.rule === 'client-to-server'));
+});
+
+test('Vite allows public prefixed variables and built-in build flags', () => {
+  assert.deepEqual(
+    fixture(
+      {
+        'src/config.ts':
+          'export const url = import.meta.env.VITE_API_URL; const dev = import.meta.env.DEV; const mode = process.env.NODE_ENV;',
+      },
+      { framework: 'vite' },
+    ),
+    [],
+  );
+});
+
+test('Vite rejects private import-meta and process environment references in browser modules', () => {
+  for (const access of [
+    'import.meta.env.ADMIN_TOKEN',
+    'process.env.ADMIN_TOKEN',
+    'process.env.NEXT_PUBLIC_TOKEN',
+  ]) {
+    const errors = fixture(
+      { 'src/config.ts': `export const token = ${access};` },
+      { framework: 'vite' },
+    );
+    assert.ok(
+      errors.some((error) => error.rule === 'client-private-env'),
+      access,
+    );
+  }
+});
+
+function fixture(files, options) {
   const root = mkdtempSync(path.join(tmpdir(), 'chalnak-frontend-'));
   writeFileSync(
     path.join(root, 'tsconfig.json'),
@@ -24,7 +79,7 @@ function fixture(files) {
     writeFileSync(file, content);
   }
   try {
-    return checkFrontend(path.join(root, 'tsconfig.json'));
+    return checkFrontend(path.join(root, 'tsconfig.json'), options);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

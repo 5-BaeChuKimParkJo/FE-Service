@@ -260,14 +260,56 @@ for (const viewport of [
       const selectSlide = async (panel: string, index: number) => {
         const slider = page.locator(`${panel} .swiper`);
         await expect(slider).toHaveClass(/swiper-initialized/);
-        await slider.evaluate((element, value) => {
-          const swiper = (
-            element as HTMLElement & {
-              swiper: { slideTo: (index: number, speed: number) => void };
+        const activeIndex = () =>
+          slider.evaluate(
+            (element) =>
+              (element as HTMLElement & { swiper: { activeIndex: number } })
+                .swiper.activeIndex,
+          );
+        const current = await activeIndex();
+        await slider.scrollIntoViewIfNeeded();
+        const box = (await slider.boundingBox())!;
+        const x = box.x + box.width / 2;
+        const startY = box.y + box.height * (index > current ? 0.9 : 0.1);
+        const endY = startY - ((index - current) * box.height) / 4;
+        const touch = viewport.isMobile
+          ? await context.newCDPSession(page)
+          : null;
+        try {
+          if (touch) {
+            await touch.send('Input.dispatchTouchEvent', {
+              type: 'touchStart',
+              touchPoints: [{ x, y: startY }],
+            });
+          } else {
+            await page.mouse.move(x, startY);
+            await page.mouse.down();
+          }
+          for (let step = 1; step <= 12; step++) {
+            const y = startY + ((endY - startY) * step) / 12;
+            if (touch) {
+              await touch.send('Input.dispatchTouchEvent', {
+                type: 'touchMove',
+                touchPoints: [{ x, y }],
+              });
+            } else {
+              await page.mouse.move(x, y);
             }
-          ).swiper;
-          swiper.slideTo(value, 0);
-        }, index);
+          }
+          // Hold past Swiper's 300ms short-swipe threshold to avoid velocity-dependent skipping.
+          await page.waitForTimeout(350);
+          if (touch) {
+            await touch.send('Input.dispatchTouchEvent', {
+              type: 'touchEnd',
+              touchPoints: [],
+            });
+          } else {
+            await page.mouse.up();
+          }
+          await expect.poll(activeIndex).toBe(index);
+        } finally {
+          await touch?.detach();
+        }
       };
       await selectSlide('#date-panel', 2);
       await page.getByRole('tab', { name: '시간 선택' }).click();

@@ -71,6 +71,8 @@ The crafted-options regression test failed against 11.2.8 and passes against
 `finally` block. Browser regression tests cover date/hour selection, confirmation,
 reopening and cancellation through the real auction creation form without
 creating an auction or uploading to real storage.
+Selection uses desktop pointer drags and mobile Chromium touch events, not
+programmatic `slideTo` calls, so broken user gestures fail the regression suite.
 
 The six Commitizen findings are development-only and absent from the production
 audit. Relevant registry advisories are

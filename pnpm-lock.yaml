@@ -78,8 +78,8 @@ importers:
         specifier: ^7.57.0
         version: 7.57.0(react@19.1.9)
       swiper:
-        specifier: ^11.2.8
-        version: 11.2.8
+        specifier: ^12.2.0
+        version: 12.2.0
       tailwind-merge:
         specifier: ^3.3.0
         version: 3.3.0
@@ -3999,8 +3999,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  swiper@11.2.8:
-    resolution: {integrity: sha512-S5FVf6zWynPWooi7pJ7lZhSUe2snTzqLuUzbd5h5PHUOhzgvW0bLKBd2wv0ixn6/5o9vwc/IkQT74CRcLJQzeg==}
+  swiper@12.2.0:
+    resolution: {integrity: sha512-K8uXsBZU6ME97Ia3xbBge8IRCnR1lOmIILzvY/jGVic7dSTQ530s3uO8RvXbPUtkkXLWIwmZLRPbtDxRWVAFdg==}
     engines: {node: '>= 4.7.0'}
 
   synckit@0.11.6:
@@ -8420,7 +8420,7 @@ snapshots:
       picocolors: 1.1.1
       sax: 1.6.1
 
-  swiper@11.2.8: {}
+  swiper@12.2.0: {}
 
   synckit@0.11.6:
     dependencies:

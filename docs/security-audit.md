@@ -3,15 +3,17 @@
 Date: 2026-10-20. Baseline: `9914e61`, clean checkout. Package manager:
 `pnpm@10.34.6`. Counts below are registry-reported vulnerability findings,
 including separate affected version paths, rather than unique CVEs. The baseline
-full audit contained 94 advisory records and 98 findings. Both audit commands
-return exit code 1 while unresolved findings remain.
+full audit contained 94 advisory records and 98 findings. The full audit returns
+exit code 1 for unresolved developer-tool findings; production now returns 0.
 
-| Scope      | State  | Low | Moderate | High | Critical | Total |
-| ---------- | ------ | --: | -------: | ---: | -------: | ----: |
-| Full       | Before |   7 |       29 |   59 |        3 |    98 |
-| Full       | After  |   1 |        2 |    3 |        1 |     7 |
-| Production | Before |   1 |        4 |    5 |        1 |    11 |
-| Production | After  |   0 |        0 |    0 |        1 |     1 |
+| Scope      | State                        | Low | Moderate | High | Critical | Total |
+| ---------- | ---------------------------- | --: | -------: | ---: | -------: | ----: |
+| Full       | Before                       |   7 |       29 |   59 |        3 |    98 |
+| Full       | Compatible patches           |   1 |        2 |    3 |        1 |     7 |
+| Full       | After approved major upgrade |   1 |        2 |    3 |        0 |     6 |
+| Production | Before                       |   1 |        4 |    5 |        1 |    11 |
+| Production | Compatible patches           |   0 |        0 |    0 |        1 |     1 |
+| Production | After approved major upgrade |   0 |        0 |    0 |        0 |     0 |
 
 ## Compatible Remediation
 
@@ -38,6 +40,10 @@ return exit code 1 while unresolved findings remain.
 
 ## Reachability and Remaining Findings
 
+The approved follow-up upgrades Swiper from 11.2.8 to 12.2.0. Next.js and
+other framework majors are unchanged. The production audit now exits 0; the
+full audit still exits 1 for the six developer-tool findings below.
+
 `pnpm audit --prod` describes installed production dependencies, not proof that
 each package handles remote requests. Next serves requests; its PostCSS,
 source-map-js and styled-jsx/Babel/Browserslist branches primarily transform
@@ -48,7 +54,6 @@ former critical tar and proxy-addr branches are no longer reported.
 
 | Remaining path                                                             | Findings           | Reason retained                                                                  |
 | -------------------------------------------------------------------------- | ------------------ | -------------------------------------------------------------------------------- |
-| `swiper@11.2.8`                                                            | 1 critical         | Fix requires major 12; explicit user approval is pending.                        |
 | `commitizen > lodash@4.17.21`                                              | 1 high, 2 moderate | Commitizen pins this exact version; outside the compatible parent-range refresh. |
 | `commitizen > inquirer > external-editor > tmp@0.0.33`                     | 1 high, 1 low      | Parent range is `^0.0.33`; patched `>=0.2.6` is outside it.                      |
 | `commitizen > find-node-modules > findup-sync > micromatch > braces@3.0.3` | 1 high             | Registry advisory currently reports no patched version.                          |
@@ -60,8 +65,12 @@ identifies 12.1.2 as patched. Its demonstration combines crafted options with an
 `Array.prototype.indexOf` replacement. The current picker constructs its own
 Swiper props; no attacker-controlled options object or `extendDefaults` call was
 found in application code. This lowers observed reachability but does not remove
-the vulnerable dependency or its critical audit result. Swiper remains unchanged
-until approval for the major upgrade and picker validation arrives.
+the former vulnerable dependency's risk. Swiper 12.2.0 removes that finding.
+The crafted-options regression test failed against 11.2.8 and passes against
+12.2.0; it restores both the modified array method and object prototype in a
+`finally` block. Browser regression tests cover date/hour selection, confirmation,
+reopening and cancellation through the real auction creation form without
+creating an auction or uploading to real storage.
 
 The six Commitizen findings are development-only and absent from the production
 audit. Relevant registry advisories are
@@ -99,8 +108,9 @@ pnpm exec playwright test e2e/popular-auctions.spec.ts --workers=1 --reporter=li
 ```
 
 Local validation uses Node 25.8.2. Docker targets Node 22; the existing CI must
-also install, test and build normally before publishing an image. Unit tests: 77 passed;
+also install, test and build normally before publishing an image. Unit tests: 78 passed;
 frontend convention tests: 11 passed; shared Python convention tests: 11 passed;
 convention scan, typecheck, lint and production build: passed. Existing mock
-popular-ranking E2E: 12 passed, covering desktop and mobile. The temporary test
-server was stopped. No application source files were changed.
+popular-ranking E2E: 14 passed, including desktop/mobile date-time-picker
+regression coverage. No application behavior or production data is changed by
+these tests.

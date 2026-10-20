@@ -63,7 +63,15 @@ test.beforeAll(async () => {
       response.statusCode = status;
       response.end(JSON.stringify(data));
     };
-    if (path.endsWith('/categories')) return send([]);
+    if (path.endsWith('/categories'))
+      return send([
+        {
+          categoryId: 1,
+          name: 'Fixture category',
+          description: 'Local picker fixture',
+          imageUrl: '/images/dummy/airpods.png',
+        },
+      ]);
     if (path.endsWith('/auctions/popular')) {
       await new Promise((resolve) => setTimeout(resolve, rankingDelay));
       if (ranking === 'error')
@@ -215,6 +223,81 @@ for (const viewport of [
       deviceScaleFactor: 1,
       userAgent:
         devices[viewport.isMobile ? 'Pixel 7' : 'Desktop Chrome'].userAgent,
+      timezoneId: 'Asia/Seoul',
+    });
+
+    test('date and hour selection survive confirmation, reopening and cancellation', async ({
+      page,
+      context,
+    }) => {
+      await page.clock.setFixedTime(new Date('2030-05-10T01:15:00Z'));
+      await context.addCookies([
+        {
+          name: 'accessToken',
+          value: 'fixture-picker-token',
+          url: test.info().project.use.baseURL!,
+        },
+      ]);
+      await page.goto('/auctions/create');
+      await page.getByRole('textbox').first().fill('Picker fixture auction');
+      await page.getByRole('button', { name: /^미개봉 상품/ }).click();
+      await page.locator('button[aria-haspopup="dialog"]').click();
+      await page.getByRole('button', { name: 'Fixture category' }).click();
+      await page.locator('input[type="file"]').setInputFiles({
+        name: 'fixture.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j5N8AAAAASUVORK5CYII=',
+          'base64',
+        ),
+      });
+      await page
+        .getByPlaceholder('상품에 대한 자세한 설명을 입력해주세요')
+        .fill('Local fixture only');
+      await page.getByRole('button', { name: '다음 단계로 이동' }).click();
+      const trigger = page.getByLabel(/^선택된 날짜:/);
+      await trigger.click();
+      const selectSlide = async (panel: string, index: number) => {
+        const slider = page.locator(`${panel} .swiper`);
+        await expect(slider).toHaveClass(/swiper-initialized/);
+        await slider.evaluate((element, value) => {
+          const swiper = (
+            element as HTMLElement & {
+              swiper: { slideTo: (index: number, speed: number) => void };
+            }
+          ).swiper;
+          swiper.slideTo(value, 0);
+        }, index);
+      };
+      await selectSlide('#date-panel', 2);
+      await page.getByRole('tab', { name: '시간 선택' }).click();
+      await selectSlide('#time-panel', 14);
+      await page.getByRole('button', { name: '확인', exact: true }).click();
+      await expect(trigger).toHaveAttribute(
+        'aria-label',
+        /2030년 5월 12일.*오후 02:00/,
+      );
+      await trigger.click();
+      await expect(page.locator('#time-panel .swiper-slide-active')).toHaveText(
+        '14:00',
+      );
+      await page.getByRole('tab', { name: '날짜 선택' }).click();
+      await expect(
+        page.locator('#date-panel .swiper-slide-active'),
+      ).toContainText('2일 후');
+      await selectSlide('#date-panel', 3);
+      await page.getByRole('button', { name: '취소', exact: true }).click();
+      await expect(trigger).toHaveAttribute(
+        'aria-label',
+        /2030년 5월 12일.*오후 02:00/,
+      );
+      expect(
+        calls.some(
+          (call) =>
+            call.method === 'POST' &&
+            /auctions$|presigned|payments/.test(call.path),
+        ),
+      ).toBe(false);
     });
 
     test('shows the server TOP10, exact prices, accessible ranks and working detail links', async ({

@@ -9,6 +9,7 @@ import ErrorText from '@/components/ui/ErrorText';
 import { isErrorResponse } from '@/utils/type-guards';
 import { BiddersSection, AuctionTags, BidderForm } from './_components';
 import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
+import AuctionViewTracker from '@/components/auction/AuctionViewTracker';
 import { WinnerCheckoutEntry } from '@/components/auction/checkout/WinnerCheckoutEntry';
 import { auth } from '@/actions/auth';
 
@@ -59,6 +60,7 @@ export default async function AuctionPage({
         bidAmount={currentBid}
         status={auction.status}
       />
+      <AuctionViewTracker auctionUuid={auction.auctionUuid} />
       <RecentAuctionTracker
         auctionUuid={auction.auctionUuid}
         title={auction.title}

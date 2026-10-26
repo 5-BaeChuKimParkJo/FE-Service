@@ -1,9 +1,30 @@
 # 검증 근거와 설명 범위
 
-기준일: 2026-10-25. 각 결과는 특정 커밋에서 관찰한 기록이다.
+기준일: 2026-10-26. 각 결과는 특정 커밋에서 관찰한 기록이다.
 이 문서 변경에서 전체 애플리케이션 테스트나 결제를 다시 실행한 것은 아니다.
 
-## 자동 데모 보충 릴리스
+## 입찰 Consumer 복구 릴리스 · 2026-10-26
+
+대상: [node-service `e43b8da`](https://github.com/5-BaeChuKimParkJo/node-service/commit/e43b8da275f4a929c777c2ded5463c2b8639ba34).
+[CI 40287768666](https://github.com/5-BaeChuKimParkJo/node-service/actions/runs/40287768666)의
+Linux 품질 검증에서 단위 327건, 실제 PostgreSQL 53건이 통과했다. DB 실행기의
+총 54건에는 별도의 fixture 정리 안전장치 단위 테스트 1건이 포함되므로 DB 건수와 구분한다.
+
+- 콜백 전송 경계에 실패를 주입해 DLQ 확인 전 커밋 방지와 커밋 실패의 잘못된 DLQ 분류 방지를 확인했다.
+- 실제 DB의 신규 4건은 동일 배치 재전달, Outbox 실패 시 롤백, 저장 후 알림 실패,
+  실제 입찰 서비스와 offset 확인 실패를 결합한 재전달을 검증했다.
+- 최종 독립 리뷰에서 발견한 테스트 fixture 정리 조건을 회귀 테스트로 재현하고 수정했다.
+- 기존 입찰 규칙 전체를 재설계하거나 실제 브로커를 중단하는 장애 시험은 수행하지 않았다.
+  Kafka 전체 경로 exactly-once 보장으로 해석하지 않는다.
+
+동작과 재처리 제약은 [입찰 복구 문서](https://github.com/5-BaeChuKimParkJo/node-service/blob/main/docs/bid-consumer-recovery.md)를 따른다.
+
+운영에는 동일한 `e43b8da` 이미지를 반영했다. 새 Auction Pod `1/1`·재시작 `0`,
+입찰 Consumer 그룹의 파티션 할당, Argo CD `Synced / Healthy`를 확인했다.
+운영 경매에 테스트 입찰을 넣거나 브로커를 중단하지 않았으므로 이 확인은
+기동·배포 검증이며 운영 장애 복구 E2E를 수행했다는 뜻은 아니다.
+
+## 자동 데모 보충 릴리스 · 2026-10-25
 
 대상: [node-service `9745d97`](https://github.com/5-BaeChuKimParkJo/node-service/commit/9745d97cc7fe19ad73c422f85cb5c493ad95623e).
 

@@ -464,7 +464,7 @@ test('all three server renders only GET; anonymous and nonwinner entries are hid
     0,
   );
   await expect(
-    page.getByRole('link', { name: '로그인하고 관심 등록' }),
+    page.getByRole('button', { name: '로그인하고 관심 등록' }),
   ).toBeVisible();
   expect(calls.filter((call) => call.method === 'POST')).toHaveLength(0);
 });

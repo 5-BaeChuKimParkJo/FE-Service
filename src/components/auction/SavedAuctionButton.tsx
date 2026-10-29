@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Heart, RefreshCw } from 'lucide-react';
 import {
@@ -10,6 +9,7 @@ import {
   removeSavedAuction,
 } from '@/actions/auction-service/saved-auctions';
 import type { SavedAuctionStateResult } from '@/types/auction/saved-auctions';
+import { SavedAuctionsSignIn } from './SavedAuctionsSignIn';
 
 export function SavedAuctionButton({
   auctionUuid,
@@ -27,15 +27,10 @@ export function SavedAuctionButton({
 
   if (!state.ok && state.error.code === 'AUTH_REQUIRED')
     return (
-      <Link
-        href={
-          '/sign-in?redirect=' + encodeURIComponent('/auctions/' + auctionUuid)
-        }
-        className='inline-flex min-h-11 items-center gap-2 rounded-lg border border-gray-200 px-3 text-sm text-gray-700'
-      >
+      <SavedAuctionsSignIn returnTo={'/auctions/' + auctionUuid}>
         <Heart className='h-4 w-4' aria-hidden='true' />
         로그인하고 관심 등록
-      </Link>
+      </SavedAuctionsSignIn>
     );
 
   async function submit() {

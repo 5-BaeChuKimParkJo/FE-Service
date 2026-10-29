@@ -277,6 +277,45 @@ for (const device of [
       ).toBe(true);
     });
 
+    test('clears a rejected cookie before sign-in from detail and list', async ({
+      page,
+      context,
+      baseURL,
+    }) => {
+      for (const entry of ['/auctions/' + ids[0], '/mypage/saved-auctions']) {
+        await context.addCookies([
+          {
+            name: 'accessToken',
+            value: 'expired-fixture-token',
+            url: baseURL!,
+          },
+          {
+            name: 'refreshToken',
+            value: 'expired-fixture-refresh',
+            url: baseURL!,
+          },
+          { name: 'memberUuid', value: 'member-fixture', url: baseURL! },
+        ]);
+        await page.goto(entry);
+        const name = entry.startsWith('/auctions/')
+          ? '로그인하고 관심 등록'
+          : '로그인하기';
+        await page
+          .getByRole('link', { name, exact: true })
+          .or(page.getByRole('button', { name, exact: true }))
+          .click();
+        await expect(page).toHaveURL(/\/sign-in(?:\?|$)/);
+        expect(
+          (await context.cookies()).some((cookie) =>
+            ['accessToken', 'refreshToken', 'memberUuid'].includes(cookie.name),
+          ),
+        ).toBe(false);
+      }
+      expect(
+        calls.some((call) => call.method === 'PUT' || call.method === 'DELETE'),
+      ).toBe(false);
+    });
+
     test('offers sign-in when anonymous and does not request another private state', async ({
       page,
       context,
@@ -284,9 +323,11 @@ for (const device of [
       await context.clearCookies();
       await page.goto('/auctions/' + ids[0]);
       await expect(
-        page.getByRole('link', { name: '로그인하고 관심 등록' }),
-      ).toHaveAttribute('href', /\/sign-in\?redirect=/);
+        page.getByRole('button', { name: '로그인하고 관심 등록' }),
+      ).toBeVisible();
       expect(calls.some((c) => c.path.endsWith('/saved'))).toBe(false);
+      await page.getByRole('button', { name: '로그인하고 관심 등록' }).click();
+      await expect(page).toHaveURL(/\/sign-in\?redirect=/);
       await page.goto('/mypage/saved-auctions');
       await expect(page).toHaveURL(/\/sign-in/);
     });

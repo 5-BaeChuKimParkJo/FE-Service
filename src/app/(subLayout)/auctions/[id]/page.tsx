@@ -13,6 +13,8 @@ import AuctionViewTracker from '@/components/auction/AuctionViewTracker';
 import { WinnerCheckoutEntry } from '@/components/auction/checkout/WinnerCheckoutEntry';
 import { auth } from '@/actions/auth';
 import { DemoAuctionGuide } from '@/components/auction/DemoAuctionGuide';
+import { Suspense } from 'react';
+import { SavedAuctionControl } from '@/components/auction/SavedAuctionControl';
 
 export default async function AuctionPage({
   params,
@@ -52,6 +54,15 @@ export default async function AuctionPage({
         />
         <ItemImages images={images} />
         <ItemInfoSection auction={{ ...auction, currentBid }} />
+        <div className='border-t border-gray-100 px-4 py-3'>
+          <Suspense
+            fallback={
+              <p className='text-sm text-gray-500'>관심 상태 확인 중...</p>
+            }
+          >
+            <SavedAuctionControl auctionUuid={id} />
+          </Suspense>
+        </div>
         <div className=' px-4'>
           <AuctionTimer startAt={auction.startAt} endAt={auction.endAt} />
         </div>

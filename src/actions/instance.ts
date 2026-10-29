@@ -254,7 +254,7 @@ export const instance = {
 
   delete: async <T = undefined>(
     url: string,
-    options: Omit<RequestOptions, 'body' | 'method'> = {},
+    options: Omit<RequestOptions, 'method'> = {},
   ) => {
     return fetchInstance<T>(url, { method: 'DELETE', ...options });
   },

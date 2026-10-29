@@ -457,5 +457,14 @@ test('all three server renders only GET; anonymous and nonwinner entries are hid
   );
   await context.clearCookies();
   await page.goto('/auctions/auction-test-123');
-  await expect(page).toHaveURL(/\/sign-in/);
+  await expect(
+    page.getByRole('heading', { name: '테스트 경매 상품' }),
+  ).toBeVisible();
+  await expect(page.getByRole('region', { name: '낙찰자 결제' })).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByRole('link', { name: '로그인하고 관심 등록' }),
+  ).toBeVisible();
+  expect(calls.filter((call) => call.method === 'POST')).toHaveLength(0);
 });

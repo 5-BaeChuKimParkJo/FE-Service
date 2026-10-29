@@ -12,6 +12,7 @@ import RecentAuctionTracker from '@/components/auction/RecentAuctionTracker';
 import AuctionViewTracker from '@/components/auction/AuctionViewTracker';
 import { WinnerCheckoutEntry } from '@/components/auction/checkout/WinnerCheckoutEntry';
 import { auth } from '@/actions/auth';
+import { DemoAuctionGuide } from '@/components/auction/DemoAuctionGuide';
 
 export default async function AuctionPage({
   params,
@@ -41,6 +42,14 @@ export default async function AuctionPage({
   return (
     <div className='relative'>
       <main className='flex flex-col '>
+        <DemoAuctionGuide
+          key={id}
+          isDemo={auction.isDemo}
+          auctionUuid={id}
+          startAt={auction.startAt}
+          endAt={auction.endAt}
+          status={auction.status}
+        />
         <ItemImages images={images} />
         <ItemInfoSection auction={{ ...auction, currentBid }} />
         <div className=' px-4'>

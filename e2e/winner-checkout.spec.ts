@@ -10,6 +10,9 @@ let server: Server;
 let view: CheckoutView;
 let scenario: 'normal' | 'unknown-confirm' | 'confirm-error' = 'normal';
 let calls: { method: string; path: string; body: unknown }[] = [];
+let shortDemo = false;
+let demoEnd = 0;
+let detailReads = 0;
 
 const fakeSdk = `
 window.__tossCalls = [];
@@ -95,16 +98,23 @@ test.beforeAll(async () => {
     }
     if (url.endsWith('/categories')) return send([]);
     if (url.endsWith('/bidders')) return send({ items: [], nextCursor: null });
-    if (url === '/auction-service/api/v1/auctions/auction-test-123')
+    if (url === '/auction-service/api/v1/auctions/auction-test-123') {
+      detailReads++;
+      if (shortDemo && !demoEnd) demoEnd = Date.now() + 8000;
       return send({
+        isDemo: shortDemo,
         auctionUuid: 'auction-test-123',
         title: '테스트 경매 상품',
         description: '경매 상품 설명',
         minimumBid: 1000,
-        startAt: '2026-01-01T00:00:00Z',
-        endAt: '2026-01-02T00:00:00Z',
+        startAt: shortDemo
+          ? new Date(demoEnd - 300000).toISOString()
+          : '2026-01-01T00:00:00Z',
+        endAt: shortDemo
+          ? new Date(demoEnd).toISOString()
+          : '2026-01-02T00:00:00Z',
         isDirectDeal: false,
-        status: 'ended',
+        status: shortDemo && Date.now() < demoEnd ? 'active' : 'ended',
         productCondition: 'GOOD',
         viewCount: 3,
         thumbnailUrl: '',
@@ -115,6 +125,7 @@ test.beforeAll(async () => {
         categoryName: '기타',
         images: [],
       });
+    }
     if (url === '/member-service/api/v1/member/seller-test')
       return send({
         memberUuid: 'seller-test',
@@ -141,6 +152,9 @@ test.beforeEach(async ({ context }) => {
   view = checkoutFixture({ purchase: null });
   scenario = 'normal';
   calls = [];
+  shortDemo = false;
+  demoEnd = 0;
+  detailReads = 0;
   await context.addCookies([
     {
       name: 'accessToken',
@@ -166,6 +180,21 @@ test.beforeEach(async ({ context }) => {
 
 async function shot(page: Page, info: TestInfo, name: string) {
   await expect(page.locator('h1')).toBeVisible();
+  await expect
+    .poll(() =>
+      page.locator('h1').evaluate((heading) => {
+        for (
+          let element: HTMLElement | null = heading;
+          element;
+          element = element.parentElement
+        ) {
+          const filter = getComputedStyle(element).filter;
+          if (filter !== 'none' && filter !== 'blur(0px)') return false;
+        }
+        return true;
+      }),
+    )
+    .toBe(true);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -191,11 +220,50 @@ for (const viewport of [
       isMobile: viewport.isMobile,
     });
 
+    test('short demo refreshes once after expiry and keeps checkout restricted to an authenticated winner', async ({
+      page,
+      context,
+    }, info) => {
+      shortDemo = true;
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      await page.goto('/auctions/auction-test-123');
+      const guide = page.getByRole('region', { name: '체험 경매 안내' });
+      await expect(
+        guide.getByRole('heading', { name: '5분 체험 경매' }),
+      ).toBeVisible();
+      await expect(guide).toContainText('경매 진행 중');
+      await expect(
+        page.getByRole('link', { name: '낙찰 상품 테스트 결제' }),
+      ).toHaveCount(0);
+      await shot(page, info, `${viewport.name}-demo-active`);
+      await expect(guide).toContainText('경매가 마감되었습니다', {
+        timeout: 20000,
+      });
+      await expect(
+        page.getByRole('link', { name: '낙찰 상품 테스트 결제' }),
+      ).toBeVisible();
+      const readsAfterExpiry = detailReads;
+      await page.waitForTimeout(1800);
+      expect(detailReads).toBe(readsAfterExpiry);
+      expect(calls.filter((call) => call.method === 'POST')).toHaveLength(0);
+      await shot(page, info, `${viewport.name}-demo-ended`);
+      await context.clearCookies();
+      await page.reload();
+      await expect(guide).toContainText('경매가 마감되었습니다');
+      await expect(
+        page.getByRole('link', { name: '낙찰 상품 테스트 결제' }),
+      ).toHaveCount(0);
+      expect(errors).toEqual([]);
+    });
+
     test('explicit prepare, prechecked agreement, confirmed PAID and success refresh', async ({
       page,
     }, info) => {
       const errors: string[] = [];
-      page.on('pageerror', (error) => errors.push(`${page.url()}: ${error.message}`));
+      page.on('pageerror', (error) =>
+        errors.push(`${page.url()}: ${error.message}`),
+      );
       await page.goto(path);
       await expect(
         page.getByRole('button', { name: '테스트 결제 준비' }),

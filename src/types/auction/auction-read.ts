@@ -35,6 +35,7 @@ export interface ImageResponseDto {
 }
 
 export interface CatalogAuctionResponseDto {
+  isDemo?: boolean;
   auctionUuid: string;
   title: string;
   description: string;

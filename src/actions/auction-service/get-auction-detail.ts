@@ -7,6 +7,7 @@ import { CatalogAuctionResponseDto } from '@/types/auction/auction-read';
 import { MemberInfo } from '@/types/member';
 
 type AuctionServiceResponse = {
+  isDemo?: boolean;
   auctionUuid: string;
   categoryId?: number | null;
   categoryName: string | null;
@@ -41,6 +42,7 @@ export async function getAuctionDetail(
 
     return {
       ...auction,
+      isDemo: auction.isDemo === true,
       directDealLocation: auction.directDealLocation ?? null,
       version: 1,
       currentBid: auction.minimumBid,

@@ -35,13 +35,21 @@ fields; selectBidHistory(groups, {query,status,sort}) returns a new ordered arra
 - [x] Add route error/retry and preserve empty history; remove obsolete amount-based status helper if unused.
 - [x] Run all unit/convention/type/lint/build checks; actual Next+API fixture browser
       tests for grouping/search/filter/history, empty and error retry on both sizes.
-- [ ] Inspect desktop/mobile screenshots; obtain one independent final review,
+- [x] Inspect desktop/mobile screenshots; obtain one independent final review,
       address material findings, then commit.
 
 ### Task 2: Publish and verify
 
-- [ ] Push main; verify exact-SHA full CI and image publication.
-- [ ] Confirm new frontend image, rollout and Argo health/GitOps commit.
-- [ ] Read-only live smoke of customer pages and personal history if authorized
+- [x] Push main; verify exact-SHA full CI and image publication.
+- [x] Confirm new frontend image, rollout and Argo health/GitOps commit.
+- [x] Read-only live smoke of customer pages and personal history if authorized
       session available; do not create bids/payments to fill a screen.
-- [ ] Save verification/limits, sync GitOps and leave checkouts clean.
+- [x] Save verification/limits, sync GitOps and leave checkouts clean.
+
+Evidence: unit89 + checker11, conventions/type/lint/build and actual production-build
+fixture browser6 passed. One reviewed Minor deferred: visible KST timezone label.
+CI40893285120 success atb45cb8e. GitOps962093fe147798ffb1e8131592ed9d430384ad28,
+frontend ready/restarts0, rollout complete, Argo Synced/Healthy. Anonymous auth
+redirect and existing demo-login desktop/mobile history2 distinct cards passed;
+search/reset/sort and no overflow, zero bid/payment/upload POSTs. Durable proof:
+docs/my-bid-history.md. No live transactions or new backend resources.

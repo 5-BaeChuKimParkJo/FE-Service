@@ -184,7 +184,7 @@ async function shot(page: Page, info: TestInfo, name: string) {
     .poll(() =>
       page.locator('h1').evaluate((heading) => {
         for (
-          let element: HTMLElement | null = heading;
+          let element: Element | null = heading;
           element;
           element = element.parentElement
         ) {

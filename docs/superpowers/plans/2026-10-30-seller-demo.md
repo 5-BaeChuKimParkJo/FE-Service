@@ -14,6 +14,7 @@ operator-only Python bootstrap uses normal APIs and Kubernetes-owned Secret/lock
 - Client chooses exact buyer/seller only, server-held credentials, separate identities.
 - Fixed SMS guard and loopback API for bootstrap; no credentials/tokens in files/logs.
 - At most3 ordinary sample creates; lock + own-list stable-title dedupe; no POST retries.
+- Persist unresolved create intent before dispatch; an empty list never authorizes a retry.
 - Initial actual states evolve naturally, no automatic reset; preserve existing data.
 
 ## Review Focus
@@ -36,7 +37,7 @@ by frontend plus private resumability state; stable3 ordinary auctions by seller
 - [x] Write bootstrap protocol/payload/guard/idempotency failure tests, observe missing module RED.
 - [x] Implement normal API provisioning, fixed-mode guard, labelled Secret/lock and stable samples.
 - [x] Add optional frontend env/identity contract and CI for bootstrap tests.
-- [ ] Run Python tests/identity/manifests render; commit immutable review range, no push yet.
+- [x] Run Python tests/identity/manifests render; commit immutable review range, no push yet.
 
 ### Task 2: Persona sign-in experience
 
@@ -48,13 +49,26 @@ Consumes optional server seller env; seller redirects /mypage/sales, buyer calle
 - [x] Add exact persona/no fallback/private response tests and observe RED.
 - [x] Implement server action, availability helper/options and guarded button/navigation.
 - [x] Run unit/checker/type/lint/build and actual Next desktop/mobile persona fixture tests; screenshots.
-- [ ] Commit; one fresh read-only cross-repo review and fix material findings RED→GREEN once.
+- [x] Commit; one fresh read-only cross-repo review and fix material findings RED→GREEN once.
 
 ### Task 3: Provision, publish and verify
 
-- [ ] Run reviewed bootstrap on miniPC; create distinct seller/3 samples via normal APIs,
+- [x] Run reviewed bootstrap on miniPC; create distinct seller/3 samples via normal APIs,
       verify waiting/active/ended and second invocation creates0/uploads0; no bid/payment.
-- [ ] Push FE and GitOps config, verify CI/optional Secret contract/image/rollout/Argo.
-- [ ] Live seller login/my-sales three states, buyer different identity/no seller listings,
+- [x] Push FE and GitOps config, verify CI/optional Secret contract/image/rollout/Argo.
+- [x] Live seller login/my-sales three states, buyer different identity/no seller listings,
       repeated sign-in causes no new rows; desktop/mobile and no sensitive output.
-- [ ] Persist proof/decisions, commit docs, sync GitOps, exact task scratch cleanup.
+- [x] Persist proof/decisions, commit docs, sync GitOps, exact task scratch cleanup.
+
+## Completion evidence
+
+FE30dd911 CI41081305641 and infra03ff141 CI41081292485 pass. Automatic image
+commit839a5d2 CI41081933017 pass; exact FE image rollout and Argo Synced/Healthy.
+Python18/identity5/policy11/Kustomize user contract green; FEunit120/checker11,
+types/lint/build, desktop/mobile fixture10 and two visual captures inspected.
+Actual normal setup3/0/1 then0/3/0; read-only initial state counts1each, separate
+buyer. Live desktop/mobile auth/owner/image/state/overflow and repeated3IDs pass,
+financial/upload posts0. No backend change or financial test. One review, two
+Important fixes RED→GREEN, no extra review. Decisions/limits: docs/seller-demo.md
+and private docs/runbooks/seller-demo.md. Docs-only commit skips duplicate FE CI;
+runtime source image remains verified30dd911.

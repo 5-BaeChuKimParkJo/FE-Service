@@ -8,8 +8,7 @@ import {
   MemberInfoSectionSkeleton,
 } from '@/components/members';
 import { Suspense } from 'react';
-import Link from 'next/link';
-import { DemoSignInButton } from '@/components/sign-in/DemoSignInButton';
+import { DemoSignInOptions } from '@/components/sign-in/DemoSignInOptions';
 
 export default async function Home() {
   const session = await auth();
@@ -25,17 +24,19 @@ export default async function Home() {
           <MemberInfoSection memberInfo={myInfo} />
         </Suspense>
       ) : (
-        <section className='border-b border-gray-200 pb-5' aria-label='체험 계정'>
+        <section
+          className='border-b border-gray-200 pb-5'
+          aria-label='체험 계정'
+        >
           <h1 className='text-lg font-semibold text-gray-900'>찰낙찰낙</h1>
-          <p className='mt-1 text-sm text-gray-600'>오늘의 경매를 둘러보세요.</p>
+          <p className='mt-1 text-sm text-gray-600'>
+            오늘의 경매를 둘러보세요.
+          </p>
           <div className='mt-4'>
-            {process.env.DEMO_MEMBER_ID && process.env.DEMO_MEMBER_PASSWORD ? (
-              <DemoSignInButton />
-            ) : (
-              <Link href='/sign-in' className='text-sm font-semibold text-gray-900 underline'>
-                로그인
-              </Link>
-            )}
+            <DemoSignInOptions
+              buyerLabel='구매자 체험 계정으로 입찰하기'
+              showLoginFallback
+            />
           </div>
         </section>
       )}

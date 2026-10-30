@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { signOut } from '@/actions/auth-service/sign-out';
 
-export function SavedAuctionsSignIn({
+export function SessionSignInButton({
   returnTo,
   children,
 }: {

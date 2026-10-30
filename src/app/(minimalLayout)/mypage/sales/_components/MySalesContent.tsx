@@ -1,125 +1,116 @@
-import { AuctionHistory } from '@/types/auction';
-import Image from 'next/image';
-import Link from 'next/link';
-import { formatDate } from '@/utils/date';
-import { ShoppingBag } from 'lucide-react';
-import { isApplicationMediaUrl } from '@/utils/media-url';
+import { mySalesStatuses, mySalesUrl } from '@/libs/mySales';
+import type { MySalesData, MySalesQuery } from '@/types/auction/my-sales';
+import { MySaleCard } from './MySaleCard';
 
-interface MySalesContentProps {
-  auctions: AuctionHistory[];
-}
-
-export function MySalesContent({ auctions }: MySalesContentProps) {
-  if (!Array.isArray(auctions)) {
-    return (
-      <section className='text-center py-16' role='alert' aria-live='polite'>
-        <p className='text-gray-500'>상품을 불러오는 중 오류가 발생했습니다.</p>
-      </section>
-    );
-  }
-
-  if (auctions.length === 0) {
-    return (
-      <section className='text-center py-16'>
-        <div
-          className='w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4'
-          role='img'
-          aria-label='상품 없음'
-        >
-          <ShoppingBag className='w-10 h-10 text-gray-400' aria-hidden='true' />
-        </div>
-        <h2 className='text-lg font-semibold text-gray-700 mb-2'>
-          등록한 상품이 없습니다
-        </h2>
-        <p className='text-sm text-gray-500 mb-6'>첫 경매를 시작해보세요!</p>
-        <Link
-          href='/auctions/create'
-          className='inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors'
-        >
-          경매 등록하기
-        </Link>
-      </section>
-    );
-  }
-
+export function MySalesContent({
+  data,
+  query,
+}: {
+  data: MySalesData;
+  query: MySalesQuery;
+}) {
+  const pages = Math.max(1, Math.min(10000, Math.ceil(data.total / 20)));
   return (
-    <section className='space-y-4' aria-label='판매한 상품 목록'>
-      {auctions.map((auction) => (
-        <SalesCard key={auction.auctionUuid} auction={auction} />
-      ))}
+    <section aria-label='내 경매 현황' className='space-y-4'>
+      <div>
+        <p className='mb-2 text-xs text-gray-500'>내 경매 전체 기준</p>
+        <dl className='grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-gray-200 bg-gray-100'>
+          {(
+            [
+              'total',
+              'waiting',
+              'active',
+              'ended',
+              'hidden',
+              'cancelled',
+            ] as const
+          ).map((key) => {
+            const label = key === 'total' ? '전체' : mySalesStatuses[key];
+            return (
+              <div key={key} className='bg-white px-2 py-3 text-center'>
+                <dt className='text-xs text-gray-500'>{label}</dt>
+                <dd
+                  aria-label={label + ' 경매 수'}
+                  className='mt-1 text-xl font-semibold tabular-nums text-gray-900'
+                >
+                  {data.summary[key].toLocaleString('ko-KR')}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      </div>
+      <p role='status' className='text-sm text-gray-500'>
+        검색 결과 {data.total.toLocaleString('ko-KR')}개 ·{' '}
+        {query.page.toLocaleString('ko-KR')} / {pages.toLocaleString('ko-KR')}
+        페이지
+      </p>
+      {data.items.length ? (
+        <ul aria-label='내 경매 목록' className='space-y-4'>
+          {data.items.map((item) => (
+            <li key={item.auctionUuid}>
+              <MySaleCard item={item} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className='rounded-xl border border-dashed border-gray-300 bg-white px-4 py-10 text-center'>
+          <h2 className='font-semibold text-gray-800'>
+            {data.summary.total === 0
+              ? '아직 등록한 경매가 없습니다'
+              : query.page > pages
+                ? '이 페이지에는 경매가 없습니다'
+                : '조건에 맞는 경매가 없습니다'}
+          </h2>
+          <p className='mt-2 text-sm text-gray-500'>
+            {data.summary.total === 0
+              ? '첫 경매를 등록해 보세요.'
+              : '검색 조건을 바꾸거나 첫 페이지에서 다시 확인하세요.'}
+          </p>
+          <a
+            href={
+              data.summary.total === 0 ? '/auctions/create' : '/mypage/sales'
+            }
+            className='mt-4 inline-flex min-h-11 items-center rounded-lg bg-primary-200 px-4 text-sm font-medium text-white'
+          >
+            {data.summary.total === 0 ? '경매 등록하기' : '조건 초기화'}
+          </a>
+        </div>
+      )}
+      <nav
+        aria-label='내 경매 페이지'
+        className='flex flex-wrap items-center justify-between gap-2'
+      >
+        {query.page > 1 && (
+          <a
+            href={mySalesUrl(query)}
+            className='inline-flex min-h-11 items-center rounded-lg border border-gray-200 px-3 text-sm text-gray-700'
+          >
+            처음으로
+          </a>
+        )}
+        {query.page > 1 && (
+          <a
+            href={mySalesUrl(query, query.page - 1)}
+            className='inline-flex min-h-11 items-center rounded-lg border border-gray-200 px-3 text-sm text-gray-700'
+          >
+            이전 페이지
+          </a>
+        )}
+        {query.page < pages && (
+          <a
+            href={mySalesUrl(query, query.page + 1)}
+            className='ml-auto inline-flex min-h-11 items-center rounded-lg bg-primary-200 px-3 text-sm font-medium text-white'
+          >
+            다음 페이지
+          </a>
+        )}
+      </nav>
+      <p className='text-xs leading-5 text-gray-500'>
+        시각은 한국시간(KST)입니다. 입찰 횟수는 저장된 입찰 기록 수입니다. 경매
+        종료는 판매·결제 완료를 뜻하지 않습니다. 최신 가격과 상태는 새로고침해서
+        확인하세요.
+      </p>
     </section>
-  );
-}
-
-function SalesCard({ auction }: { auction: AuctionHistory }) {
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      waiting: { text: '대기', className: 'bg-yellow-100 text-yellow-800' },
-      active: { text: '진행', className: 'bg-green-100 text-green-800' },
-      ended: { text: '종료', className: 'bg-gray-100 text-gray-800' },
-      cancelled: { text: '취소', className: 'bg-red-100 text-red-800' },
-    };
-
-    const config =
-      statusConfig[status as keyof typeof statusConfig] || statusConfig.waiting;
-
-    return (
-      <span
-        className={`px-2 py-1 text-xs font-medium rounded-full ${config.className}`}
-        role='status'
-        aria-label={`경매 상태: ${config.text}`}
-      >
-        {config.text}
-      </span>
-    );
-  };
-
-  return (
-    <article className='block bg-white border border-gray-400/50 rounded-lg p-4 hover:border-gray-300 transition-colors'>
-      <Link
-        href={`/auctions/${auction.auctionUuid}`}
-        className='block'
-        aria-label={`${auction.title} 상세 보기`}
-      >
-        <div className='flex gap-4'>
-          <figure className='relative w-20 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden'>
-            <Image
-              src={auction.thumbnailUrl}
-              alt={`${auction.title} 상품 이미지`}
-              fill
-              style={{ objectFit: 'cover' }}
-              unoptimized={isApplicationMediaUrl(auction.thumbnailUrl)}
-            />
-          </figure>
-
-          <div className='flex-1 min-w-0'>
-            <header className='flex items-start justify-between mb-2'>
-              <h3 className='font-medium text-gray-900 truncate pr-2 flex items-center gap-2'>
-                {getStatusBadge(auction.status)}
-                <span className='line-clamp-1'>{auction.title}</span>
-              </h3>
-            </header>
-
-            <dl className='space-y-1 text-sm text-gray-500'>
-              <div className='flex items-center justify-between'>
-                <dt>시작가</dt>
-                <dd className='font-medium text-gray-900'>
-                  {auction.minimumBid.toLocaleString()}원
-                </dd>
-              </div>
-
-              <div className='flex items-center justify-between'>
-                <dt>등록일</dt>
-                <dd>
-                  <time dateTime={auction.createdAt}>
-                    {formatDate(auction.createdAt)}
-                  </time>
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </div>
-      </Link>
-    </article>
   );
 }

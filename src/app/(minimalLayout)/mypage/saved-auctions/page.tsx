@@ -4,7 +4,7 @@ import { getSavedAuctions } from '@/actions/auction-service/saved-auctions';
 import { SavedAuctionCard } from '@/components/mypage/SavedAuctionCard';
 import { SavedAuctionsRefresh } from '@/components/mypage/SavedAuctionsRefresh';
 import { EmptyState } from '@/components/common/EmptyState';
-import { SavedAuctionsSignIn } from '@/components/auction/SavedAuctionsSignIn';
+import { SessionSignInButton } from '@/components/auth/SessionSignInButton';
 
 export default async function SavedAuctionsPage({
   searchParams,
@@ -36,9 +36,9 @@ export default async function SavedAuctionsPage({
           <p className='mt-3 text-sm text-gray-600'>{result.error.message}</p>
           {result.error.code === 'AUTH_REQUIRED' && (
             <div className='mt-4'>
-              <SavedAuctionsSignIn returnTo='/mypage/saved-auctions'>
+              <SessionSignInButton returnTo='/mypage/saved-auctions'>
                 로그인하기
-              </SavedAuctionsSignIn>
+              </SessionSignInButton>
             </div>
           )}
           {cursor !== undefined && (

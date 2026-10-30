@@ -7,7 +7,7 @@ export function MyPageTransactionSection() {
   const transactionSummary = [
     {
       id: 'sales',
-      title: '판매한 경매상품',
+      title: '내 경매',
       href: '/mypage/sales',
       icon: <ShoppingBag className='w-6 h-6' />,
     },

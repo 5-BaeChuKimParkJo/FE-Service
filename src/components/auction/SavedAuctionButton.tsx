@@ -9,7 +9,7 @@ import {
   removeSavedAuction,
 } from '@/actions/auction-service/saved-auctions';
 import type { SavedAuctionStateResult } from '@/types/auction/saved-auctions';
-import { SavedAuctionsSignIn } from './SavedAuctionsSignIn';
+import { SessionSignInButton } from '@/components/auth/SessionSignInButton';
 
 export function SavedAuctionButton({
   auctionUuid,
@@ -27,10 +27,10 @@ export function SavedAuctionButton({
 
   if (!state.ok && state.error.code === 'AUTH_REQUIRED')
     return (
-      <SavedAuctionsSignIn returnTo={'/auctions/' + auctionUuid}>
+      <SessionSignInButton returnTo={'/auctions/' + auctionUuid}>
         <Heart className='h-4 w-4' aria-hidden='true' />
         로그인하고 관심 등록
-      </SavedAuctionsSignIn>
+      </SessionSignInButton>
     );
 
   async function submit() {

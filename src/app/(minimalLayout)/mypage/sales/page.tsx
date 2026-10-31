@@ -47,7 +47,7 @@ export default async function MySalesPage({
               </SessionSignInButton>
             ) : (
               <a
-                href='/mypage/sales'
+                href={mySalesUrl(defaultMySalesQuery)}
                 className='inline-flex min-h-11 items-center rounded-lg border border-gray-200 px-3 text-sm text-gray-700'
               >
                 조건 초기화

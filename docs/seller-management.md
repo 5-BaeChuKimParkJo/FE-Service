@@ -82,3 +82,14 @@ Kafka 상태 검사/잠금 후 시각/가격 범위 실패8건과 프론트 가�
 전체 Kafka/CDC/Elasticsearch 장애 복구·재생·수렴과 운영 부하·잠금 시간은 이번 결과로
 인증하지 않는다. 렌더 검증은 현재 PC·모바일 브라우저 범위이며 종합 접근성 감사가 아니다.
 기존 인증·관리자·결제·내부 완료의 전반적인 정합성은 재검증 범위에서 제외한다.
+
+## 실제 CI와 배포
+
+Backend `87ee91058f79072c8946f6926d91805f43ce8f9a`의
+[전체 CI41195598705](https://github.com/5-BaeChuKimParkJo/node-service/actions/runs/41195598705)가
+단위459/보호된94 skip, PostgreSQL 통합 실행91건(실제 DB90+정리 안전성1), 실제 Kafka4와
+네 앱 빌드·GHCR 게시를 통과했다. 신규 판매자 PG19건과 migration도 실제 CI에서 실행했다.
+자동 GitOps `114e22ff552ddfe0066ca4d9b7b13684f390963f`의
+[매니페스트 CI](https://github.com/chuman0216/cncn_private/actions/runs/41195949309)도 통과했다.
+정확한 새 백엔드 이미지에서 이력 테이블 migration과 모든 migration 성공 로그,
+rollout·Ready·재시작0·Argo Synced/Healthy·익명401을 확인한 뒤 프론트를 푸시했다.

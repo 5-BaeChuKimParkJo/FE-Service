@@ -75,7 +75,7 @@ exact five fields or reason, no optimistic state mutation. Conflict asks reload.
 
 ### Task 3: Publish backend then frontend and verify release
 
-- [ ] Push backend; verify exact full CI unit+isolated PG/Kafka+build/GHCR.
+- [x] Push backend; verify exact full CI unit+isolated PG/Kafka+build/GHCR.
 - [ ] Apply additive migration through existing release procedure; exact backend image
       ready/rollout/Argo, then push FE and verify CI/image/runtime.
 - [ ] Read-only live desktop/mobile seller page/fields/history/state, buyer404 and old

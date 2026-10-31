@@ -34,9 +34,15 @@ export function SellerAuctionForm({ data }: { data: SellerAuctionData }) {
   const busy = useRef(false);
   useEffect(() => setReady(true), []);
   const url = '/mypage/sales/' + data.auctionUuid;
+  const priceNeedsCorrection = BigInt(data.minimumBid) > BigInt('2147483647');
   async function submit(event: FormEvent, action: 'update' | 'cancel') {
     event.preventDefault();
-    if (!ready || busy.current || (action === 'cancel' && !confirmed)) return;
+    if (
+      !ready ||
+      busy.current ||
+      (action === 'cancel' && (!confirmed || priceNeedsCorrection))
+    )
+      return;
     busy.current = true;
     setPending(true);
     setError(null);
@@ -158,12 +164,12 @@ export function SellerAuctionForm({ data }: { data: SellerAuctionData }) {
                 value={price}
                 onChange={(event) => setPrice(event.target.value)}
                 inputMode='numeric'
-                pattern='[1-9][0-9]{3,15}'
-                maxLength={16}
+                pattern='[1-9][0-9]{3,9}'
+                maxLength={10}
                 required
               />
               <p className='mt-1 text-xs text-gray-500'>
-                1,000원 이상, 숫자만 입력해 주세요.
+                1,000~2,147,483,647원, 숫자만 입력해 주세요.
               </p>
             </div>
             <div className='grid min-w-0 gap-4 sm:grid-cols-2'>
@@ -276,10 +282,18 @@ export function SellerAuctionForm({ data }: { data: SellerAuctionData }) {
               />
               <span>출품 취소 내용을 확인했습니다</span>
             </label>
+            {priceNeedsCorrection && (
+              <p className='rounded-lg bg-amber-50 p-3 text-sm leading-6 text-amber-800'>
+                시작가를 2,147,483,647원 이하로 수정한 후 취소해 주세요.
+              </p>
+            )}
             <button
               type='submit'
               disabled={
-                !confirmed || !reason || (reason === 'other' && !detail.trim())
+                priceNeedsCorrection ||
+                !confirmed ||
+                !reason ||
+                (reason === 'other' && !detail.trim())
               }
               className={
                 button + ' w-full border border-red-200 text-red-700 sm:w-auto'

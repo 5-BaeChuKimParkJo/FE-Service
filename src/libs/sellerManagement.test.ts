@@ -72,6 +72,12 @@ describe('seller management projection and form values', () => {
     expect(
       parseSellerUpdateInput({ ...input, minimumBid: '9007199254740992' }),
     ).toBeNull();
+    expect(
+      parseSellerUpdateInput({ ...input, minimumBid: '2147483648' }),
+    ).toBeNull();
+    expect(
+      parseSellerUpdateInput({ ...input, minimumBid: '2147483647' }),
+    ).toMatchObject({ minimumBid: '2147483647' });
     expect(parseSellerUpdateInput({ ...input, status: 'visible' })).toBeNull();
     expect(
       parseSellerCancellation({ version: 2, reasonCode: 'listing_error' }),

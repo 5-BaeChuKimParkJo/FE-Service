@@ -264,6 +264,44 @@ for (const device of [
       });
       expect(row.status).toBe('cancelled');
     });
+    test('requires correcting an oversized starting price before cancellation', async ({
+      page,
+    }) => {
+      row.minimumBid = '2147483648';
+      await page.goto('/mypage/sales/' + id);
+      await page
+        .getByLabel('취소 사유', { exact: true })
+        .selectOption('listing_error');
+      await page.getByLabel('출품 취소 내용을 확인했습니다').check();
+      await expect(
+        page.getByRole('button', { name: '출품 취소', exact: true }),
+      ).toBeDisabled();
+      await expect(
+        page.getByText(
+          '시작가를 2,147,483,647원 이하로 수정한 후 취소해 주세요.',
+          { exact: true },
+        ),
+      ).toBeVisible();
+      expect(writes).toHaveLength(0);
+      await page.getByLabel('시작가 (원)', { exact: true }).fill('1000');
+      await page
+        .getByRole('button', { name: '수정 저장', exact: true })
+        .click();
+      await expect(
+        page.getByRole('region', { name: '판매자 변경 이력' }),
+      ).toContainText('경매 정보 수정');
+      await page
+        .getByLabel('취소 사유', { exact: true })
+        .selectOption('listing_error');
+      await page.getByLabel('출품 취소 내용을 확인했습니다').check();
+      await page
+        .getByRole('button', { name: '출품 취소', exact: true })
+        .click();
+      await expect(
+        page.getByRole('button', { name: '수정 저장', exact: true }),
+      ).toHaveCount(0);
+      expect(writes).toHaveLength(2);
+    });
     test('clears obsolete free text when switching to a predefined reason', async ({
       page,
     }) => {

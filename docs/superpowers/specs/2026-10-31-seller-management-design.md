@@ -18,15 +18,19 @@ using legacy seller DELETE must switch to cancellation. No new service/dependenc
   seller actions (update/cancel, reason code/detail, before/after and timestamp).
 - PATCH supplies version and title/description/minimumBid/startAt/endAt only. Strict
   keys; title5–100 trimmed chars, description≤1000, price decimal string1000 through
-  9007199254740991 (existing numeric Outbox limit). Dates timezone-qualified ISO,
+  2147483647 (existing search consumer int limit). Dates timezone-qualified ISO,
   whole UTC hours, start in future and duration≥1hour, as ordinary creation requires.
 - Cancellation requires version and reason code: listing_error, item_unavailable,
   schedule_change, personal_reason, other. Other requires trimmed detail1–200chars;
   predefined reasons have no detail. Persist cancellation as status=cancelled, never
   deletedAt. Preserve all images, ownership, bids, financial records and original values.
+  An existing price above this range must be corrected with normal PATCH before cancel;
+  do not forge/clamp values in a deletion event or change the search index schema here.
 - Writes lock the auction row and recheck visible/not-deleted, future start/end, no bid
   records/current bidder/nonzero current bid, no sold/checkout lock/purchase. Database
   clock and conditional UPDATE protect start-time boundaries after lock contention.
+  The existing Kafka batch bid processor must also reject cancelled/hidden/deleted/sold/
+  checkout rows under its lock and use exclusive end time evaluated after lock acquisition.
 - Version rejects stale forms/double writes with409. No automatic retry after timeout.
 - Same transaction saves immutable before/after history and existing Outbox update or
   delete event; cancel removes the item from search through the existing event contract.

@@ -13,7 +13,7 @@ transactional Outbox; private Next actions/forms linked from existing seller car
 - Existing checkouts, no worktrees/local Docker/new dependencies; inline execution.
 - Normal verified JWT ownership,404 for other owners/deleted, strict input keys.
 - Five edit fields only; version0..2147483647; title5–100, description≤1000,
-  price string1000..9007199254740991, ISO whole-hour dates/future start/duration≥1h.
+  price string1000..2147483647, ISO whole-hour dates/future start/duration≥1h.
 - Cancel reason codes listing_error/item_unavailable/schedule_change/personal_reason/other;
   other detail1–200, predefined detail absent; preserve existing data and history.
 - Visible/future/no bids/currentBid0/currentBiddernull/soldnull/checkoutnull/no purchase;
@@ -70,7 +70,7 @@ exact five fields or reason, no optimistic state mutation. Conflict asks reload.
 - [x] Implement private action and accessible page/form; link owner cards and recent history.
 - [x] Local full FE suite/conventions/types/lint/build; actual Next fixture desktop/mobile
       save/cancel/other detail/confirm/stale/no duplicate/readonly/nonowner and screenshots.
-- [ ] Commit and create one fresh whole-change review for both repos; fix Important/Critical
+- [x] Commit and create one fresh whole-change review for both repos; fix Important/Critical
       once with reproducing RED→GREEN tests and final full checks, no second review.
 
 ### Task 3: Publish backend then frontend and verify release

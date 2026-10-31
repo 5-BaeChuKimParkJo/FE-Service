@@ -71,7 +71,7 @@ export function parseSellerUpdateInput(
     value.description.length > 1000 ||
     typeof value.minimumBid !== 'string' ||
     !/^[1-9]\d{3,15}$/.test(value.minimumBid) ||
-    BigInt(value.minimumBid) > BigInt('9007199254740991') ||
+    BigInt(value.minimumBid) > BigInt('2147483647') ||
     !wholeHour(value.startAt) ||
     !wholeHour(value.endAt) ||
     Date.parse(value.endAt) - Date.parse(value.startAt) < 3600000

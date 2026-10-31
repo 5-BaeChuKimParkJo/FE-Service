@@ -63,6 +63,13 @@ export function MySaleCard({ item }: { item: MySale }) {
           </dd>
         </div>
       </dl>
+      <Link
+        href={'/mypage/sales/' + item.auctionUuid}
+        prefetch={false}
+        className='mr-2 mt-4 inline-flex min-h-11 items-center rounded-lg bg-primary-200 px-3 text-sm font-medium text-white'
+      >
+        경매 관리
+      </Link>
       {visible ? (
         <Link
           href={'/auctions/' + item.auctionUuid}

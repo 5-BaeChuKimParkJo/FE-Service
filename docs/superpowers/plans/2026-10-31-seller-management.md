@@ -76,9 +76,23 @@ exact five fields or reason, no optimistic state mutation. Conflict asks reload.
 ### Task 3: Publish backend then frontend and verify release
 
 - [x] Push backend; verify exact full CI unit+isolated PG/Kafka+build/GHCR.
-- [ ] Apply additive migration through existing release procedure; exact backend image
+- [x] Apply additive migration through existing release procedure; exact backend image
       ready/rollout/Argo, then push FE and verify CI/image/runtime.
-- [ ] Read-only live desktop/mobile seller page/fields/history/state, buyer404 and old
+- [x] Read-only live desktop/mobile seller page/fields/history/state, buyer404 and old
       seller PUT/DELETE denial (not a successful write); no financial/demo reset writes.
-- [ ] Persist proof/rulings and docs commits (skip duplicate image builds), sync GitOps,
+- [x] Persist proof/rulings and docs commits (skip duplicate image builds), sync GitOps,
       verify clean remote heads and healthy rollout, clean only owned scratch/process.
+
+## Completion evidence
+
+Backend87ee910 CI41195598705: unit459/94 guarded skip, isolated integration91
+(90 DB+cleanup-safety1), actual Kafka4, migration, four builds/GHCR. Backend image
+GitOps114e22f CI41195949309; actual migration log/rollout/Ready/restarts0 before FE push.
+FE50c9048 CI41196446695:133/checker/type/clean build/GHCR; final local Next fixture16
+and priorMySales8. Earlier stale lint cache reproduced --no-cache then native reset
+route builder fixed, clean lint/build+8 pass. ImageGitOpscf791ef CI41196676120 pass.
+Exact frontend rollout and ArgoSyncedHealthy; desktop/mobile live own3/private history,
+buyer404/legacy403 on nonexistent UUID/no financial posts. Current real samples are
+active2/ended1 so actual writes exercised only isolated fixtures/CI, no demo resets.
+One fresh review, Important2 fixed RED→GREEN; Minor protected description/start display
+deferred. Decisions/costs preserved in docs/seller-management.md in both repos.

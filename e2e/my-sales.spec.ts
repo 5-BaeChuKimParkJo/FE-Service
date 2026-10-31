@@ -221,7 +221,17 @@ for (const device of [
         .selectOption('hidden');
       await page.getByRole('button', { name: '조회', exact: true }).click();
       await expect(page.getByRole('article')).toHaveCount(1);
-      await expect(page.getByRole('article').getByRole('link')).toHaveCount(0);
+      await expect(
+        page.getByRole('article').locator('a[href^="/auctions/"]'),
+      ).toHaveCount(0);
+      await expect(
+        page
+          .getByRole('article')
+          .getByRole('link', { name: '경매 관리', exact: true }),
+      ).toHaveAttribute(
+        'href',
+        '/mypage/sales/20000000-0000-4000-8000-000000000002',
+      );
       await expect(
         page.getByText('숨김·취소 경매는 공개 상세를 제공하지 않습니다.'),
       ).toBeVisible();

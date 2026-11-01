@@ -66,15 +66,15 @@ Button no automatic retry, ref+hydration guard; full navigation to own managemen
 - [x] Implement server panel and guarded client button; preserve native list navigation.
 - [x] Full FE unit/checker/type/clean lint/build; actual production Next fixture desktop/mobile
       create/reuse/rapid click/error/cooldown/ordinary user and original list regression; inspect captures.
-- [ ] Commit and one fresh read-only cross-repo review; fix Important/Critical once RED→GREEN
+- [x] Commit and one fresh read-only cross-repo review; fix Important/Critical once RED→GREEN
       plus required full checks; document Minor and all rulings, no extra reviewer.
 
 ### Task 3: Publish and demonstrate
 
-- [ ] Push config/backend, verify exact CI isolated PG/Kafka/build/GHCR and optional env,
+- [x] Push config/backend, verify exact CI isolated PG/Kafka/build/GHCR and optional env,
       backend image Ready/rollout/Argo; then push FE and verify CI/new exact image.
-- [ ] Live seller button creates at most1 waiting demo, second click reuses same UUID;
+- [x] Live seller button creates at most1 waiting demo, second click reuses same UUID;
       desktop/mobile management form editable, original3 rows/history preserved,
       buyer absent button/direct403 and no financial/upload posts or resets.
-- [ ] Persist evidence/choices, docs commits skipping duplicate builds, clean synced
+- [x] Persist evidence/choices, docs commits skipping duplicate builds, clean synced
       remote heads/healthy images; stop owned preview and delete only task scratch.

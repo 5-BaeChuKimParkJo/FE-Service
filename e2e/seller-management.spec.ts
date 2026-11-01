@@ -31,6 +31,8 @@ test.beforeAll(async () => {
       response.statusCode = status;
       response.end(JSON.stringify(value));
     };
+    if (url.pathname === '/auction-service/api/v1/auctions/seller-demo')
+      return send({ available: false });
     if (url.pathname === root && request.method === 'GET')
       return mode === 'denied'
         ? send({ code: 'HTTP_ERROR_404', message: 'private-owner-detail' }, 404)

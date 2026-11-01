@@ -8,6 +8,7 @@ import { SessionSignInButton } from '@/components/auth/SessionSignInButton';
 import { MySalesContent } from './_components/MySalesContent';
 import { MySalesFilters } from './_components/MySalesFilters';
 import { MySalesRefresh } from './_components/MySalesRefresh';
+import { SellerDemoPreparation } from './_components/SellerDemoPreparation';
 
 export default async function MySalesPage({
   searchParams,
@@ -25,6 +26,7 @@ export default async function MySalesPage({
           내가 등록한 경매의 진행 상황을 한곳에서 확인하세요.
         </p>
       </header>
+      {result.ok && <SellerDemoPreparation />}
       <MySalesFilters query={query} />
       <div className='flex justify-end'>
         <MySalesRefresh query={query} />

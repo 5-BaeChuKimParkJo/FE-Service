@@ -90,6 +90,8 @@ test.beforeAll(async () => {
             : items,
       });
     }
+    if (url.pathname === '/auction-service/api/v1/auctions/seller-demo')
+      return send({ available: false });
     if (url.pathname.endsWith('/categories')) return send([]);
     if (url.pathname.startsWith('/member-service'))
       return send({
